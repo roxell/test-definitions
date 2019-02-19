@@ -33,13 +33,14 @@ usage() {
                       [-g branch]
                       [-e environment]
                       [-s True|False]
+                      [-p path to LTP]
                       [-v LTP_VERSION]
                       [-M Timeout_Multiplier]
                       [-R root_password]" 1>&2
     exit 0
 }
 
-while getopts "M:T:S:b:g:e:s:v:R:" arg; do
+while getopts "M:T:S:b:g:e:s:p:v:R:" arg; do
    case "$arg" in
      T)
         TST_CMDFILES="${OPTARG}"
@@ -82,6 +83,7 @@ while getopts "M:T:S:b:g:e:s:v:R:" arg; do
      # SKIP_INSTALL is true in case of Open Embedded builds
      # SKIP_INSTALL is flase in case of Debian builds
      s) SKIP_INSTALL="${OPTARG}";;
+     p) LTP_PATH="${OPTARG}";;
      v) LTP_VERSION="${OPTARG}";;
      # Slow machines need more timeout Default is 5min and multiply * MINUTES
      M) export LTP_TIMEOUT_MUL="${OPTARG}";;
@@ -101,10 +103,10 @@ fi
 
 # Install LTP test suite
 install_ltp() {
-    rm -rf /opt/ltp
-    mkdir -p /opt/ltp
+    rm -rf ${LTP_PATH}
+    mkdir -p ${LTP_PATH}
     # shellcheck disable=SC2164
-    cd /opt/ltp
+    cd ${LTP_PATH}
     # shellcheck disable=SC2140
     wget https://github.com/linux-test-project/ltp/releases/download/"${LTP_VERSION}"/ltp-full-"${LTP_VERSION}".tar.xz
     tar --strip-components=1 -Jxf ltp-full-"${LTP_VERSION}".tar.xz

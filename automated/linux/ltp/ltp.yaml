@@ -43,11 +43,12 @@ params:
     TIMEOUT_MULTIPLIER: 3
     # root's password. Needed by ltp/su01.
     ROOT_PASSWD: root
+    LTP_PATH: "/otp/ltp"
 
 run:
     steps:
         - cd ./automated/linux/ltp/
-        - ./ltp.sh -T "${TST_CMDFILES}" -s "${SKIP_INSTALL}" -v "${LTP_VERSION}" -M "${TIMEOUT_MULTIPLIER}" -R "${ROOT_PASSWD}" -b "${BOARD}" -g "${BRANCH}" -e "${ENVIRONMENT}" -S "${SKIPFILE}"
+        - ./ltp.sh -T "${TST_CMDFILES}" -s "${SKIP_INSTALL}" -v "${LTP_VERSION}" -M "${TIMEOUT_MULTIPLIER}" -R "${ROOT_PASSWD}" -b "${BOARD}" -g "${BRANCH}" -e "${ENVIRONMENT}" -S "${SKIPFILE}" -p "${LTP_PATH}"
         - ../../utils/send-to-lava.sh ./output/result.txt
 
 parse:
