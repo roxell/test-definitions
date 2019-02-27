@@ -1,0 +1,44 @@
+metadata:
+    name: ltp
+    format: "Lava-Test-Shell Test Definition 1.0"
+    description: "Run a chroot"
+    maintainer:
+        - anders.roxell@linaro.org
+    os:
+        - OE
+    scope:
+        - functional
+    devices:
+        - qemu-arm64
+params:
+    ARM32_ROOTFS: https://snapshots.linaro.org/openembedded/lkft/lkft/rocko/am57xx-evm/lkft/linux-next/441/rpb-console-image-lkft-am57xx-evm-20190115034131-441.rootfs.tar.xz
+
+run:
+    steps:
+        - df -h
+        - pwd
+        - cd /
+        - curl -SOL "${ARM32_ROOTFS}"
+        - unxz rpb-console-image-lkft-*.rootfs.tar.xz
+        - mkdir -p /new_root
+        - tar --strip-components=1 -C new_root -xf rpb-console-image-lkft-*.rootfs.tar
+        - rm rpb-console-image-lkft-*.rootfs.tar
+        - cd new_root
+        - mount -t proc /proc proc/
+        - mount --rbind /sys sys/
+        - mount --rbind /dev dev/
+        - mount --rbind /run run/
+        - cd -
+        - git clone https://github.com/Linaro/test-definitions new_root/testdef
+        - echo "cat /etc/os-release" > new_root/run.sh
+        - echo "cd /testdef/automated/linux/ltp/" >> new_root/run.sh
+        - echo './ltp.sh -T "syscalls" -s "true" -v "20180926" -M "3" -R "root" -b "qemu_arm" -g "mainline" -e "production" -S "skipfile-lkft.yaml"' >> new_root/run.sh
+        - chroot /new_root /bin/bash /run.sh
+        - new_root/testdef/automated/utils/send-to-lava.sh new_root/testdef/automated/linux/ltp/output/result.txt
+
+parse:
+    pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>PASS|FAIL|CONF)\\s+\\d+"
+    fixupdict:
+        FAIL: fail
+        PASS: pass
+        CONF: skip
