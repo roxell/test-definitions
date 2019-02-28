@@ -12,6 +12,7 @@ metadata:
         - qemu-arm64
 params:
     ARM32_ROOTFS: https://snapshots.linaro.org/openembedded/lkft/lkft/rocko/am57xx-evm/lkft/linux-next/441/rpb-console-image-lkft-am57xx-evm-20190115034131-441.rootfs.tar.xz
+    TEST_SUITE: ltp
 
 run:
     steps:
@@ -31,10 +32,13 @@ run:
         - cd -
         - git clone https://github.com/Linaro/test-definitions new_root/testdef
         - echo "cat /etc/os-release" > new_root/run.sh
-        - echo "cd /testdef/automated/linux/ltp/" >> new_root/run.sh
-        - echo './ltp.sh -T "syscalls" -s "true" -v "20180926" -M "3" -R "root" -b "qemu_arm" -g "mainline" -e "production" -S "skipfile-lkft.yaml"' >> new_root/run.sh
+        - echo "cd /testdef/automated/linux/${TEST_SUITE}/" >> new_root/run.sh
+        - sed '0,/^params:$/d' ${TEST_SUITE}.yaml|sed '/^run:$/,'|sed '/^    #/d'|sed '/^$/d'|sed -e 's/^   /export/g'|sed -e 's/: /=/g' >> new_root/run.sh
+        - sed '0,/steps:$/d' ${TEST_SUITE}.yaml|sed '/^parse:$/,$d'|sed '/^$/d'|sed -e 's/^        - //g'|sed -e 's|^../../utils/send-to-lava.sh|new_root/testdef/automated/utils/send-to-lava.sh|' |sed -e "s|./output/result.txt|new_root/testdef/automated/linux/${TEST_SUITE}/output/result.txt|" >> new_root/run.sh
+        - echo "show  new_root/run.sh"
+        - cat new_root/run.sh
         - chroot /new_root /bin/bash /run.sh
-        - new_root/testdef/automated/utils/send-to-lava.sh new_root/testdef/automated/linux/ltp/output/result.txt
+        - new_root/testdef/automated/utils/send-to-lava.sh new_root/testdef/automated/linux/${TEST_SUITE}/output/result.txt
 
 parse:
     pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>PASS|FAIL|CONF)\\s+\\d+"
