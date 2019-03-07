@@ -4,6 +4,7 @@ metadata:
     description: "Run a chroot"
     maintainer:
         - anders.roxell@linaro.org
+        - chase.qi@linaro.org
     os:
         - OE
     scope:
@@ -11,32 +12,18 @@ metadata:
     devices:
         - qemu-arm64
 params:
+    #Parameters that is here for the chroot
     ARM32_ROOTFS: https://snapshots.linaro.org/openembedded/lkft/lkft/rocko/am57xx-evm/lkft/linux-next/441/rpb-console-image-lkft-am57xx-evm-20190115034131-441.rootfs.tar.xz
     TEST_SUITE: ltp
+    TEST_PARAM_FILE: ltp_param_file
 
 run:
     steps:
         - df -h
         - pwd
-        - cd /
-        - curl -SOL "${ARM32_ROOTFS}"
-        - unxz rpb-console-image-lkft-*.rootfs.tar.xz
-        - mkdir -p /new_root
-        - tar --strip-components=1 -C new_root -xf rpb-console-image-lkft-*.rootfs.tar
-        - rm rpb-console-image-lkft-*.rootfs.tar
-        - cd new_root
-        - mount -t proc /proc proc/
-        - mount --rbind /sys sys/
-        - mount --rbind /dev dev/
-        - mount --rbind /run run/
-        - cd -
-        - git clone https://github.com/Linaro/test-definitions new_root/testdef
-        - echo "cat /etc/os-release" > new_root/run.sh
-        - echo "cd /testdef/automated/linux/${TEST_SUITE}/" >> new_root/run.sh
-        - sed '0,/^params:$/d' ${TEST_SUITE}.yaml|sed '/^run:$/,'|sed '/^    #/d'|sed '/^$/d'|sed -e 's/^   /export/g'|sed -e 's/: /=/g' >> new_root/run.sh
-        - sed '0,/steps:$/d' ${TEST_SUITE}.yaml|sed '/^parse:$/,$d'|sed '/^$/d'|sed -e 's/^        - //g'|sed -e 's|^../../utils/send-to-lava.sh|new_root/testdef/automated/utils/send-to-lava.sh|' |sed -e "s|./output/result.txt|new_root/testdef/automated/linux/${TEST_SUITE}/output/result.txt|" >> new_root/run.sh
-        - echo "show  new_root/run.sh"
-        - cat new_root/run.sh
+        - cd /testdef/automated/linux/chroot
+        - ./download_and_mount.sh ${ARM32_ROOTFS}
+        - . ./setup_run.sh ${TEST_SUITE} ${TEST_PARAM_FILE}
         - chroot /new_root /bin/bash /run.sh
         - new_root/testdef/automated/utils/send-to-lava.sh new_root/testdef/automated/linux/${TEST_SUITE}/output/result.txt
 
@@ -45,4 +32,3 @@ parse:
     fixupdict:
         FAIL: fail
         PASS: pass
-        CONF: skip
