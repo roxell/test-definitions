@@ -21,7 +21,7 @@ run:
     steps:
         - df -h
         - pwd
-        - cd /testdef/automated/linux/chroot
+        - cd ./automated/linux/chroot
         - ./download_and_mount.sh ${ARM32_ROOTFS}
         - . ./setup_run.sh ${TEST_SUITE} ${TEST_PARAM_FILE}
         - chroot /new_root /bin/bash /run.sh
