@@ -4,7 +4,8 @@ TEST_SUITE=${1}
 TEST_PARAM_FILE=${2}
 
 cd /
-git clone https://github.com/Linaro/test-definitions new_root/testdef
+#git clone https://github.com/Linaro/test-definitions new_root/testdef
+git clone https://github.com/roxell/test-definitions new_root/testdef
 echo "cat /etc/os-release" > new_root/run.sh
 echo "cd /testdef/automated/linux/${TEST_SUITE}/" >> new_root/run.sh
 
