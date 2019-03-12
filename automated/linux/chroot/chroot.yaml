@@ -23,7 +23,7 @@ run:
         - pwd
         - cd ./automated/linux/chroot
         - ./download_and_mount.sh ${ARM32_ROOTFS}
-        - . ${TEST_PARAM_FILE} >> /new_root/run.sh
+        - . ./${TEST_PARAM_FILE} >> /new_root/run.sh
         - . ./setup_run.sh ${TEST_SUITE} ${TEST_PARAM_FILE}
         - cat /new_root/run.sh
         - chroot /new_root /bin/bash /run.sh
