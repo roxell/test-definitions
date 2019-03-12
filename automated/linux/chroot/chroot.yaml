@@ -21,10 +21,13 @@ run:
     steps:
         - df -h
         - pwd
+        - TESTDEF_URL=$(pwd)
         - cd ./automated/linux/chroot
         - ./download_and_mount.sh ${ARM32_ROOTFS}
+        - . ./pre_setup_run.sh ${TEST_SUITE} ${TESTDEF_URL}
         - . ./${TEST_PARAM_FILE} >> /new_root/run.sh
-        - . ./setup_run.sh ${TEST_SUITE} ${TEST_PARAM_FILE}
+        - cat ./${TEST_PARAM_FILE} >> /new_root/run.sh
+        - . ./post_setup_run.sh ${TEST_SUITE}
         - cat /new_root/run.sh
         - chroot /new_root /bin/bash /run.sh
         - /new_root/testdef/automated/utils/send-to-lava.sh /new_root/testdef/automated/linux/${TEST_SUITE}/output/result.txt
