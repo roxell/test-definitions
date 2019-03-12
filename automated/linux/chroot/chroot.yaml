@@ -23,10 +23,11 @@ run:
         - pwd
         - cd ./automated/linux/chroot
         - ./download_and_mount.sh ${ARM32_ROOTFS}
+        - . new_root/testdef/automated/linux/chroot/${TEST_PARAM_FILE} >> /new_root/run.sh
         - . ./setup_run.sh ${TEST_SUITE} ${TEST_PARAM_FILE}
         - cat /new_root/run.sh
         - chroot /new_root /bin/bash /run.sh
-        - new_root/testdef/automated/utils/send-to-lava.sh new_root/testdef/automated/linux/${TEST_SUITE}/output/result.txt
+        - /new_root/testdef/automated/utils/send-to-lava.sh /new_root/testdef/automated/linux/${TEST_SUITE}/output/result.txt
 
 parse:
     pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>PASS|FAIL|CONF)\\s+\\d+"
