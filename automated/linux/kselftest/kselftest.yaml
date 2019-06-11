@@ -46,6 +46,10 @@ params:
 
 run:
     steps:
+        - wget people.linaro.org/~anders.roxell/runner.sh
+        - mv /opt/kselftests/next/kselftest/runner.sh /opt/kselftests/next/kselftest/runner.sh.bak
+        - mv runner.sh /opt/kselftests/next/kselftest/runner.sh
+        - chmod +x /opt/kselftests/next/kselftest/runner.sh
         - cd ./automated/linux/kselftest/
         - ./kselftest.sh -t "${TESTPROG}" -s "${SKIP_INSTALL}" -u "${TESTPROG_URL}" -L "${SKIPLIST}" -S "${SKIPFILE}" -b "${BOARD}" -g "${BRANCH}" -e "${ENVIRONMENT}" -p "${KSELFTEST_PATH}"
 
