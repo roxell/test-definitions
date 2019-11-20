@@ -43,6 +43,7 @@ skiplist:
     url: https://bugs.linaro.org/show_bug.cgi?id=3208
     environments: all
     boards:
+      - hi6220-hikey-r2
       - dragonboard-410c
       - hi6220-hikey
       - juno-r2
@@ -56,6 +57,11 @@ skiplist:
     url:
     environments: all
     boards:
+      - qemu/amd64
+      - qemu/i386
+      - qemu-arm/arm
+      - qemu-arm/arm64
+      - x86/i386
       - x15
       - qemu_x86_64
       - qemu_arm64
@@ -72,6 +78,8 @@ skiplist:
     url:
     environments: all
     boards:
+      - qemu/amd64
+      - qemu/i386
       - qemu_x86_64
       - qemu_i386
     branches: all
@@ -81,6 +89,8 @@ skiplist:
     url:
     environments: production
     boards:
+      - qemu-arm/arm
+      - qemu-arm/arm64
       - qemu_arm
       - qemu_arm64
     branches:
@@ -93,6 +103,8 @@ skiplist:
     url:
     environments: all 
     boards:
+      - qemu-arm/arm
+      - qemu-arm/arm64
       - qemu_arm
       - qemu_arm64
     branches: all
@@ -105,6 +117,7 @@ skiplist:
     url:
     environments: all
     boards:
+      - hi6220-hikey-r2
       - dragonboard-410c
       - hi6220-hikey
       - juno-r2
@@ -118,6 +131,9 @@ skiplist:
     url: https://bugs.linaro.org/show_bug.cgi?id=3923
     environments: all
     boards:
+      - hi6220-hikey-r2
+      - qemu-arm/arm
+      - qemu-arm/arm64
       - dragonboard-410c
       - hi6220-hikey
       - juno-r2
@@ -144,6 +160,7 @@ skiplist:
     url: https://bugs.linaro.org/show_bug.cgi?id=4078
     environments: all
     boards:
+      - x86/i386
       - i386
     branches:
       - next
@@ -156,6 +173,7 @@ skiplist:
     url: https://bugs.linaro.org/show_bug.cgi?id=5342
     environments: all
     boards:
+      - x86/i386
       - i386
     branches: all
     tests:
@@ -176,6 +194,8 @@ skiplist:
     url: https://bugs.linaro.org/show_bug.cgi?id=5332
     environments: all
     boards:
+      - x86/amd64
+      - qemu/amd64
       - qemu_x86_64
       - x86
     branches: all
@@ -187,6 +207,9 @@ skiplist:
     url: https://bugs.linaro.org/show_bug.cgi?id=4080
     environments: production
     boards:
+      - hi6220-hikey-r2
+      - qemu-arm/arm
+      - qemu-arm/arm64
       - dragonboard-410c
       - hi6220-hikey
       - juno-r2
@@ -234,6 +257,8 @@ skiplist:
     url: TBD
     environments: all
     boards:
+      - hi6220-hikey-r2
+      - qemu-arm/arm64
       - dragonboard-410c
       - hi6220-hikey
       - juno-r2
@@ -250,6 +275,9 @@ skiplist:
     url: https://bugs.linaro.org/show_bug.cgi?id=5337
     environments: all
     boards:
+      - qemu/amd64
+      - x86/amd64
+      - x86/i386
       - qemu_x86_64
       - x86
       - i386
@@ -263,6 +291,9 @@ skiplist:
     url: https://bugs.linaro.org/show_bug.cgi?id=5338
     environments: all
     boards:
+      - qemu/amd64
+      - x86/amd64
+      - x86/i386
       - qemu_x86_64
       - x86
       - i386
@@ -276,6 +307,8 @@ skiplist:
     url: https://bugs.linaro.org/show_bug.cgi?id=5339
     environments: all
     boards:
+      - qemu/i386
+      - x86/i386
       - qemu_i386
       - i386
     branches:
