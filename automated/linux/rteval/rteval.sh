@@ -178,6 +178,8 @@ run_test() {
 	date
 	make runit D="${DURATION}" 2>&1 | tee "${RESULT_FILE}"
 	date
+	make sysreport
+	date
 	popd || exit
 }
 
