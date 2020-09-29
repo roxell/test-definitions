@@ -86,7 +86,7 @@ install() {
 	dist_name
 	case "${dist}" in
 		debian|ubuntu)
-			pkgs="curl git python3-dev python3-schedutils python3-ethtool python3-lxml python3-dmidecode rt-tests sysstat xz-utils bzip2 tar numactl build-essential flex bison bc elfutils openssl libssl-dev cpio libelf-dev binutils linux-libc-dev keyutils libaio-dev attr libpcap-dev lksctp-tools zlib1g-dev util-linux"
+			pkgs="curl git python3-dev python3-schedutils python3-ethtool python3-lxml python3-dmidecode rt-tests sysstat xz-utils bzip2 tar numactl build-essential flex bison bc elfutils openssl libssl-dev cpio libelf-dev binutils linux-libc-dev keyutils libaio-dev attr libpcap-dev lksctp-tools zlib1g-dev util-linux sosreport"
 			install_deps "${pkgs}" "${SKIP_INSTALL}"
 			;;
 		fedora|centos)
