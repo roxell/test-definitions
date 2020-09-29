@@ -161,6 +161,8 @@ get_test_program() {
 run_test() {
 
 	ln -s /bin/dmesg /usr/bin/dmesg
+	echo PATH: $PATH
+	export PATH="$PATH:/usr/sbin/"
 	pushd "$TEST_DIR" || exit 1
 	pushd loadsource || exit 1
 	curl -sSOL "${DOWNLOAD_KERNEL}"
