@@ -21,10 +21,13 @@ BOARD=""
 BRANCH=""
 ENVIRONMENT=""
 # LTP version
+LTP_VERSION="20180926"
 TEST_PROGRAM=ltp
 TEST_PROG_VERSION=""
-TEST_GIT_URL=https://github.com/linux-test-project/ltp.git
+# https://github.com/linux-test-project/ltp.git
+TEST_GIT_URL=""
 TEST_DIR="$(pwd)/${TEST_PROGRAM}"
+TEST_TARFILE=https://github.com/linux-test-project/ltp/releases/download/"${LTP_VERSION}"/ltp-full-"${LTP_VERSION}".tar.xz
 
 LTP_TMPDIR=/ltp-tmp
 
@@ -89,13 +92,14 @@ while getopts "M:T:S:b:d:g:e:s:v:R:u:p:" arg; do
      # SKIP_INSTALL is true in case of Open Embedded builds
      # SKIP_INSTALL is flase in case of Debian builds
      s) SKIP_INSTALL="${OPTARG}";;
-     v) TEST_PROG_VERSION="${OPTARG}";;
+     v) LTP_VERSION="${OPTARG}";;
      # Slow machines need more timeout Default is 5min and multiply * MINUTES
      M) export LTP_TIMEOUT_MUL="${OPTARG}";;
      R) export PASSWD="${OPTARG}";;
      u)
         if [[ "$OPTARG" != '' ]]; then
           TEST_GIT_URL="$OPTARG"
+          TEST_TARFILE=""
         fi
         ;;
      p)
@@ -162,9 +166,19 @@ prep_system() {
     fi
 }
 
+get_tarfile() {
+    local test_tarfile="$1"
+    mkdir "${TEST_DIR}"
+    pushd "${TEST_DIR}"
+
+    wget "${test_tarfile}"
+    tar --strip-components=1 -Jxf "$(basename ${test_tarfile})"
+    popd
+}
+
 build_install_tests() {
     pushd "${TEST_DIR}"
-    make autotools
+    [[ -n "${TEST_GIT_URL}" ]] && make autotools
     ./configure
     make -j8 all
     make SKIP_IDCHECK=1 install
@@ -215,8 +229,12 @@ else
 fi
 
 if [ -d ${LTP_INSTALL_PATH} ]; then
-	get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
-	build_install_tests
+    if [ -n "${TEST_GIT_URL}" || -n "${TEST_PROG_VERSION}" ]; then
+        get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
+    else
+        get_tarfile "${TEST_TARFILE}"
+    fi
+    build_install_tests
 fi
 info_msg "Running prep_system"
 prep_system
