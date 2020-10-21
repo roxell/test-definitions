@@ -22,9 +22,15 @@ BRANCH=""
 ENVIRONMENT=""
 # LTP version
 LTP_VERSION="20180926"
+TEST_PROGRAM=ltp
+TEST_PROG_VERSION=""
+# https://github.com/linux-test-project/ltp.git
+TEST_GIT_URL=""
+TEST_DIR="$(pwd)/${TEST_PROGRAM}"
+
 LTP_TMPDIR=/ltp-tmp
 
-LTP_PATH=/opt/ltp
+LTP_INSTALL_PATH=/opt/ltp
 
 usage() {
     echo "Usage: ${0} [-T mm,math,syscalls]
@@ -40,7 +46,7 @@ usage() {
     exit 0
 }
 
-while getopts "M:T:S:b:d:g:e:s:v:R:" arg; do
+while getopts "M:T:S:b:d:g:e:s:v:R:u:p:" arg; do
    case "$arg" in
      T)
         TST_CMDFILES="${OPTARG}"
@@ -89,12 +95,25 @@ while getopts "M:T:S:b:d:g:e:s:v:R:" arg; do
      # Slow machines need more timeout Default is 5min and multiply * MINUTES
      M) export LTP_TIMEOUT_MUL="${OPTARG}";;
      R) export PASSWD="${OPTARG}";;
+     u)
+        if [[ "$OPTARG" != '' ]]; then
+          TEST_GIT_URL="$OPTARG"
+          TEST_TARFILE=""
+        fi
+        ;;
+     p)
+        if [[ "$OPTARG" != '' ]]; then
+          TEST_DIR="$OPTARG"
+        fi
+        ;;
      *)
         usage
         error_msg "No flag ${OPTARG}"
         ;;
   esac
 done
+
+TEST_TARFILE=https://github.com/linux-test-project/ltp/releases/download/"${LTP_VERSION}"/ltp-full-"${LTP_VERSION}".tar.xz
 
 if [ -n "${SKIPFILE_YAML}" ]; then
     export SKIPFILE_PATH="${SCRIPTPATH}/generated_skipfile"
@@ -104,20 +123,6 @@ if [ -n "${SKIPFILE_YAML}" ]; then
     fi
     SKIPFILE="-S ${SKIPFILE_PATH}"
 fi
-
-# Install LTP test suite
-install_ltp() {
-    rm -rf /opt/ltp
-    mkdir -p /opt/ltp
-    # shellcheck disable=SC2164
-    cd /opt/ltp
-    # shellcheck disable=SC2140
-    wget https://github.com/linux-test-project/ltp/releases/download/"${LTP_VERSION}"/ltp-full-"${LTP_VERSION}".tar.xz
-    tar --strip-components=1 -Jxf ltp-full-"${LTP_VERSION}".tar.xz
-    ./configure
-    make -j8 all
-    make SKIP_IDCHECK=1 install
-}
 
 # Parse LTP output
 parse_ltp_output() {
@@ -129,7 +134,7 @@ parse_ltp_output() {
 # Run LTP test suite
 run_ltp() {
     # shellcheck disable=SC2164
-    cd "${LTP_PATH}"
+    cd "${LTP_INSTALL_PATH}"
     # shellcheck disable=SC2174
     mkdir -m 777 -p "${LTP_TMPDIR}"
 
@@ -162,16 +167,27 @@ prep_system() {
     fi
 }
 
-# Test run.
-! check_root && error_msg "This script must be run as root"
-create_out_dir "${OUTPUT}"
+get_tarfile() {
+    local test_tarfile="$1"
+    mkdir "${TEST_DIR}"
+    pushd "${TEST_DIR}"
 
-info_msg "About to run ltp test..."
-info_msg "Output directory: ${OUTPUT}"
+    wget "${test_tarfile}"
+    tar --strip-components=1 -Jxf "$(basename ${test_tarfile})"
+    popd
+}
 
-if [ "${SKIP_INSTALL}" = "True" ] || [ "${SKIP_INSTALL}" = "true" ]; then
-    info_msg "install_ltp skipped"
-else
+build_install_tests() {
+    pushd "${TEST_DIR}"
+    [[ -n "${TEST_GIT_URL}" ]] && make autotools
+    ./configure
+    make -j8 all
+    make SKIP_IDCHECK=1 install
+    popd
+}
+
+install() {
+    dist=
     dist_name
     # shellcheck disable=SC2154
     case "${dist}" in
@@ -198,9 +214,29 @@ else
             fi
         fi
     fi
+}
 
-    info_msg "Run install_ltp"
-    install_ltp
+# Test run.
+! check_root && error_msg "This script must be run as root"
+create_out_dir "${OUTPUT}"
+
+info_msg "About to run ltp test..."
+info_msg "Output directory: ${OUTPUT}"
+
+if [ "${SKIP_INSTALL}" = "true" ] || [ "${SKIP_INSTALL}" = "True" ]; then
+    info_msg "${TEST_PROGRAM} installation skipped altogether"
+else
+    install
+fi
+
+if [ ! -d ${LTP_INSTALL_PATH} ]; then
+    if [ -n "${TEST_GIT_URL}" || -n "${TEST_PROG_VERSION}" ]; then
+        TEST_PROG_VERSION="${LTP_VERSION}"
+        get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
+    else
+        get_tarfile "${TEST_TARFILE}"
+    fi
+    build_install_tests
 fi
 info_msg "Running prep_system"
 prep_system
