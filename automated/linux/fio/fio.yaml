@@ -1,0 +1,63 @@
+metadata:
+    format: Lava-Test Test Definition 1.0
+    name: fio
+    description: |
+                  fio is a tool that will
+                  spawn a number of threads or
+                  processes doing a particular
+                  type of I/O action as
+                  specified by the user. fio
+                  takes a number of global
+                  parameters, each inherited
+                  by the thread unless
+                  otherwise parameters given
+                  to them overriding that
+                  setting is given.  The
+                  typical use of fio is to
+                  write a job file matching
+                  the I/O load one wants to
+                  simulate.  .  This package
+                  contains the command line
+                  version of fio and all
+                  additional command line
+                  tools.
+    maintainer:
+        - anders.roxell@linaro.org
+    os:
+        - debian
+        - ubuntu
+        - openembedded
+    scope:
+        - performance
+    devices:
+        - x86
+
+params:
+        # If the following parameter is set, then the fio suite is
+        # cloned and used unconditionally. In particular, the version
+        # of the suite is set to the commit pointed to by the
+        # parameter. A simple choice for the value of the parameter
+        # is, e.g., HEAD.  If, instead, the parameter is
+        # not set, then the suite present in TEST_DIRis used.
+        TEST_PROG_VERSION: ""
+
+        # If next parameter is set, then the fio suite is cloned
+        # from the URL in TEST_GIT_URL. Otherwise it is cloned from the
+        # standard repository for the suite. Note that cloning is done
+        # only if TEST_PROG_VERSION is not empty
+        TEST_GIT_URL: ""
+
+        # If next parameter is set, then the fio suite is cloned to or
+        # looked for in TEST_DIR. Otherwise it is cloned to $(pwd)/fio
+        TEST_DIR: ""
+
+        # If the user space already have everything installed. default: false
+        SKIP_INSTALL: "false"
+
+        # If user space want to install the pkg from the package repository
+        INSTALL_FROM_PKG: "false"
+run:
+    steps:
+        - cd ./automated/linux/fio/
+        - ./fio.sh -v "${TEST_PROG_VERSION}" -s "${SKIP_INSTALL}" -i "${INSTALL_FROM_PKG}" -p "${TEST_DIR}" -u "${TEST_GIT_URL}"
+        - ../../utils/send-to-lava.sh ./output/result.txt
