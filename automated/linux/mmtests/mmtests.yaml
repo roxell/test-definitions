@@ -1,0 +1,62 @@
+metadata:
+    format: Lava-Test Test Definition 1.0
+    name: mmtests
+    description: |
+                  MMTests is a configurable test suite that runs performance tests
+                  against arbitrary workloads. This is not the only test framework
+                  but care is taken to make sure the test configurations are accurate,
+                  representative and reproducible. Reporting and analysis is common across
+                  all benchmarks. Support exists for gathering additional telemetry while
+                  tests are running and hooks exist for more detailed tracing using ftrace
+                  or perf.
+
+
+    maintainer:
+        - anders.roxell@linaro.org
+        - naresh.kamboju@linaro.org
+    os:
+        - debian
+        - ubuntu
+        - fedora
+        - centos
+        - openembedded
+    scope:
+        - functional
+    devices:
+        - dragonboard410c
+        - hi6220-hikey
+        - juno
+        - nxp-ls2088
+        - x15
+        - x86
+
+params:
+        # If the following parameter is set, then the mmtests suite is
+        # cloned and used unconditionally. In particular, the version
+        # of the suite is set to the commit pointed to by the
+        # parameter. A simple choice for the value of the parameter
+        # is, e.g., HEAD.  If, instead, the parameter is
+        # not set, then the suite present in TEST_DIRis used.
+        TEST_PROG_VERSION: ""
+
+        # If next parameter is set, then the mmtests suite is cloned
+        # from the URL in TEST_GIT_URL. Otherwise it is cloned from the
+        # standard repository for the suite. Note that cloning is done
+        # only if TEST_PROG_VERSION is not empty
+        TEST_GIT_URL: ""
+
+        # If next parameter is set, then the mmtests suite is cloned to or
+        # looked for in TEST_DIR. Otherwise it is cloned to $(pwd)/mmtests
+        TEST_DIR: ""
+
+        # If the user space already have everything installed. default: false
+        SKIP_INSTALL: "false"
+
+        # Benchmark TEST to run.
+        TEST: "configs/config-scheduler-sysbench-cpu"
+
+run:
+    steps:
+        - cd ./automated/linux/mmtests/
+        - ./mmtests.sh -v "${TEST_PROG_VERSION}" -s "${SKIP_INSTALL}" -p "${TEST_DIR}" -u "${TEST_GIT_URL}" -t "${TEST}"
+        - ../../utils/send-to-lava.sh ./output/result.txt
