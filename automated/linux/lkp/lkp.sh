@@ -46,7 +46,9 @@ OUTPUT_DIR="${TEST_DIR}/output"
 RESULT_FILE="${OUTPUT_DIR}/result.txt"
 
 LKP_INSTALL_PATH="/opt"
-LKP_GIT_REPO="https://github.com/intel/lkp-tests.git"
+TEST_PROGRAM="lkp-tests"
+TEST_PROG_VERSION=
+TEST_GIT_URL="https://github.com/intel/lkp-tests.git"
 LKP_PATH=''
 export RESULT_FILE
 TEST_QUEUE=''                          #tests to run (set by args)
@@ -93,7 +95,7 @@ argument_parsing()
                    shift; shift;
                    ;;
                 -g | --git-repo)
-                   LKP_GIT_REPO="$2"
+                   TEST_GIT_URL="$2"
                    shift; shift;
                    ;;
                 -q | --quiet)
@@ -168,12 +170,16 @@ install()
        LKP_PATH=$(readlink -f $(which lkp) 2>/dev/null| sed 's:bin.*::')
 
        if [ "${SKIP_INSTALL}" = 'false' ]; then
+               [[ -n "${TEST_GIT_URL}" ]] && pkgs="git"
+               install_deps "${pkgs}" "${SKIP_INSTALL}"
                info_msg "LKP installation ..."
                if [[ -z  "${LKP_PATH}" ]]; then
                        info_msg "LKP not present: installing..."
                        cd ${LKP_INSTALL_PATH}
-                       eval git clone ${LKP_GIT_REPO} ${QUIET}
-                       cd lkp-tests
+                       if [ -n "${TEST_GIT_URL}" ]; then
+                               get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
+                       fi
+                       cd ${TEST_PROGRAM}
                        eval make install ${QUIET}
                else
                        info_msg "LKP is already installed."
@@ -244,6 +250,7 @@ run_atomic_job()
 #--- MAIN ---------------------------------------------------------------------#
 
 # cleaning the output
+! check_root && error_msg "This script must be run as root"
 create_out_dir "${OUTPUT_DIR}"
 
 report_set_start "LKP"

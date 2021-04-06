@@ -24,7 +24,7 @@ params:
     # If not specified, the standard one is used.
     # NOTE: that the link is used only if -s|--skip-install is set
     # to be 'False'.
-    LKP_GIT_REPO: "https://github.com/intel/lkp-tests.git"
+    TEST_GIT_URL: "https://github.com/intel/lkp-tests.git"
 
     # The boolean decide if lkp and its dependencies will be installed.
     # - 'False' and lkp already presents: check only dependencies.
@@ -63,5 +63,5 @@ params:
 run:
     steps:
         - cd ./automated/linux/lkp
-        - ./lkp.sh -g "${LKP_GIT_REPO}" -d "${LKP_INSTALL_PATH}" -s "${SKIP_INSTALL}" -S "${SKIP_TEST_INSTALL}" -t "${TEST_QUEUE}" -T "${ATOMIC_JOBS}"
+        - ./lkp.sh -g "${TEST_GIT_URL}" -d "${LKP_INSTALL_PATH}" -s "${SKIP_INSTALL}" -S "${SKIP_TEST_INSTALL}" -t "${TEST_QUEUE}" -T "${ATOMIC_JOBS}"
         - ../../utils/send-to-lava.sh ./output/result.txt
