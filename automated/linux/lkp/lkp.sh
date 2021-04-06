@@ -172,14 +172,14 @@ install()
                if [[ -z  "${LKP_PATH}" ]]; then
                        info_msg "LKP not present: installing..."
                        cd ${LKP_INSTALL_PATH}
-                       eval sudo git clone ${LKP_GIT_REPO} ${QUIET}
+                       eval git clone ${LKP_GIT_REPO} ${QUIET}
                        cd lkp-tests
-                       eval sudo make install ${QUIET}
+                       eval make install ${QUIET}
                else
                        info_msg "LKP is already installed."
                fi
                info_msg "Cheching dependecies..."
-               eval sudo lkp install ${QUIET}
+               eval lkp install ${QUIET}
 
        else #${SKIP_INSTALL} = true
                info_msg "LKP installation skipped"
@@ -207,7 +207,7 @@ install_atomic_jobs_dependencies()
        if [ "${SKIP_TEST_INSTALL}" = 'false' ]; then
                info_msg "--Installing atomic jobs..."
                for job in ${ATOMIC_JOBS[@]}; do
-                       eval sudo lkp install ${job} ${QUIET}
+                       eval lkp install ${job} ${QUIET}
                done
        else
                info_msg "--Skip atomic jobs dependencies installation"
@@ -222,7 +222,7 @@ create_atomic_jobs()
        check_function_param 0 "$@"
 
        info_msg "+Creating atomic-jobs for ${test}..."
-       readarray -t ATOMIC_FILES <<< $(sudo lkp split-job ${LKP_PATH}/jobs/${test}.yaml | cut -f 3 -d ' ')
+       readarray -t ATOMIC_FILES <<< $(lkp split-job ${LKP_PATH}/jobs/${test}.yaml | cut -f 3 -d ' ')
        #ATOMIC_FILES <<< $(echo "${TEMP[@]}" | tr --delete '\n')
        #echo "${ATOMIC_FILES[@]}"
 
@@ -236,7 +236,7 @@ run_atomic_job()
        check_function_param 1 "$@"
 
        info_msg "++Running ${job}..."
-       eval sudo lkp run ./${1} ${QUIET}
+       eval lkp run ./${1} ${QUIET}
        report_unknown "${1}"
 
 }
