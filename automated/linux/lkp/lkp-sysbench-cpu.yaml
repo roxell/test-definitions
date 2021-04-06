@@ -63,5 +63,5 @@ params:
 run:
     steps:
         - cd ./automated/linux/lkp
-        - ./lkp.sh -g "${LKP_GIT_REPO}" -d "{LKP_INSTALL_PATH}" -s "${SKIP_INSTALL}" -S "${SKIP_TEST_INSTALL}" -t "${TEST_QUEUE}" -T "${ATOMIC_JOBS}"
+        - ./lkp.sh -g "${LKP_GIT_REPO}" -d "${LKP_INSTALL_PATH}" -s "${SKIP_INSTALL}" -S "${SKIP_TEST_INSTALL}" -t "${TEST_QUEUE}" -T "${ATOMIC_JOBS}"
         - ../../utils/send-to-lava.sh ./output/result.txt
