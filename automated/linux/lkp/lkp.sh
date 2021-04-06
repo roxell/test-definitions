@@ -41,12 +41,12 @@
 #-- IMPORT
 . "../../lib/sh-test-lib"
 #-- VARIABLES
-TEST_DIR=$(dirname "$(realpath "$0")")
 OUTPUT_DIR="${TEST_DIR}/output"
 RESULT_FILE="${OUTPUT_DIR}/result.txt"
 
 LKP_INSTALL_PATH="/opt"
 TEST_PROGRAM="lkp-tests"
+TEST_DIR="$(pwd)/${TEST_PROGRAM}"
 TEST_PROG_VERSION=
 TEST_GIT_URL="https://github.com/intel/lkp-tests.git"
 LKP_PATH=''
