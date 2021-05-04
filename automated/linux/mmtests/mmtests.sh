@@ -116,6 +116,11 @@ install() {
 		warn_msg "Unsupported distro: ${dist}! Package installation skipped!"
 		;;
 	esac
+}
+
+prepare_system()
+{
+	pushd "${TEST_DIR}"
 	PERL_MM_USE_DEFAULT=1
 	export PERL_MM_USE_DEFAULT
 	cpan -F JSON Cpanel::JSON::XS List::BinarySearch
@@ -127,18 +132,19 @@ install() {
 		./run-mmtests.sh -b --no-monitor --config ${MMTESTS_CONFIG_FILE} benchmark && DOWNLOADED=1
 		COUNTER=$((COUNTER+1))
 	done
+	popd
 }
 
 run_test() {
+	pushd "${TEST_DIR}"
 	info_msg "Running ${MMTESTS_TYPE_NAME} cpu test..."
 	extracted_json="../${MMTESTS_TYPE_NAME}.json"
 	./run-mmtests.sh --no-monitor --config ${MMTESTS_CONFIG_FILE} benchmark
 	./bin/extract-mmtests.pl -d work/log/ -b ${MMTESTS_TYPE_NAME} -n benchmark --print-json > $extracted_json
+	popd
 }
 
 ! check_root && error_msg "Please run this script as root."
-
-get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
 
 # Test installation.
 if [ "${SKIP_INSTALL}" = "true" ] || [ "${SKIP_INSTALL}" = "True" ]; then
@@ -147,5 +153,8 @@ else
 	install
 fi
 
+get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
+
 create_out_dir "${OUTPUT}"
+prepare_system
 run_test
