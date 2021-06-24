@@ -5,12 +5,13 @@
 OUTPUT="$(pwd)/output"
 RESULT_FILE="${OUTPUT}/result.txt"
 
+GPIOD_PATH="/opt/libgpiod"
+
 TEST_PROGRAM=gpiod
 TEST_PROG_VERSION=
 TEST_GIT_URL=https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git
 TEST_DIR="$(pwd)/${TEST_PROGRAM}"
 SKIP_INSTALL="false"
-GPIOD_PATH="/opt/libgpiod"
 
 usage() {
 	echo "\
@@ -43,7 +44,7 @@ usage() {
 	default: false"
 }
 
-while getopts "d:hk:p:u:s:v:" opt; do
+while getopts "d:h:p:u:s:v:" opt; do
 	case $opt in
 		d)
 			if [[ "$OPTARG" != '' ]]; then
@@ -82,11 +83,11 @@ install() {
 	dist_name
 	case "${dist}" in
 		debian|ubuntu)
-			pkgs="git libtool automake build-essential autoconf-archive pkg-config"
+			pkgs="git libtool automake build-essential curl python3 "
 			install_deps "${pkgs}" "${SKIP_INSTALL}"
 			;;
 		fedora|centos)
-			pkgs=""
+			pkgs="git-core libtool automake make gcc gcc-c++ curl python3"
 			install_deps "${pkgs}" "${SKIP_INSTALL}"
 			;;
 		# When build do not have package manager
@@ -99,9 +100,11 @@ install() {
 
 build_install_tests() {
 	pushd "${TEST_DIR}" || exit 1
-	./autoconfig.sh --enable-tools=yes --prefix=
+	mkdir -p "${GPIOD_PATH}"
+	./autogen.sh --enable-tools=yes --enable-tests=yes  --enable-bindings-cxx=yes --enable-bindings-python=yes --prefix="${GPIOD_PATH}"
 	make
 	make install
+	make check
 	popd || exit 1
 }
 
@@ -120,6 +123,7 @@ create_out_dir "${OUTPUT}"
 run_test
 
 export PATH="${GPIOD_PATH}/bin:$PATH"
+which gpiod-test || error_msg "'gpiod-test' not found, exiting..."
 gpiod-test 2>&1| tee tmp.txt
 sed 's/\[[0-9;]*m//g'  tmp.txt \
 	| grep '\[TEST\]' \
