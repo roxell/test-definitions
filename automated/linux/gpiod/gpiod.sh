@@ -13,6 +13,8 @@ TEST_GIT_URL=https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git
 TEST_DIR="$(pwd)/${TEST_PROGRAM}"
 SKIP_INSTALL="false"
 
+export RESULT_FILE
+
 usage() {
 	echo "\
 	Usage: [sudo] ./gpiod.sh [-d <GPIOD_PATH>] [-v <TEST_PROG_VERSION>]
