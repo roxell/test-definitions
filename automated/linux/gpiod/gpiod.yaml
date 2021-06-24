@@ -1,4 +1,4 @@
-
+metadata:
     name: gpiod
     format: "Lava-Test Test Definition 1.0"
     description: "Run a gpiod suite"
