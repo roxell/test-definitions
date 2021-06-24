@@ -122,7 +122,6 @@ if [ ! -d "${GPIOD_PATH}/bin" ]; then
 	build_install_tests
 fi
 create_out_dir "${OUTPUT}"
-run_test
 
 export PATH="${GPIOD_PATH}/bin/bin:$PATH"
 which gpiod-test || error_msg "'gpiod-test' not found, exiting..."
