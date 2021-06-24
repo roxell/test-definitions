@@ -85,11 +85,11 @@ install() {
 	dist_name
 	case "${dist}" in
 		debian|ubuntu)
-			pkgs="git libtool automake build-essential curl python3 m4 autoconf-archive libkmod-dev"
+			pkgs="git libtool automake build-essential curl python3 m4 autoconf-archive libkmod-dev libudev-dev"
 			install_deps "${pkgs}" "${SKIP_INSTALL}"
 			;;
 		fedora|centos)
-			pkgs="git-core libtool automake make gcc gcc-c++ curl python3 m4 autoconf-archive libkmod-dev"
+			pkgs="git-core libtool automake make gcc gcc-c++ curl python3 m4 autoconf-archive libkmod-dev libudev-dev"
 			install_deps "${pkgs}" "${SKIP_INSTALL}"
 			;;
 		# When build do not have package manager
