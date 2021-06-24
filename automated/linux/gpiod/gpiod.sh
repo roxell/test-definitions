@@ -103,7 +103,8 @@ install() {
 build_install_tests() {
 	pushd "${TEST_DIR}" || exit 1
 	mkdir -p "${GPIOD_PATH}"
-	./autogen.sh --enable-tools=yes --enable-tests=yes  --enable-bindings-cxx=yes --enable-bindings-python=yes --prefix="${GPIOD_PATH}"
+#	./autogen.sh --enable-tools=yes --enable-tests=yes  --enable-bindings-cxx=yes --enable-bindings-python=yes --prefix="${GPIOD_PATH}"
+	./autogen.sh --enable-tools=yes --enable-tests=yes  --prefix="${GPIOD_PATH}"
 	make
 	make install
 	make check
@@ -123,7 +124,9 @@ if [ ! -d "${GPIOD_PATH}/bin" ]; then
 fi
 create_out_dir "${OUTPUT}"
 
-export PATH="${GPIOD_PATH}/bin/bin:$PATH"
+echo "pwd" ${pwd}
+export PATH="${GPIOD_PATH}/bin:$PATH"
+ls -1
 which gpiod-test || error_msg "'gpiod-test' not found, exiting..."
 gpiod-test 2>&1| tee tmp.txt
 sed 's/\[[0-9;]*m//g'  tmp.txt \
