@@ -124,7 +124,7 @@ fi
 create_out_dir "${OUTPUT}"
 run_test
 
-export PATH="${GPIOD_PATH}/bin:$PATH"
+export PATH="${GPIOD_PATH}/bin/bin:$PATH"
 which gpiod-test || error_msg "'gpiod-test' not found, exiting..."
 gpiod-test 2>&1| tee tmp.txt
 sed 's/\[[0-9;]*m//g'  tmp.txt \
