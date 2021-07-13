@@ -139,6 +139,8 @@ run_test() {
 	extracted_json="../${MMTESTS_TYPE_NAME}.json"
 	./run-mmtests.sh --no-monitor --config "${MMTESTS_CONFIG_FILE}" benchmark
 	./bin/extract-mmtests.pl -d work/log/ -b "${MMTESTS_TYPE_NAME}" -n benchmark --print-json > "$extracted_json"
+	echo "my-output"
+	cat "$extracted_json"
 	popd || exit
 }
 
