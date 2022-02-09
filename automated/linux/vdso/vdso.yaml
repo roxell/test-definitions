@@ -1,0 +1,62 @@
+metadata:
+    format: Lava-Test Test Definition 1.0
+    name: vdso
+    description: |
+                  vdsotest is a utility for testing and benchmarking a Linux VDSO.
+                  The "vDSO" (virtual dynamic shared object) is a small shared
+                  library that the kernel automatically maps into the address space
+                  of all user-space applications.  Applications usually do not need
+                  to concern themselves with these details as the vDSO is most
+                  commonly called by the C library.  This way you can code in the
+                  normal way using standard functions and the C library will take
+                  care of using any functionality that is available via the vDSO.
+
+    maintainer:
+        - naresh.kamboju@linaro.org
+    os:
+        - debian
+        - ubuntu
+        - fedora
+        - centos
+        - openembedded
+    scope:
+        - performance
+    devices:
+        - x86
+
+params:
+        # How long the test will run for. DURATION can be set
+        # to Xs, Xm, Xh, Xd.
+        # s - seconds,
+        # m - minutes,
+        # h - hours,
+        # d - days
+        DURATION: "10m"
+
+        # If the following parameter is set, then the vdso suite is
+        # cloned and used unconditionally. In particular, the version
+        # of the suite is set to the commit pointed to by the
+        # parameter. A simple choice for the value of the parameter
+        # is, e.g., HEAD.  If, instead, the parameter is
+        # not set, then the suite present in TEST_DIRis used.
+        TEST_PROG_VERSION: ""
+
+        # If next parameter is set, then the vdso suite is cloned
+        # from the URL in TEST_GIT_URL. Otherwise it is cloned from the
+        # standard repository for the suite. Note that cloning is done
+        # only if TEST_PROG_VERSION is not empty
+        # "https://github.com/nathanlynch/vdsotest.git"
+        TEST_GIT_URL: ""
+
+        # If next parameter is set, then the vdso suite is cloned to or
+        # looked for in TEST_DIR. Otherwise it is cloned to $(pwd)/vdso
+        TEST_DIR: ""
+
+        # If the user space already have everything installed. default: false
+        SKIP_INSTALL: "false"
+
+run:
+    steps:
+        - cd ./automated/linux/vdso/
+        - ./vdso.sh -d "${DURATION}" -v "${TEST_PROG_VERSION}" -s "${SKIP_INSTALL}" -p "${TEST_DIR}" -u "${TEST_GIT_URL}"
+        - ../../utils/send-to-lava.sh ./output/result.txt
