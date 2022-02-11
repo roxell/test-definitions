@@ -14,17 +14,47 @@ DURATION="10m"
 
 usage() {
 	echo "\
-	Usage: [sudo] ./vdso.sh [-d <DURATION>] [-v <TEST_PROG_VERSION>]
-				  [-u <TEST_GIT_URL>] [-p <TEST_DIR>] [-s <true|false>]
+	Usage: [sudo] ./vdso.sh [-d <DURATION>] 
+		                  [-a <API>]
+		                  [-t <TEST-TYPE>]
+		                  [-v <TEST_PROG_VERSION>]
+				  [-u <TEST_GIT_URL>]
+				  [-p <TEST_DIR>]
+				  [-s <true|false>]
 
 	<DURATION>:
 	Time in long will the test be running. DURATION can be set
-	to Xs, Xm, Xh, Xd.
-	s - seconds,
-	m - minutes,
-	h - hours,
-	d - days
-	default: 10m
+	to X
+	default: 1s - seconds,
+
+	<API>:
+	Time in long will the test be running. DURATION can be set
+	to X
+
+	<TEST-TYPE>:
+	where API must be one of:
+        clock-gettime-monotonic
+        clock-getres-monotonic
+        clock-gettime-monotonic-coarse
+        clock-getres-monotonic-coarse
+        clock-gettime-monotonic-raw
+        clock-getres-monotonic-raw
+        clock-gettime-tai
+        clock-getres-tai
+        clock-gettime-boottime
+        clock-getres-boottime
+        clock-gettime-realtime
+        clock-getres-realtime
+        clock-gettime-realtime-coarse
+        clock-getres-realtime-coarse
+        getcpu
+        gettimeofday
+
+	<TEST-TYPE>:
+	TEST-TYPE must be one of:
+        verify
+        bench
+        abi
 
 	<TEST_PROG_VERSION>:
 	If this parameter is set, then the ${TEST_PROGRAM} is cloned. In
