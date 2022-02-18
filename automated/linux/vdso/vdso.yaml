@@ -26,12 +26,7 @@ metadata:
 
 params:
         # How long the test will run for. DURATION can be set
-        # to Xs, Xm, Xh, Xd.
-        # s - seconds,
-        # m - minutes,
-        # h - hours,
-        # d - days
-        DURATION: "10m"
+        DURATION: "10"
 
         # where API must be one of:
         # clock-gettime-monotonic
