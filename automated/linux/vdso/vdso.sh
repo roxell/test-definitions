@@ -171,7 +171,7 @@ parse_output() {
     awk '{for (i=1; i<NF-1; i++) printf $i "-"; print $i " " "skip"}' "${TEST_SKIP_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
 
     grep -E "nsec/call" "${RESULT_LOG}" | tee -a "${TEST_METRIC_LOG}"
-    awk '{for (i=1; i<NF-2; i++) printf $i "-"; print $i " " "$NF-1" " " "$NF"}' "${TEST_METRIC_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
+    awk '{ print $1 "-" $2 " " $3 " " $4 }' "${TEST_METRIC_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
 
     # Clean up
     rm -rf "${TMP_LOG}" "${RESULT_LOG}" "${TEST_PASS_LOG}" "${TEST_FAIL_LOG}" "${TEST_SKIP_LOG}"
