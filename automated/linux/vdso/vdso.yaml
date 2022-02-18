@@ -33,6 +33,31 @@ params:
         # d - days
         DURATION: "10m"
 
+        # where API must be one of:
+        # clock-gettime-monotonic
+        # clock-getres-monotonic
+        # clock-gettime-monotonic-coarse
+        # clock-getres-monotonic-coarse
+        # clock-gettime-monotonic-raw
+        # clock-getres-monotonic-raw
+        # clock-gettime-tai
+        # clock-getres-tai
+        # clock-gettime-boottime
+        # clock-getres-boottime
+        # clock-gettime-realtime
+        # clock-getres-realtime
+        # clock-gettime-realtime-coarse
+        # clock-getres-realtime-coarse
+        # getcpu
+        # gettimeofday
+        API: ""
+
+        # TEST_TYPE must be one of:
+        # verify
+        # bench
+        # abi
+        TEST_TYPE: ""
+
         # If the following parameter is set, then the vdso suite is
         # cloned and used unconditionally. In particular, the version
         # of the suite is set to the commit pointed to by the
@@ -58,5 +83,5 @@ params:
 run:
     steps:
         - cd ./automated/linux/vdso/
-        - ./vdso.sh -d "${DURATION}" -v "${TEST_PROG_VERSION}" -s "${SKIP_INSTALL}" -p "${TEST_DIR}" -u "${TEST_GIT_URL}"
+        - ./vdso.sh -d "${DURATION}" -f "${VDSOTESTALL}" -a "{API}" -t "${TEST_TYPE}" -v "${TEST_PROG_VERSION}" -s "${SKIP_INSTALL}" -p "${TEST_DIR}" -u "${TEST_GIT_URL}"
         - ../../utils/send-to-lava.sh ./output/result.txt

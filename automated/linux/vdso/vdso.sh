@@ -4,57 +4,65 @@
 . ../../lib/sh-test-lib
 OUTPUT="$(pwd)/output"
 RESULT_FILE="${OUTPUT}/result.txt"
+RESULT_LOG="${OUTPUT}/result_log.txt"
+TMP_LOG="${OUTPUT}/tmp_log.txt"
+TEST_PASS_LOG="${OUTPUT}/test_pass_log.txt"
+TEST_FAIL_LOG="${OUTPUT}/test_fail_log.txt"
+TEST_SKIP_LOG="${OUTPUT}/test_skip_log.txt"
 
 TEST_PROGRAM=vdso
 TEST_PROG_VERSION=
 TEST_GIT_URL=https://kernel.googlesource.com/pub/scm/utils/vdso/vdso.git
-TEST_DIR="/opt/${TEST_PROGRAM}"
+TEST_DIR="$(pwd)/${TEST_PROGRAM}"
 SKIP_INSTALL="false"
-DURATION="10m"
-
+API=""
+DURATION=""
+VDSOTESTALL="yes"
+TEST_TYPE=""
 usage() {
 	echo "\
-	Usage: [sudo] ./vdso.sh [-d <DURATION>] 
-		                  [-a <API>]
-		                  [-t <TEST-TYPE>]
-		                  [-v <TEST_PROG_VERSION>]
-				  [-u <TEST_GIT_URL>]
-				  [-p <TEST_DIR>]
-				  [-s <true|false>]
+	Usage: [sudo] ./vdso.sh [-a <API>]
+				[-d <DURATION>]
+				[-f <ALL>]
+				[-t <TEST-TYPE>]
+				[-v <TEST_PROG_VERSION>]
+				[-u <TEST_GIT_URL>]
+				[-p <TEST_DIR>]
+				[-s <true|false>]
+
+	<API>:
+	where API must be one of:
+	clock-gettime-monotonic
+	clock-getres-monotonic
+	clock-gettime-monotonic-coarse
+	clock-getres-monotonic-coarse
+	clock-gettime-monotonic-raw
+	clock-getres-monotonic-raw
+	clock-gettime-tai
+	clock-getres-tai
+	clock-gettime-boottime
+	clock-getres-boottime
+	clock-gettime-realtime
+	clock-getres-realtime
+	clock-gettime-realtime-coarse
+	clock-getres-realtime-coarse
+	getcpu
+	gettimeofday
 
 	<DURATION>:
 	Time in long will the test be running. DURATION can be set
 	to X
-	default: 1s - seconds,
+	default: 1s - seconds
+	
+	<ALL>:
+	Run all tests
+	default: all
 
-	<API>:
-	Time in long will the test be running. DURATION can be set
-	to X
-
-	<TEST-TYPE>:
-	where API must be one of:
-        clock-gettime-monotonic
-        clock-getres-monotonic
-        clock-gettime-monotonic-coarse
-        clock-getres-monotonic-coarse
-        clock-gettime-monotonic-raw
-        clock-getres-monotonic-raw
-        clock-gettime-tai
-        clock-getres-tai
-        clock-gettime-boottime
-        clock-getres-boottime
-        clock-gettime-realtime
-        clock-getres-realtime
-        clock-gettime-realtime-coarse
-        clock-getres-realtime-coarse
-        getcpu
-        gettimeofday
-
-	<TEST-TYPE>:
-	TEST-TYPE must be one of:
-        verify
-        bench
-        abi
+	<TEST_TYPE>:
+	TEST_TYPE must be one of:
+	verify
+	bench
+	abi
 
 	<TEST_PROG_VERSION>:
 	If this parameter is set, then the ${TEST_PROGRAM} is cloned. In
@@ -78,11 +86,21 @@ usage() {
 	default: false"
 }
 
-while getopts "d:hk:p:u:s:v:" opt; do
+while getopts "a:d:f:t:hk:p:u:s:v:" opt; do
 	case $opt in
-		d)
-			DURATION="$OPTARG"
+		a)
+			API="$OPTARG"
 			;;
+		d)
+			DURATION="-d $OPTARG"
+			;;
+		f)
+			VDSOTESTALL="${OPTARG}"
+			;;
+		t)
+			TEST_TYPE="${OPTARG}"
+			;;
+
 		u)
 			if [[ "$OPTARG" != '' ]]; then
 				TEST_GIT_URL="$OPTARG"
@@ -90,14 +108,14 @@ while getopts "d:hk:p:u:s:v:" opt; do
 			;;
 		p)
 			if [[ "$OPTARG" != '' ]]; then
-				TEST_DIR="$OPTARG"
+				TEST_DIR="${OPTARG}"
 			fi
 			;;
 		s)
 			SKIP_INSTALL="${OPTARG}"
 			;;
 		v)
-			TEST_PROG_VERSION="$OPTARG"
+			TEST_PROG_VERSION="${OPTARG}"
 			;;
 		h)
 			usage
@@ -109,28 +127,6 @@ while getopts "d:hk:p:u:s:v:" opt; do
 			;;
 	esac
 done
-
-install() {
-	dist=
-	dist_name
-	case "${dist}" in
-		debian|ubuntu)
-			pkgs="curl git python3-dev python3-schedutils python3-ethtool python3-lxml python3-dmidecode rt-tests sysstat xz-utils bzip2 tar numactl build-essential flex bison bc elfutils openssl libssl-dev cpio libelf-dev binutils linux-libc-dev keyutils libaio-dev attr libpcap-dev lksctp-tools zlib1g-dev util-linux"
-			install_deps "${pkgs}" "${SKIP_INSTALL}"
-			;;
-		fedora|centos)
-			pkgs="curl git-core python3-devel python3-schedutils python3-ethtool python3-lxml python3-dmidecode sysstat numactl gcc flex bison bc make elfutils elfutils-libelf-devel openssl-devel libaio-devel libattr-devel libcap-devel lksctp-tools-devel zlib-devel"
-			install_deps "${pkgs}" "${SKIP_INSTALL}"
-			;;
-		# When build do not have package manager
-		# Assume dependencies pre-installed
-		*)
-			echo "Unsupported distro: ${dist}! Package installation skipped!"
-			;;
-	esac
-	openssl req -new -nodes -utf8 -sha256 -days 36500 -batch -x509 -config x509.genkey -outform PEM -out kernel_key.pem -keyout kernel_key.pem
-
-}
 
 install_vdso_tests() {
 	dist=
@@ -150,30 +146,62 @@ install_vdso_tests() {
 			echo "Unsupported distro: ${dist}! Package installation skipped!"
 			;;
 	esac
-	git clone https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git
-	pushd rt-tests || exit
-	git checkout v1.8
-	make && make install
+	git clone https://github.com/nathanlynch/vdsotest.git
+	pushd vdsotest || exit
+	./autogen.sh && ./configure && make && make install
 	popd || exit
-	rm -rf rt-tests
+	rm -rf vdsotest
+}
+
+parse_output() {
+    # Parse each type of results
+    grep -E "OK" "${RESULT_LOG}" | tee -a "${TEST_PASS_LOG}"
+    sed -i -e 's/(/ /g' "${TEST_PASS_LOG}"
+    sed -i -e 's/)/ /g' "${TEST_PASS_LOG}"
+    sed -i -e 's/:/ /g' "${TEST_PASS_LOG}"
+    sed -i -e 's/,/ /g' "${TEST_PASS_LOG}"
+    awk '{for (i=1; i<NF-1; i++) printf $i "-"; print $i " " "pass"}' "${TEST_PASS_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
+
+    grep -E "FAIL" "${RESULT_LOG}" | tee -a "${TEST_FAIL_LOG}"
+    sed -i -e 's/(/ /g' "${TEST_FAIL_LOG}"
+    sed -i -e 's/)/ /g' "${TEST_FAIL_LOG}"
+    sed -i -e 's/:/ /g' "${TEST_FAIL_LOG}"
+    sed -i -e 's/,/ /g' "${TEST_FAIL_LOG}"
+    awk '{for (i=1; i<NF-1; i++) printf $i "-"; print $i " " "fail"}' "${TEST_FAIL_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
+
+    
+    grep -E "SKIP" "${RESULT_LOG}" | tee -a "${TEST_SKIP_LOG}"
+    sed -i -e 's/(/ /g' "${TEST_SKIP_LOG}"
+    sed -i -e 's/)/ /g' "${TEST_SKIP_LOG}"
+    sed -i -e 's/:/ /g' "${TEST_SKIP_LOG}"
+    sed -i -e 's/,/ /g' "${TEST_SKIP_LOG}"
+    awk '{for (i=1; i<NF-1; i++) printf $i "-"; print $i " " "skip"}' "${TEST_SKIP_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
+
+    # Clean up
+    rm -rf "${TMP_LOG}" "${RESULT_LOG}" "${TEST_PASS_LOG}" "${TEST_FAIL_LOG}" "${TEST_SKIP_LOG}"
+
 }
 
 run_test() {
-
-	date
+	if [ "${VDSOTESTALL}" = "all" ]; then
+		vdsotest-all -g -v 2>&1 | tee -a "${RESULT_LOG}"
+	else
+		vdsotest "${DURATION}" "${API}" "${TEST_TYPE}" -g -v 2>&1 | tee -a "${RESULT_LOG}"
+	fi
+	parse_output
 }
 
+
 ! check_root && error_msg "This script must be run as root"
-
+create_out_dir "${OUTPUT}"
+	
 # Install and run test
-
 if [ "${SKIP_INSTALL}" = "true" ] || [ "${SKIP_INSTALL}" = "True" ]; then
 	info_msg "Skip installing package dependency for ${TEST_PROG_VERSION}"
+	which vdsotest || info_msg "Please install vdsotest"
 else
-	install
+	get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
+	create_out_dir "${OUTPUT}"
         install_vdso_tests
 fi
-
-get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
-create_out_dir "${OUTPUT}"
 run_test
