@@ -154,28 +154,24 @@ install_vdso_tests() {
 }
 
 parse_output() {
+    # Replace special chars wit space in results file
+    sed -i -e 's/(/ /g' "${RESULT_LOG}"
+    sed -i -e 's/)/ /g' "${RESULT_LOG}"
+    sed -i -e 's/:/ /g' "${RESULT_LOG}"
+    sed -i -e 's/,/ /g' "${RESULT_LOG}"
     # Parse each type of results
     grep -E "OK" "${RESULT_LOG}" | tee -a "${TEST_PASS_LOG}"
-    sed -i -e 's/(/ /g' "${TEST_PASS_LOG}"
-    sed -i -e 's/)/ /g' "${TEST_PASS_LOG}"
-    sed -i -e 's/:/ /g' "${TEST_PASS_LOG}"
-    sed -i -e 's/,/ /g' "${TEST_PASS_LOG}"
     awk '{for (i=1; i<NF-1; i++) printf $i "-"; print $i " " "pass"}' "${TEST_PASS_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
 
     grep -E "FAIL" "${RESULT_LOG}" | tee -a "${TEST_FAIL_LOG}"
-    sed -i -e 's/(/ /g' "${TEST_FAIL_LOG}"
-    sed -i -e 's/)/ /g' "${TEST_FAIL_LOG}"
-    sed -i -e 's/:/ /g' "${TEST_FAIL_LOG}"
-    sed -i -e 's/,/ /g' "${TEST_FAIL_LOG}"
     awk '{for (i=1; i<NF-1; i++) printf $i "-"; print $i " " "fail"}' "${TEST_FAIL_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
 
     
     grep -E "SKIP" "${RESULT_LOG}" | tee -a "${TEST_SKIP_LOG}"
-    sed -i -e 's/(/ /g' "${TEST_SKIP_LOG}"
-    sed -i -e 's/)/ /g' "${TEST_SKIP_LOG}"
-    sed -i -e 's/:/ /g' "${TEST_SKIP_LOG}"
-    sed -i -e 's/,/ /g' "${TEST_SKIP_LOG}"
     awk '{for (i=1; i<NF-1; i++) printf $i "-"; print $i " " "skip"}' "${TEST_SKIP_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
+
+    grep -E "nsec/call" "${RESULT_LOG}" | tee -a "${TEST_METRIC_LOG}"
+    awk '{for (i=1; i<NF-1; i++) printf $i "-"; print $i " " "$NF"}' "${TEST_METRIC_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
 
     # Clean up
     rm -rf "${TMP_LOG}" "${RESULT_LOG}" "${TEST_PASS_LOG}" "${TEST_FAIL_LOG}" "${TEST_SKIP_LOG}"
