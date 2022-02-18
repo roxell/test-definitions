@@ -9,6 +9,7 @@ TMP_LOG="${OUTPUT}/tmp_log.txt"
 TEST_PASS_LOG="${OUTPUT}/test_pass_log.txt"
 TEST_FAIL_LOG="${OUTPUT}/test_fail_log.txt"
 TEST_SKIP_LOG="${OUTPUT}/test_skip_log.txt"
+TEST_METRIC_LOG="${OUTPUT}/test_metric_log.txt"
 
 TEST_PROGRAM=vdso
 TEST_PROG_VERSION=
@@ -166,12 +167,11 @@ parse_output() {
     grep -E "FAIL" "${RESULT_LOG}" | tee -a "${TEST_FAIL_LOG}"
     awk '{for (i=1; i<NF-1; i++) printf $i "-"; print $i " " "fail"}' "${TEST_FAIL_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
 
-    
     grep -E "SKIP" "${RESULT_LOG}" | tee -a "${TEST_SKIP_LOG}"
     awk '{for (i=1; i<NF-1; i++) printf $i "-"; print $i " " "skip"}' "${TEST_SKIP_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
 
     grep -E "nsec/call" "${RESULT_LOG}" | tee -a "${TEST_METRIC_LOG}"
-    awk '{for (i=1; i<NF-1; i++) printf $i "-"; print $i " " "$NF"}' "${TEST_METRIC_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
+    awk '{for (i=1; i<NF-2; i++) printf $i "-"; print $i " " "$NF-1" " " "$NF"}' "${TEST_METRIC_LOG}" 2>&1 | tee -a "${RESULT_FILE}"
 
     # Clean up
     rm -rf "${TMP_LOG}" "${RESULT_LOG}" "${TEST_PASS_LOG}" "${TEST_FAIL_LOG}" "${TEST_SKIP_LOG}"
