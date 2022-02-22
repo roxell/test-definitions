@@ -80,3 +80,4 @@ run:
         - cd ./automated/linux/vdso/
         - ./vdso.sh -d "${DURATION}" -f "${VDSOTESTALL}" -a "{API}" -t "${TEST_TYPE}" -v "${TEST_PROG_VERSION}" -s "${SKIP_INSTALL}" -p "${TEST_DIR}" -u "${TEST_GIT_URL}"
         - ../../utils/send-to-lava.sh ./output/result.txt
+        - ../../utils/send-to-lava.sh ./output/metric.txt
