@@ -14,7 +14,7 @@ METRIC_FILE="${OUTPUT}/metric.txt"
 
 # set it to VDSO_INSTALL_PATH=/opt/vdsotest if you want to use git
 VDSO_INSTALL_PATH=/usr/bin
-TEST_PROGRAM=vdso
+TEST_PROGRAM=vdsotest
 TEST_PROG_VERSION=
 TEST_GIT_URL=https://github.com/nathanlynch/vdsotest.git
 TEST_DIR="$(pwd)/${TEST_PROGRAM}"
@@ -204,7 +204,7 @@ create_out_dir "${OUTPUT}"
 	
 # Install and run test
 if [ "${SKIP_INSTALL}" = "true" ] || [ "${SKIP_INSTALL}" = "True" ]; then
-	info_msg "Skip installing package dependency for ${TEST_PROG_VERSION}"
+	info_msg "Skip installing package dependency for ${TEST_PROGRAM}"
 else
         install
 fi
