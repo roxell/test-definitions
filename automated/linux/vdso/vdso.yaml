@@ -74,7 +74,7 @@ params:
 
         # If next parameter is set, then the vdso suite is cloned to or
         # looked for in VDSO_INSTALL_PATH. Otherwise it will be installed to /usr/bin/
-        VDSO_INSTALL_PATH: ""
+        VDSO_INSTALL_PATH: "/usr"
 
         # If the user space already have everything installed. default: false
         SKIP_INSTALL: "false"
