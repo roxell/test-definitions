@@ -71,7 +71,7 @@ params:
         # If next parameter is set, then the vdso suite is cloned to or
         # looked for in TEST_DIR. Otherwise it is cloned to $(pwd)/vdso
         TEST_DIR: ""
-        
+
         # If next parameter is set, then the vdso suite is cloned to or
         # looked for in VDSO_INSTALL_PATH. Otherwise it will be installed to /usr/bin/
         VDSO_INSTALL_PATH: ""

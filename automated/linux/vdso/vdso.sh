@@ -15,7 +15,7 @@ TEST_METRIC_LOG="${OUTPUT}/test_metric_log.txt"
 METRIC_FILE="${OUTPUT}/metric.txt"
 
 # set it to VDSO_INSTALL_PATH=/opt/vdsotest if you want to use git
-VDSO_INSTALL_PATH=/usr/bin
+VDSO_INSTALL_PATH=/usr
 TEST_PROGRAM=vdsotest
 TEST_PROG_VERSION=
 TEST_GIT_URL=https://github.com/nathanlynch/vdsotest.git
@@ -193,9 +193,9 @@ parse_output() {
 
 run_test() {
 	if [ "${VDSOTESTALL}" = "all" ]; then
-		"${VDSO_INSTALL_PATH}"/vdsotest-all -g -v 2>&1 | tee -a "${RESULT_LOG}"
+		"${VDSO_INSTALL_PATH}"/bin/vdsotest-all -g -v 2>&1 | tee -a "${RESULT_LOG}"
 	else
-		"${VDSO_INSTALL_PATH}"/vdsotest "${DURATION}" "${API}" "${TEST_TYPE}" -g -v 2>&1 | tee -a "${RESULT_LOG}"
+		"${VDSO_INSTALL_PATH}"/bin/vdsotest "${DURATION}" "${API}" "${TEST_TYPE}" -g -v 2>&1 | tee -a "${RESULT_LOG}"
 	fi
 	parse_output
 }
@@ -215,7 +215,7 @@ if [ ! -d "${VDSO_INSTALL_PATH}" ]; then
 	get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
 	install_vdso_tests
 	create_out_dir "${OUTPUT}"
-elif [ ! -f "${VDSO_INSTALL_PATH}"/vdsotest ]; then
+elif [ ! -f "${VDSO_INSTALL_PATH}"/bin/vdsotest ]; then
 	err_msg "Please install vdsotest"
 fi
 
