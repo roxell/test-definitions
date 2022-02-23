@@ -12,9 +12,11 @@ TEST_SKIP_LOG="${OUTPUT}/test_skip_log.txt"
 TEST_METRIC_LOG="${OUTPUT}/test_metric_log.txt"
 METRIC_FILE="${OUTPUT}/metric.txt"
 
+# set it to VDSO_INSTALL_PATH=/opt/vdsotest if you want to use git
+VDSO_INSTALL_PATH=/usr/bin
 TEST_PROGRAM=vdso
 TEST_PROG_VERSION=
-TEST_GIT_URL=https://kernel.googlesource.com/pub/scm/utils/vdso/vdso.git
+TEST_GIT_URL=https://github.com/nathanlynch/vdsotest.git
 TEST_DIR="$(pwd)/${TEST_PROGRAM}"
 SKIP_INSTALL="false"
 API=""
@@ -82,13 +84,17 @@ usage() {
 	<TEST_DIR>:
 	If this parameter is set, then the ${TEST_PROGRAM} suite is cloned to or
 	looked for in TEST_DIR. Otherwise it is cloned to /opt/${TEST_PROGRAM}
+        
+        # If next parameter is set, then the vdso suite is cloned to or
+        # looked for in VDSO_INSTALL_PATH. Otherwise it is cloned to /opt/vdso
+        <VDSO_INSTALL_PATH>
 
 	<SKIP_INSTALL>:
 	If you already have it installed into the rootfs.
 	default: false"
 }
 
-while getopts "a:d:f:t:hk:p:u:s:v:" opt; do
+while getopts "a:d:f:i:t:hk:p:u:s:v:" opt; do
 	case $opt in
 		a)
 			API="$OPTARG"
@@ -98,6 +104,9 @@ while getopts "a:d:f:t:hk:p:u:s:v:" opt; do
 			;;
 		f)
 			VDSOTESTALL="${OPTARG}"
+			;;
+		i)
+			VDSO_INSTALL_PATH="${OPTARG}"
 			;;
 		t)
 			TEST_TYPE="${OPTARG}"
@@ -130,7 +139,7 @@ while getopts "a:d:f:t:hk:p:u:s:v:" opt; do
 	esac
 done
 
-install_vdso_tests() {
+install() {
 	dist=
 	dist_name
 	case "${dist}" in
@@ -148,11 +157,12 @@ install_vdso_tests() {
 			echo "Unsupported distro: ${dist}! Package installation skipped!"
 			;;
 	esac
-	git clone https://github.com/nathanlynch/vdsotest.git
-	pushd vdsotest || exit
-	./autogen.sh && ./configure && make && make install
+}
+
+install_vdso_tests() {
+	pushd "${TEST_DIR}" || exit
+	./autogen.sh && ./configure --prefix="${VDSO_INSTALL_PATH}" && make && make install
 	popd || exit
-	rm -rf vdsotest
 }
 
 parse_output() {
@@ -181,9 +191,9 @@ parse_output() {
 
 run_test() {
 	if [ "${VDSOTESTALL}" = "all" ]; then
-		vdsotest-all -g -v 2>&1 | tee -a "${RESULT_LOG}"
+		"${VDSO_INSTALL_PATH}"/vdsotest-all -g -v 2>&1 | tee -a "${RESULT_LOG}"
 	else
-		vdsotest "${DURATION}" "${API}" "${TEST_TYPE}" -g -v 2>&1 | tee -a "${RESULT_LOG}"
+		"${VDSO_INSTALL_PATH}"/vdsotest "${DURATION}" "${API}" "${TEST_TYPE}" -g -v 2>&1 | tee -a "${RESULT_LOG}"
 	fi
 	parse_output
 }
@@ -195,10 +205,16 @@ create_out_dir "${OUTPUT}"
 # Install and run test
 if [ "${SKIP_INSTALL}" = "true" ] || [ "${SKIP_INSTALL}" = "True" ]; then
 	info_msg "Skip installing package dependency for ${TEST_PROG_VERSION}"
-	which vdsotest || info_msg "Please install vdsotest"
 else
-	get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
-	create_out_dir "${OUTPUT}"
-        install_vdso_tests
+        install
 fi
+
+if [ ! -d "${VDSO_INSTALL_PATH}" ]; then
+	get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
+	install_vdso_tests
+	create_out_dir "${OUTPUT}"
+elif [ ! -f "${VDSO_INSTALL_PATH}"/vdsotest ]; then
+	err_msg "Please install vdsotest"
+fi
+
 run_test

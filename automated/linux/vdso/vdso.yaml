@@ -71,6 +71,10 @@ params:
         # If next parameter is set, then the vdso suite is cloned to or
         # looked for in TEST_DIR. Otherwise it is cloned to $(pwd)/vdso
         TEST_DIR: ""
+        
+        # If next parameter is set, then the vdso suite is cloned to or
+        # looked for in VDSO_INSTALL_PATH. Otherwise it will be installed to /usr/bin/
+        VDSO_INSTALL_PATH: ""
 
         # If the user space already have everything installed. default: false
         SKIP_INSTALL: "false"
@@ -78,6 +82,6 @@ params:
 run:
     steps:
         - cd ./automated/linux/vdso/
-        - ./vdso.sh -d "${DURATION}" -f "${VDSOTESTALL}" -a "{API}" -t "${TEST_TYPE}" -v "${TEST_PROG_VERSION}" -s "${SKIP_INSTALL}" -p "${TEST_DIR}" -u "${TEST_GIT_URL}"
+        - ./vdso.sh -d "${DURATION}" -f "${VDSOTESTALL}" -a "{API}" -t "${TEST_TYPE}" -v "${TEST_PROG_VERSION}" -s "${SKIP_INSTALL}" -p "${TEST_DIR}" -u "${TEST_GIT_URL}" -i "${VDSO_INSTALL_PATH}"
         - ../../utils/send-to-lava.sh ./output/result.txt
         - ../../utils/send-to-lava.sh ./output/metric.txt
