@@ -205,6 +205,7 @@ fi
 
 get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
 
+echo "127.0.0.1 debian" >>/etc/hosts
 create_out_dir "${OUTPUT}"
 prepare_system
 run_test
