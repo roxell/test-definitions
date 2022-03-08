@@ -101,14 +101,14 @@ install() {
 			pkgs="build-essential wget perl git autoconf automake \
 					bc binutils-dev btrfs-progs linux-cpupower expect \
 					gcc hdparm hwloc-nox libtool numactl tcl time \
-					xfsprogs xfslibs-dev libopenmpi-dev jq"
+					xfsprogs xfslibs-dev libopenmpi-dev jq pkg-config"
 			install_deps "${pkgs}" "${SKIP_INSTALL}"
 		;;
 	fedora|centos)
 		pkgs="git gcc make automake libtool wget perl autoconf \
 					bc binutils-devel btrfs-progs kernel-tools expect \
 					hdparm hwloc libtool numactl tcl time xfsprogs \
-					openmpi-devel"
+					openmpi-devel pkg-config"
 			install_deps "${pkgs}" "${SKIP_INSTALL}"
 		;;
 	oe-rpb)
