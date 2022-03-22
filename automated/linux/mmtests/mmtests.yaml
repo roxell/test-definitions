@@ -39,7 +39,7 @@ params:
     TEST_DIR: ""
 
     # Mtests test type, e.g. sysbenchcpu, iozone, sqlite, etc.
-    MMTESTS_TYPE_NAME: "sqlite"
+    MMTESTS_TYPE_NAME: ""
 
     # Mmtests configuration file that describes how the benchmarks should be
     # configured and executed.
