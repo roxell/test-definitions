@@ -155,7 +155,7 @@ run_test() {
 	chmod u+x ./"${MMTESTS_CONFIG_FILE}"
 	eval 'source ./${MMTESTS_CONFIG_FILE}'
 
-	if [ "${MMTESTS_TYPE_NAME}" != "${MMTESTS}" ]; then
+	if [ -z "${MMTESTS_TYPE_NAME}" ]; then
 		EXTRACT_NAMES="${MMTESTS}"
 	else
 		EXTRACT_NAMES="${MMTESTS_TYPE_NAME}"
