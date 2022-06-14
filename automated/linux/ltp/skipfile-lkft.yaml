@@ -386,3 +386,34 @@ skiplist:
       - v4.4-rt
     tests:
       - ping01
+
+  - reason: >
+      fs_bind07-2_sh
+    environments: production
+    boards:
+      - qemu-x86_64
+    branches:
+      - all
+    tests:
+        - fs_bind07-2_sh
+
+  - reason: >
+      fs_bind_cloneNS06_sh
+    environments: production
+    boards:
+      - qemu-x86_64
+    branches:
+      - all
+    tests:
+      - fs_bind_cloneNS06_sh
+
+  - reason: >
+      fs_bind_cloneNS07_sh
+    environments: production
+    boards:
+      - qemu-x86_64
+    branches:
+      - all
+    tests:
+      - fs_bind_cloneNS06_sh
+
