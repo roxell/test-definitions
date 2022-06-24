@@ -415,5 +415,25 @@ skiplist:
     branches:
       - all
     tests:
-      - fs_bind_cloneNS06_sh
+      - fs_bind_cloneNS07_sh
+
+  - reason: >
+      fs_bind_move21
+    environments: production
+    boards:
+      - qemu-x86_64
+    branches:
+      - all
+    tests:
+      - fs_bind_move21
+
+  - reason: >
+      fs_bind_move22
+    environments: production
+    boards:
+      - qemu-x86_64
+    branches:
+      - all
+    tests:
+      - fs_bind_move22
 
