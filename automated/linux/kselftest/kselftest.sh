@@ -222,9 +222,12 @@ elif [ -n "${TST_CMDFILES}" ]; then
     cp kselftest-list.txt kselftest-list.txt.skips
     # shellcheck disable=SC2086
     for test in ${TST_CMDFILES}; do
+        echo "OUTPUT 1:${test}"
         cp kselftest-list.txt.skips kselftest-list.txt
-        grep "^${test}:" kselftest-list.txt | tee kselftest-list.txt
-        split --verbose --numeric-suffixes=1 -n l/"${SHARD_INDEX}"/"${SHARD_NUMBER}" kselftest-list.txt > shardfile
+        grep "^${test}:" kselftest-list.txt | tee kselftest-list.tmp
+        echo "OUTPUT 2:"
+        cat kselftest-list.tmp
+        split --verbose --numeric-suffixes=1 -n l/"${SHARD_INDEX}"/"${SHARD_NUMBER}" kselftest-list.tmp > shardfile
         echo "============== Tests to run ==============="
         cat shardfile
         echo "===========End Tests to run ==============="

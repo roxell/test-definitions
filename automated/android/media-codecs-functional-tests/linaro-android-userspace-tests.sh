@@ -72,16 +72,16 @@ run_audio_codec_aac()
 	echo
 	echo "Running AAC encoder test"
 
-	if [ ! -f ${TEST_FILE} ]; then
+	if [ ! -f "${TEST_FILE}" ]; then
 		echo "ERROR: AAC encoder test file ${TEST_FILE} does not exist"
 		echo "AAC encoder test: FAILED"
 		echo "[audio_codec_aac]: test failed"
 		return 1
 	fi
 	if [ "${VERBOSE}" -eq "1" ]; then
-		libaacenc_test ${TEST_FILE} ${OUT_FILE}
+		libaacenc_test "${TEST_FILE}" "${OUT_FILE}"
 	else
-		libaacenc_test ${TEST_FILE} ${OUT_FILE} &> /dev/null
+		libaacenc_test "${TEST_FILE}" "${OUT_FILE}" &> /dev/null
 	fi
 	if [ "$?" -ne "0" ]; then
 		echo "ERROR: AAC encoder test returned error"
@@ -91,9 +91,9 @@ run_audio_codec_aac()
 	fi
 
 	echo "Checking MD5SUM of output file"
-	local MD5SUM=$(func_md5 ${OUT_FILE})
-	MD5SUM=${MD5SUM%% *}
-	rm ${OUT_FILE}
+	local MD5SUM="$(func_md5 ${OUT_FILE})"
+	MD5SUM="${MD5SUM%% *}"
+	rm "${OUT_FILE}"
 	if [[ "${MD5SUM}" == "${EXPECTED_MD5SUM}" ]]; then
 		echo "AAC encoder test: PASSED"
 		echo "[audio_codec_aac]: test passed"
@@ -135,16 +135,16 @@ run_audio_codec_mp3()
 	echo
 	echo "Running MP3 decoder test"
 
-	if [ ! -f ${TEST_FILE} ]; then
+	if [ ! -f "${TEST_FILE}" ]; then
 		echo "ERROR: MP3 test file ${TEST_FILE} does not exist"
 		echo "MP3 decoder test: FAILED"
 		echo "[audio_codec_mp3]: test failed"
 		return 1
 	fi
 	if [ "${VERBOSE}" -eq "1" ]; then
-		libstagefright_mp3dec_test ${TEST_FILE} ${OUT_FILE}
+		libstagefright_mp3dec_test "${TEST_FILE}" "${OUT_FILE}"
 	else
-		libstagefright_mp3dec_test ${TEST_FILE} ${OUT_FILE} &> /dev/null
+		libstagefright_mp3dec_test "${TEST_FILE}" "${OUT_FILE}" &> /dev/null
 	fi
 	if [ "$?" -ne "0" ]; then
 		echo "ERROR: MP3 decoder test returned error"
@@ -154,9 +154,9 @@ run_audio_codec_mp3()
 	fi
 
 	echo "Checking MD5SUM of output file"
-	local MD5SUM=$(func_md5 ${OUT_FILE})
-	MD5SUM=${MD5SUM%% *}
-	rm ${OUT_FILE}
+	local MD5SUM="$(func_md5 ${OUT_FILE})"
+	MD5SUM="${MD5SUM%% *}"
+	rm "${OUT_FILE}"
 	if [[ "${MD5SUM}" == "${EXPECTED_MD5SUM}" ]]; then
 		echo "MP3 decoder test: PASSED"
 		echo "[audio_codec_mp3]: test passed"
@@ -176,16 +176,16 @@ run_audio_codec_tremolo()
 
 	echo
 	echo "Running Tremolo decoder test"
-	if [ ! -f ${TEST_FILE} ]; then
+	if [ ! -f "${TEST_FILE}" ]; then
 		echo "ERROR: Tremolo test file ${TEST_FILE} does not exist"
 		echo "Tremolo decoder test: FAILED"
 		echo "[audio_codec_tremolo]: test failed"
 		return 1
 	fi
 	if [ "${VERBOSE}" -eq "1" ]; then
-		libvorbisidec_test ${TEST_FILE} ${OUT_FILE}
+		libvorbisidec_test "${TEST_FILE}" "${OUT_FILE}"
 	else
-		libvorbisidec_test ${TEST_FILE} ${OUT_FILE} &> /dev/null
+		libvorbisidec_test "${TEST_FILE}" "${OUT_FILE}" &> /dev/null
 	fi
 	if [ "$?" -ne "0" ]; then
 		echo "ERROR: Tremolo decoder test returned error"
@@ -195,9 +195,9 @@ run_audio_codec_tremolo()
 	fi
 
 	echo "Checking MD5SUM of output file"
-	local MD5SUM=$(func_md5 ${OUT_FILE})
-	MD5SUM=${MD5SUM%% *}
-	rm ${OUT_FILE}
+	local MD5SUM="$(func_md5 ${OUT_FILE})"
+	MD5SUM="${MD5SUM%% *}"
+	rm "${OUT_FILE}"
 	if [[ "${MD5SUM}" == "${EXPECTED_MD5SUM}" ]]; then
 		echo "Tremolo decoder test: PASSED"
 		echo "[audio_codec_tremolo]: test passed"
@@ -225,7 +225,7 @@ run_speech_codec()
 
 	echo
 	echo "${TAG}: Running ${NAME}"
-	if [ ! -f ${MD5SUM_FILE} ]; then
+	if [ ! -f "${MD5SUM_FILE}" ]; then
 		echo "${TAG}: ERROR: MD5SUM file '${MD5SUM_FILE}' does not exist"
 		echo "${TAG}: ${NAME}: FAILED"
 		echo "[${TAG}]: test failed"
@@ -257,7 +257,7 @@ run_speech_codec()
 		LINE="${LINE#${TEST_FILE}}"
 
 		TEST_FILE="${DATA_DIR}/${TEST_FILE}"
-		if [ ! -f ${TEST_FILE} ]; then
+		if [ ! -f "${TEST_FILE}" ]; then
 			echo "${TAG}: ERROR: test file '${TEST_FILE}' does not exist"
 			echo "${TAG}: ${NAME}: FAILED"
 			echo "[${TAG}]: test failed"
@@ -291,7 +291,7 @@ run_speech_codec()
 				continue
 			fi
 
-			local MD5SUM=$(func_md5 ${OUT_FILE})
+			local MD5SUM="$(func_md5 ${OUT_FILE})"
 			MD5SUM="${MD5SUM%% *}"
 			if [[ "${MD5SUM}" != "${EXPECTED_MD5SUM}" ]]; then
 				echo
@@ -303,14 +303,14 @@ run_speech_codec()
 
 			((INDEX++))
 		done
-	done < ${MD5SUM_FILE}
+	done < "${MD5SUM_FILE}"
 	echo "done"
 
-	if [ -f ${OUT_FILE} ]; then
-		rm ${OUT_FILE}
+	if [ -f "${OUT_FILE}" ]; then
+		rm "${OUT_FILE}"
 	fi
 
-	if $result; then
+	if "$result"; then
 		echo "${TAG}: ${NAME}: PASSED"
 		echo "[${TAG}]: test passed"
 	else
@@ -412,9 +412,9 @@ run_video_codec_h264_dec()
 		fi
 
 		if [ "${VERBOSE}" -eq "1" ]; then
-			${RUN} -O${OUT_FILE} ${TEST_FILE}
+			${RUN} -O"${OUT_FILE}" "${TEST_FILE}"
 		else
-			${RUN} -O${OUT_FILE} ${TEST_FILE} &> /dev/null
+			${RUN} -O"${OUT_FILE}" "${TEST_FILE}" &> /dev/null
 		fi
 
 		if [ "$?" -ne "0" ]; then
@@ -425,7 +425,7 @@ run_video_codec_h264_dec()
 			return 1
 		fi
 
-		local MD5SUM=$(func_md5 ${OUT_FILE})
+		local MD5SUM="$(func_md5 ${OUT_FILE})"
 		MD5SUM="${MD5SUM%% *}"
 		if [[ "${MD5SUM}" != "${EXPECTED_MD5SUM}" ]]; then
 			echo
@@ -434,11 +434,11 @@ run_video_codec_h264_dec()
 			echo "[${TAG}]: test failed"
 			return 1
 		fi
-	done < ${MD5SUM_FILE}
+	done < "${MD5SUM_FILE}"
 	echo "done"
 
-	if [ -f ${OUT_FILE} ]; then
-		rm ${OUT_FILE}
+	if [ -f "${OUT_FILE}" ]; then
+		rm "${OUT_FILE}"
 	fi
 
 	echo "${TAG}: ${NAME}: PASSED"
@@ -514,7 +514,7 @@ run_video_codec_h264_enc()
 			continue
 		fi
 
-		local MD5SUM=$(func_md5 ${OUT_FILE})
+		local MD5SUM="$(func_md5 ${OUT_FILE})"
 		MD5SUM="${MD5SUM%% *}"
 		if [[ "${MD5SUM}" != "${EXPECTED_MD5SUM}" ]]; then
 			echo
@@ -523,14 +523,14 @@ run_video_codec_h264_enc()
 			result=false
 			continue
 		fi
-	done < ${MD5SUM_FILE}
+	done < "${MD5SUM_FILE}"
 	echo "done"
 
-	if [ -f ${OUT_FILE} ]; then
-		rm ${OUT_FILE}
+	if [ -f "${OUT_FILE}" ]; then
+		rm "${OUT_FILE}"
 	fi
 
-	if ${result}; then
+	if "${result}"; then
 		echo "${TAG}: ${NAME}: PASSED"
 		echo "[${TAG}]: test passed"
 	else
