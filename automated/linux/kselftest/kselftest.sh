@@ -229,6 +229,9 @@ elif [ -n "${TST_CMDFILES}" ]; then
         cat shardfile
         echo "===========End Tests to run ==============="
         cp shardfile kselftest-list.txt
+        if grep -q fp-stress kselftest-list.txt ; then
+            echo "timeout=900" > arm64/settings
+        fi
         ./run_kselftest.sh -c ${test} 2>&1 | tee -a "${LOGFILE}"
     done
     cp kselftest-list.txt.original kselftest-list.txt
