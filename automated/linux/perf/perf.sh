@@ -124,7 +124,7 @@ echo "SATAN"
 echo "PATH: ${PATH}"
 export PATH="/usr/bin:${PATH}"
 which perf
-perf help
+ls -l /usr/bin/
 
 # List of test cases "record report stat test"
 for tests in ${TEST}; do
