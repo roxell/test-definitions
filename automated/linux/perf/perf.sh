@@ -33,7 +33,7 @@ run_perf_record() {
     TCID="perf_record_test"
     echo "SATAN"
     which perf
-    perf record -e cycles -o perf-lava-test.data ls -a  2>&1 | tee perf-record.log
+    /usr/bin/perf record -e cycles -o perf-lava-test.data ls -a  2>&1 | tee perf-record.log
     samples=$(grep -ao "[0-9]\\+[ ]\\+samples" perf-record.log| cut -f 1 -d' ')
     if [ "${samples}" -gt 1 ]; then
         report_pass "${TCID}"
@@ -48,7 +48,7 @@ run_perf_report() {
     # Test 'perf report'
     info_msg "Performing perf report test..."
     TCID="perf_report_test"
-    perf report -i perf-lava-test.data 2>&1 | tee perf-report.log
+    /usr/bin/perf report -i perf-lava-test.data 2>&1 | tee perf-report.log
     pcnt_samples=$(grep -c -e "^[ ]\\+[0-9]\\+.[0-9]\\+%" perf-report.log)
     if [ "${pcnt_samples}" -gt 1 ]; then
         report_pass "${TCID}"
@@ -63,7 +63,7 @@ run_perf_stat() {
     # Test 'perf stat'
     info_msg "Performing perf stat test..."
     TCID="perf_stat_test"
-    perf stat -e cycles ls -a 2>&1 | tee perf-stat.log
+    /usr/bin/perf stat -e cycles ls -a 2>&1 | tee perf-stat.log
     cycles=$(grep -o "[0-9,]\\+[ ]\\+cycles" perf-stat.log | sed 's/,//g' | cut -f 1 -d' ')
     if [ -z "${cycles}" ]; then
         report_skip "${TCID}"
@@ -81,7 +81,7 @@ run_perf_stat() {
 run_perf_test() {
     # Test 'perf test'
     info_msg "Performing 'perf test'..."
-    perf test -v 2>&1 | tee "${RESULT_LOG}"
+    /usr/bin/perf test -v 2>&1 | tee "${RESULT_LOG}"
     report_pass "perf_test"
     parse_perf_test_results
 }
