@@ -31,6 +31,7 @@ run_perf_record() {
     # Test 'perf record'
     info_msg "Performing perf record test..."
     TCID="perf_record_test"
+    which perf
     perf record -e cycles -o perf-lava-test.data ls -a  2>&1 | tee perf-record.log
     samples=$(grep -ao "[0-9]\\+[ ]\\+samples" perf-record.log| cut -f 1 -d' ')
     if [ "${samples}" -gt 1 ]; then
