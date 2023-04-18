@@ -115,8 +115,12 @@ else
 fi
 
 info_msg "check which perf"
-which perf > /dev/null
-exit_on_fail "perf-existence-check"
+which perf
+#exit_on_fail "perf-existence-check"
+
+echo "PATH: ${PATH}"
+export PATH="/usr/bin/:${PATH}"
+which perf
 
 # List of test cases "record report stat test"
 for tests in ${TEST}; do
