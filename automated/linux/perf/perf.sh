@@ -31,6 +31,7 @@ run_perf_record() {
     # Test 'perf record'
     info_msg "Performing perf record test..."
     TCID="perf_record_test"
+    echo "SATAN"
     which perf
     perf record -e cycles -o perf-lava-test.data ls -a  2>&1 | tee perf-record.log
     samples=$(grep -ao "[0-9]\\+[ ]\\+samples" perf-record.log| cut -f 1 -d' ')
@@ -116,11 +117,12 @@ else
 fi
 
 info_msg "check which perf"
-which perf
-#exit_on_fail "perf-existence-check"
+which perf > /dev/null
+exit_on_fail "perf-existence-check"
 
+echo "SATAN"
 echo "PATH: ${PATH}"
-export PATH="/usr/bin/:${PATH}"
+export PATH="/usr/bin:${PATH}"
 which perf
 
 # List of test cases "record report stat test"
