@@ -177,6 +177,9 @@ if [ -f "${SKIPFILE}" ] &&  [ -z "${SKIPLIST}" ]; then
     done < "${SKIPFILE}"
 fi
 
+# need the forwarding.config to run net/forwarding suite
+cp net/forwarding/forwarding.config.sample net/forwarding/forwarding.config
+
 cp kselftest-list.txt kselftest-list.txt.orig
 echo "skiplist:"
 echo "========================================"
