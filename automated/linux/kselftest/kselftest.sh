@@ -200,6 +200,12 @@ elif [ -n "${TST_CMDFILES}" ]; then
         echo "============== Tests to run ==============="
         cat shardfile
         echo "===========End Tests to run ==============="
+        if [ -s shardfile ]; then
+            report_pass "shardfile-${TST_CMDFILES}"
+        else
+            report_fail "shardfile-${TST_CMDFILES}"
+            continue
+        fi
         cp shardfile kselftest-list.txt
         ./run_kselftest.sh -c ${test} 2>&1 | tee -a "${LOGFILE}"
     done
