@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 RESULT_LOG="result.log"
 DUMP_FRAMES_DIR="/root/dump-frames"
 
