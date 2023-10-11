@@ -105,7 +105,8 @@ while getopts "c:p:r:s:t:u:v:i:" opt; do
 	esac
 done
 
-install() {
+install_system_deps() {
+# Install system-wide dependencies required for the benchmarks and MMTests framework.
 	dist=
 	dist_name
 	case "${dist}" in
@@ -144,7 +145,7 @@ prepare_system() {
 	COUNTER=0
 	# Install benchmark according to the configuration file.
 	while [ $DOWNLOADED -eq 0 ] && [ $COUNTER -lt "$MMTESTS_MAX_RETRIES" ]; do
-		./run-mmtests.sh -b --no-monitor --config "${MMTESTS_CONFIG_FILE}" benchmark && DOWNLOADED=1
+		./run-mmtests.sh -b -n -c "${MMTESTS_CONFIG_FILE}" benchmark && DOWNLOADED=1
 		COUNTER=$((COUNTER+1))
 	done
 	popd || exit
@@ -152,10 +153,10 @@ prepare_system() {
 
 run_test() {
 	pushd "${TEST_DIR}" || exit
-  info_msg "Running ${MMTESTS_TYPE_NAME} test..."
-  # Run benchmark according config file and with disabled monitoring.
-  # Results will be stored in work/log/benchmark directory.
-	MMTEST_ITERATIONS=${MMTESTS_ITERATIONS} ./run-mmtests.sh --no-monitor --config "${MMTESTS_CONFIG_FILE}" benchmark
+	info_msg "Running ${MMTESTS_TYPE_NAME} test..."
+	# Run benchmark according config file and with disabled monitoring.
+	# Results will be stored in work/log/benchmark directory.
+	MMTEST_ITERATIONS=${MMTESTS_ITERATIONS} nice -n -5 ./run-mmtests.sh -np -c "${MMTESTS_CONFIG_FILE}" benchmark
 
 	MEMTOTAL_BYTES=$(free -b | grep Mem: | awk '{print $2}')
 	export MEMTOTAL_BYTES
@@ -215,15 +216,16 @@ run_test() {
 
 ! check_root && error_msg "Please run this script as root."
 
-# Test installation.
 if [ "${SKIP_INSTALL}" = "true" ] || [ "${SKIP_INSTALL}" = "True" ]; then
 	info_msg "${MMTESTS_TYPE_NAME} installation skipped"
 else
-	install
+	# Install system-wide dependencies.
+	install_system_deps
+	# Install benchmark and Perl dependencies.
+	prepare_system
+	# Clone MMTests repository.
+	get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
+	create_out_dir "${OUTPUT}"
 fi
-# Clone MMTests repository.
-get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
 
-create_out_dir "${OUTPUT}"
-prepare_system
 run_test
