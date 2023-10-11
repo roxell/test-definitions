@@ -14,6 +14,7 @@ SKIP_INSTALL=${SKIP_INSTALL:-"false"}
 MMTESTS_MAX_RETRIES=${MMTESTS_MAX_RETRIES:-"3"}
 MMTESTS_TYPE_NAME=
 MMTESTS_CONFIG_FILE=
+MMTEST_ITERATIONS=${MMTEST_ITERATIONS:-"10"}
 
 # DBENCH specific variables
 declare -A altreport_mappings=( ["dbench4"]="tput latency opslatency")
@@ -21,9 +22,14 @@ declare -A env_variable_mappings=( ["dbench4"]="DBENCH" )
 
 usage() {
 	echo "\
-	Usage: $0 [-s <true|false>] [-v <TEST_PROG_VERSION>]
-			[-u <TEST_GIT_URL>] [-p <TEST_DIR>]
-			[-c <MMTESTS_CONFIG_FILE>] [-t <MMTESTS_TYPE_NAME>] [-r <MMTESTS_MAX_RETRIES>]
+	Usage: $0 [-s <true|false>]
+		[-v <TEST_PROG_VERSION>]
+		[-u <TEST_GIT_URL>]
+		[-p <TEST_DIR>]
+		[-c <MMTESTS_CONFIG_FILE>]
+		[-t <MMTESTS_TYPE_NAME>]
+		[-r <MMTESTS_MAX_RETRIES>]
+		[-i <MMTEST_ITERATIONS>]
 
 	<TEST_PROG_VERSION>:
 	If this parameter is set, then the ${TEST_PROGRAM} suite is cloned. In
@@ -55,12 +61,15 @@ usage() {
 	MMTests test type, e.g. sysbenchcpu, iozone, sqlite, etc.
 
 	<MMTESTS_MAX_RETRIES>:
-	Maximum number of retries for the single benchmark's source file download"
+	Maximum number of retries for the single benchmark's source file download
+
+	<MMTEST_ITERATIONS>:
+	The number of iterations to run the benchmark for."
 
 	exit 1
 }
 
-while getopts "c:p:r:s:t:u:v:" opt; do
+while getopts "c:p:r:s:t:u:v:i:" opt; do
 	case "${opt}" in
 		c)
 			MMTESTS_CONFIG_FILE="${OPTARG}"
@@ -85,7 +94,10 @@ while getopts "c:p:r:s:t:u:v:" opt; do
 			fi
 			;;
 		v)
-			TEST_PROG_VERSION="$OPTARG"
+			TEST_PROG_VERSION="${OPTARG}"
+			;;
+		i)
+			MMTESTS_ITERATIONS="${OPTARG}"
 			;;
 		*)
 			usage
@@ -143,7 +155,7 @@ run_test() {
   info_msg "Running ${MMTESTS_TYPE_NAME} test..."
   # Run benchmark according config file and with disabled monitoring.
   # Results will be stored in work/log/benchmark directory.
-	./run-mmtests.sh --no-monitor --config "${MMTESTS_CONFIG_FILE}" benchmark
+	MMTEST_ITERATIONS=${MMTESTS_ITERATIONS} ./run-mmtests.sh --no-monitor --config "${MMTESTS_CONFIG_FILE}" benchmark
 
 	MEMTOTAL_BYTES=$(free -b | grep Mem: | awk '{print $2}')
 	export MEMTOTAL_BYTES
