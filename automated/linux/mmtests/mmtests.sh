@@ -1,9 +1,6 @@
 #!/bin/bash
-# Sysbench is a modular, cross-platform and multi-threaded benchmark tool.
-# This runs the CPU microbench which calculates primes up to a
-# certain value using varying numbers of instances.
-# In this configuration, it calculates primes up to 25000
-# using between 1 and 2*NUMCPUS threads.
+
+set -x
 
 # shellcheck disable=SC1091
 . ../../lib/sh-test-lib
@@ -18,6 +15,7 @@ MMTESTS_MAX_RETRIES=10
 MMTESTS_TYPE_NAME=
 MMTESTS_CONFIG_FILE=
 
+# DBENCH specific variables
 declare -A altreport_mappings=( ["dbench4"]="tput latency opslatency")
 declare -A env_variable_mappings=( ["dbench4"]="DBENCH" )
 
@@ -45,18 +43,20 @@ usage() {
 	looked for in TEST_DIR. Otherwise it is cloned to $(pwd)/${TEST_PROGRAM}
 
 	<SKIP_INSTALL>:
-	If you already have it installed into the rootfs.
+	This flag controls two things: benchmark installation and benchmark's
+	dependencies installation.
 	default: false
 
 	<MMTESTS_CONFIG_FILE>:
-	Mmtests configuration file that describes how the benchmarks should be
+	MMMTests configuration file that describes how the benchmarks should be
 	configured and executed.
 
 	<MMTESTS_TYPE_NAME>:
-	Mtests test type, e.g. sysbenchcpu, iozone, sqlite, etc.
+	MMTests test type, e.g. sysbenchcpu, iozone, sqlite, etc.
 
 	<MMTESTS_MAX_RETRIES>:
-	Maximum number of retries for the single benchamrk's source file download"
+	Maximum number of retries for the single benchmark's source file download"
+
 	exit 1
 }
 
@@ -81,7 +81,7 @@ while getopts "c:p:r:s:t:u:v:" opt; do
 			;;
 		u)
 			if [[ "$OPTARG" != '' ]]; then
-				TEST_GIT_URL="$OPTARG"
+			TEST_GIT_URL="${OPTARG}"
 			fi
 			;;
 		v)
@@ -121,6 +121,7 @@ install() {
 }
 
 prepare_system() {
+	# Install additional Perl dependencies.
 	pushd "${TEST_DIR}" || exit
 	PERL_MM_USE_DEFAULT=1
 	export PERL_MM_USE_DEFAULT
@@ -129,6 +130,7 @@ prepare_system() {
 	export AUTO_PACKAGE_INSTALL
 	DOWNLOADED=0
 	COUNTER=0
+	# Install benchmark according to the configuration file.
 	while [ $DOWNLOADED -eq 0 ] && [ $COUNTER -lt "$MMTESTS_MAX_RETRIES" ]; do
 		./run-mmtests.sh -b --no-monitor --config "${MMTESTS_CONFIG_FILE}" benchmark && DOWNLOADED=1
 		COUNTER=$((COUNTER+1))
@@ -138,7 +140,9 @@ prepare_system() {
 
 run_test() {
 	pushd "${TEST_DIR}" || exit
-	info_msg "Running ${MMTESTS_TYPE_NAME} test..."
+  info_msg "Running ${MMTESTS_TYPE_NAME} test..."
+  # Run benchmark according config file and with disabled monitoring.
+  # Results will be stored in work/log/benchmark directory.
 	./run-mmtests.sh --no-monitor --config "${MMTESTS_CONFIG_FILE}" benchmark
 
 	MEMTOTAL_BYTES=$(free -b | grep Mem: | awk '{print $2}')
@@ -154,22 +158,25 @@ run_test() {
 
 	chmod u+x ./"${MMTESTS_CONFIG_FILE}"
 	eval 'source ./${MMTESTS_CONFIG_FILE}'
+	# Extract results data from available logs for each benchmark in JSON format.
+	# JSON files will be available in mmtests root directory.
 
+	# Note: benchmark name is not always equal to benchmark name from config file.
 	if [ "${MMTESTS_TYPE_NAME}" != "${MMTESTS}" ]; then
 		EXTRACT_NAMES="${MMTESTS}"
 	else
 		EXTRACT_NAMES="${MMTESTS_TYPE_NAME}"
 	fi
 
-	echo "test[s] to extract: ${EXTRACT_NAMES}"
-	for test in ${EXTRACT_NAMES}; do
-		echo "extraction for test: $test"
-		./bin/extract-mmtests.pl -d work/log/ -b "${test}" -n benchmark --print-json >> "../${MMTESTS_TYPE_NAME}_${test}.json"
+	echo "test(s) to extract: ${EXTRACT_NAMES}"
+	for benchmark_name in ${EXTRACT_NAMES}; do
+		echo "results for: $benchmark_name"
+		./bin/extract-mmtests.pl -d work/log/ -b "${benchmark_name}" -n benchmark --print-json >> "../${MMTESTS_TYPE_NAME}_${benchmark_name}.json"
 
-		altreports=${altreport_mappings[${test}]}
+		altreports=${altreport_mappings[${benchmark_name}]}
 		for altreport in ${altreports}; do
-			./bin/extract-mmtests.pl -d work/log/ -b "${test}" -n benchmark\
-			-a "${altreport}" --print-json > "../${MMTESTS_TYPE_NAME}_${test}${altreport}.json"
+			./bin/extract-mmtests.pl -d work/log/ -b "${benchmark_name}" -n benchmark\
+			-a "${altreport}" --print-json > "../${MMTESTS_TYPE_NAME}_${benchmark_name}${altreport}.json"
 		done
 	done
 
@@ -186,7 +193,7 @@ run_test() {
 		myvalue=${!variable}
 		echo "$mykey":"$myvalue"
 		tmp=$(mktemp)
-		jq -c --arg key "$mykey" --arg value "$myvalue" '. += {($key):$value}' ../"${MMTESTS_TYPE_NAME}"_"${test}".json > "$tmp" && mv "$tmp" ../"${MMTESTS_TYPE_NAME}"_"${test}".json
+		jq -c --arg key "$mykey" --arg value "$myvalue" '. += {($key):$value}' ../"${MMTESTS_TYPE_NAME}"_"${benchmark_name}".json > "$tmp" && mv "$tmp" ../"${MMTESTS_TYPE_NAME}"_"${benchmark_name}".json
 	done
 
 	chmod a+r "../$MMTESTS_TYPE_NAME"*".json"
@@ -202,7 +209,7 @@ if [ "${SKIP_INSTALL}" = "true" ] || [ "${SKIP_INSTALL}" = "True" ]; then
 else
 	install
 fi
-
+# Clone MMTests repository.
 get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
 
 create_out_dir "${OUTPUT}"
