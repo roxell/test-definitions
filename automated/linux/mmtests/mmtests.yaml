@@ -62,14 +62,14 @@ run:
             fi
         - |
             cmd="./mmtests.sh";
-            [ -n "${SKIP_INSTALL}" ] && cmd="${cmd} -s ${SKIP_INSTALL}";
-            [ -n "${TEST_PROG_VERSION}" ] && cmd="${cmd} -v ${TEST_PROG_VERSION}";
-            [ -n "${TEST_DIR}" ] && cmd="${cmd} -p ${TEST_DIR}";
-            [ -n "${TEST_GIT_URL}" ] && cmd="${cmd} -u ${TEST_GIT_URL}";
-            [ -n "${MMTESTS_CONFIG_FILE}" ] && cmd="${cmd} -c ${MMTESTS_CONFIG_FILE}";
-            [ -n "${MMTESTS_TYPE_NAME}" ] && cmd="${cmd} -t ${MMTESTS_TYPE_NAME}";
-            [ -n "${MMTESTS_MAX_RETRIES}" ] && cmd="${cmd} -r ${MMTESTS_MAX_RETRIES}";
-            [ -n "${MMTESTS_ITERATIONS}" ] && cmd="${cmd} -i ${MMTESTS_ITERATIONS}";
+            [ -n "${SKIP_INSTALL}" ] && cmd="${cmd} -s '${SKIP_INSTALL}'";
+            [ -n "${TEST_PROG_VERSION}" ] && cmd="${cmd} -v '${TEST_PROG_VERSION}'";
+            [ -n "${TEST_DIR}" ] && cmd="${cmd} -p '${TEST_DIR}'";
+            [ -n "${TEST_GIT_URL}" ] && cmd="${cmd} -u '${TEST_GIT_URL}'";
+            [ -n "${MMTESTS_CONFIG_FILE}" ] && cmd="${cmd} -c '${MMTESTS_CONFIG_FILE}'";
+            [ -n "${MMTESTS_TYPE_NAME}" ] && cmd="${cmd} -t '${MMTESTS_TYPE_NAME}'";
+            [ -n "${MMTESTS_MAX_RETRIES}" ] && cmd="${cmd} -r '${MMTESTS_MAX_RETRIES}'";
+            [ -n "${MMTESTS_ITERATIONS}" ] && cmd="${cmd} -i '${MMTESTS_ITERATIONS}'";
             eval ${cmd}
         - if [ ! -z ${TEST_DIR} ]; then mv ${TEST_DIR}/../${MMTESTS_TYPE_NAME}*.json .; fi
         - for file in ./${MMTESTS_TYPE_NAME}*.json; do ./json-to-lava.py $file >> ./output/result.txt; done
