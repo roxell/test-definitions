@@ -15,6 +15,7 @@ MMTESTS_MAX_RETRIES=${MMTESTS_MAX_RETRIES:-"3"}
 MMTESTS_TYPE_NAME=
 MMTESTS_CONFIG_FILE=
 MMTEST_ITERATIONS=${MMTEST_ITERATIONS:-"10"}
+MMTEST_EXTR="./bin/extract-mmtests.pl"
 
 # DBENCH specific variables
 declare -A altreport_mappings=( ["dbench4"]="tput latency opslatency")
@@ -180,11 +181,11 @@ run_test() {
   echo "test(s) to extract: ${EXTRACT_NAMES}"
   for benchmark_name in ${EXTRACT_NAMES}; do
     echo "results for: $benchmark_name"
-    ./bin/extract-mmtests.pl -d work/log/ -b "${benchmark_name}" -n benchmark --print-json >> "../${MMTESTS_TYPE_NAME}_${benchmark_name}.json"
+    ${MMTEST_EXTR} -d work/log/ -b "${benchmark_name}" -n benchmark --print-json >> "../${MMTESTS_TYPE_NAME}_${benchmark_name}.json"
 
     altreports=${altreport_mappings[${benchmark_name}]}
     for altreport in ${altreports}; do
-      ./bin/extract-mmtests.pl -d work/log/ -b "${benchmark_name}" -n benchmark\
+      ${MMTEST_EXTR} -d work/log/ -b "${benchmark_name}" -n benchmark \
       -a "${altreport}" --print-json > "../${MMTESTS_TYPE_NAME}_${benchmark_name}${altreport}.json"
     done
   done
