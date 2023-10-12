@@ -26,7 +26,7 @@ params:
     # parameter. A simple choice for the value of the parameter
     # is, e.g., HEAD.  If, instead, the parameter is
     # not set, then the suite present in TEST_DIR is used.
-    TEST_PROG_VERSION: "HEAD"
+    TEST_PROG_VERSION: null
 
     # If next parameter is set, then the MMTests suite is cloned
     # from the URL in TEST_GIT_URL. Otherwise, it is cloned from the
@@ -48,23 +48,29 @@ params:
     # Maximum number of retries for the single benchmark source file download
     MMTESTS_MAX_RETRIES: null
 
-    # MMTEST iterations for config
-    MMTEST_ITERATIONS: 1
+    # MMTESTS iterations for config
+    MMTESTS_ITERATIONS: 1
 
 run:
     steps:
         - cd ./automated/linux/mmtests/
         - |
+            if [ -n "${MMTESTS_CONFIG_FILE}" ]; then
+              echo "print crap ${MMTESTS_CONFIG_FILE}";
+            else
+              echo "print satan ${MMTESTS_CONFIG_FILE}";
+            fi
+        - |
             cmd="./mmtests.sh";
-            [ -n "${SKIP_INSTALL}" ] && cmd+=" -s '${SKIP_INSTALL}'";
-            [ -n "${TEST_PROG_VERSION}" ] && cmd+=" -v '${TEST_PROG_VERSION}'";
-            [ -n "${TEST_DIR}" ] && cmd+=" -p '${TEST_DIR}'";
-            [ -n "${TEST_GIT_URL}" ] && cmd+=" -u '${TEST_GIT_URL}'";
-            [ -n "${MMTESTS_CONFIG_FILE}" ] && cmd+=" -c '${MMTESTS_CONFIG_FILE}'";
-            [ -n "${MMTESTS_TYPE_NAME}" ] && cmd+=" -t '${MMTESTS_TYPE_NAME}'";
-            [ -n "${MMTESTS_MAX_RETRIES}" ] && cmd+=" -r '${MMTESTS_MAX_RETRIES}'";
-            [ -n "${MMTEST_ITERATIONS}" ] && cmd+=" -i '${MMTEST_ITERATIONS}'";
-            eval $cmd
+            [ -n "${SKIP_INSTALL}" ] && cmd="${cmd} -s ${SKIP_INSTALL}";
+            [ -n "${TEST_PROG_VERSION}" ] && cmd="${cmd} -v ${TEST_PROG_VERSION}";
+            [ -n "${TEST_DIR}" ] && cmd="${cmd} -p ${TEST_DIR}";
+            [ -n "${TEST_GIT_URL}" ] && cmd="${cmd} -u ${TEST_GIT_URL}";
+            [ -n "${MMTESTS_CONFIG_FILE}" ] && cmd="${cmd} -c ${MMTESTS_CONFIG_FILE}";
+            [ -n "${MMTESTS_TYPE_NAME}" ] && cmd="${cmd} -t ${MMTESTS_TYPE_NAME}";
+            [ -n "${MMTESTS_MAX_RETRIES}" ] && cmd="${cmd} -r ${MMTESTS_MAX_RETRIES}";
+            [ -n "${MMTESTS_ITERATIONS}" ] && cmd="${cmd} -i ${MMTESTS_ITERATIONS}";
+            eval ${cmd}
         - if [ ! -z ${TEST_DIR} ]; then mv ${TEST_DIR}/../${MMTESTS_TYPE_NAME}*.json .; fi
         - for file in ./${MMTESTS_TYPE_NAME}*.json; do ./json-to-lava.py $file >> ./output/result.txt; done
         - ../../utils/send-to-lava.sh ./output/result.txt
