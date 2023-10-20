@@ -16,10 +16,6 @@ MMTESTS_CONFIG_FILE=
 MMTEST_ITERATIONS=${MMTEST_ITERATIONS:-"10"}
 MMTEST_EXTR="./bin/extract-mmtests.pl"
 
-# DBENCH specific variables
-declare -A altreport_mappings=( ["dbench4"]="tput latency opslatency")
-declare -A env_variable_mappings=( ["dbench4"]="DBENCH" )
-
 usage() {
   echo "\
   Usage: $0 [-s] [-v <TEST_PROG_VERSION>] [-u <TEST_GIT_URL>] [-p <TEST_DIR>]
