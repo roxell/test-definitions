@@ -99,7 +99,8 @@ while getopts "c:p:r:st:u:v:i:" opt; do
   esac
 done
 
-install() {
+install_system_deps() {
+  # Install system-wide dependencies required for the benchmarks and MMTests framework.
   dist=
   dist_name
   case "${dist}" in
@@ -132,12 +133,12 @@ prepare_system() {
   cpan -f -i JSON Cpanel::JSON::XS List::BinarySearch
   AUTO_PACKAGE_INSTALL=yes
   export AUTO_PACKAGE_INSTALL
-  DOWNLOADED=0
-  COUNTER=0
+  downloaded=0
+  counter=0
   # Install benchmark according to the configuration file.
-  while [ $DOWNLOADED -eq 0 ] && [ $COUNTER -lt "$MMTESTS_MAX_RETRIES" ]; do
-    ./run-mmtests.sh -b --no-monitor --config "${MMTESTS_CONFIG_FILE}" benchmark && DOWNLOADED=1
-    COUNTER=$((COUNTER+1))
+  while [ $downloaded -eq 0 ] && [ $counter -lt "$MMTESTS_MAX_RETRIES" ]; do
+    ./run-mmtests.sh -b -n -c "${MMTESTS_CONFIG_FILE}" benchmark && downloaded=1
+    counter=$((counter+1))
   done
   popd || exit
 }
@@ -214,11 +215,12 @@ run_test() {
 if [ "${SKIP_INSTALL}" = "true" ]; then
   info_msg "${MMTESTS_TYPE_NAME} installation skipped"
 else
-  install
+  # Install system-wide dependencies.
+  install_system_deps
+  # Clone MMTests repository.
+  get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
+  # Install benchmark and Perl dependencies.
+  prepare_system
+  create_out_dir "${OUTPUT}"
 fi
-# Clone MMTests repository.
-get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
-
-create_out_dir "${OUTPUT}"
-prepare_system
 run_test
