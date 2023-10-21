@@ -4,12 +4,11 @@ set -x
 
 # shellcheck disable=SC1091
 . ../../lib/sh-test-lib
-
-OUTPUT="$(pwd)/output"
 TEST_PROGRAM="mmtests"
 TEST_PROG_VERSION=${TEST_PROG_VERSION:-"master"}
 TEST_GIT_URL=https://github.com/gormanm/mmtests
 TEST_DIR=${TEST_DIR:-"$(pwd)/${TEST_PROGRAM}"}
+OUTPUT="${TEST_DIR}/output"
 SKIP_INSTALL=${SKIP_INSTALL:-"false"}
 MMTESTS_MAX_RETRIES=${MMTESTS_MAX_RETRIES:-"3"}
 MMTESTS_CONFIG_FILE=
