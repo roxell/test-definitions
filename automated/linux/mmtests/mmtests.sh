@@ -89,6 +89,25 @@ while getopts "c:p:r:su:v:i:" opt; do
   esac
 done
 
+check_perl_module() {
+  # Function to check if a Perl module is installed
+  cpan -l | grep -q "$1"
+}
+
+install_perl_deps() {
+  # List of Perl dependencies for MMTests
+  declare -a perl_modules=("JSON" "Cpanel::JSON::XS" "List::BinarySearch")
+  # Check each module and install if necessary
+  for module in "${perl_modules[@]}"; do
+    if ! check_perl_module "${module}"; then
+      cpan -f -i "${module}"
+    else
+      echo "Perl module ${module} is already installed."
+    fi
+  done
+  unset PERL_MM_USE_DEFAULT
+}
+
 install_system_deps() {
   # Install system-wide dependencies required for the benchmarks and MMTests framework.
   dist=
@@ -116,10 +135,6 @@ install_system_deps() {
 }
 
 prepare_system() {
-  # Install additional Perl dependencies.
-  PERL_MM_USE_DEFAULT=1
-  export PERL_MM_USE_DEFAULT
-  cpan -f -i JSON Cpanel::JSON::XS List::BinarySearch
   AUTO_PACKAGE_INSTALL=yes
   export AUTO_PACKAGE_INSTALL
   downloaded=0
@@ -133,6 +148,7 @@ prepare_system() {
 }
 
 run_test() {
+
   info_msg "Running ${MMTESTS_CONFIG_FILE} test..."
   # It's required to export MMTEST_ITERATIONS as it will be used by
   # run-mmtests.sh from the MMTests package.
@@ -246,6 +262,8 @@ if [ "${SKIP_INSTALL}" = "true" ]; then
 else
   # Install system-wide dependencies.
   install_system_deps
+  # Install perl dependencies.
+  install_perl_deps
   # Clone MMTests repository.
   get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
   # Install benchmark and Perl dependencies.
