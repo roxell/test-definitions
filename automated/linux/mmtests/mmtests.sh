@@ -34,8 +34,10 @@ usage() {
     dependencies installation.
 
   -c <MMTESTS_CONFIG_FILE>
-    MMMTests configuration file that describes how the benchmarks should be
-    configured and executed.
+    MMTests configuration file name that describes how the benchmarks should
+    be configured and executed. Mandatory parameter. List of all config files
+    can be found in <mmtests-root>/configs/ directory.
+    For example, configs/config-db-sqlite-insert-small
 
   -r <MMTESTS_MAX_RETRIES>
     Maximum number of retries for the single benchmark's source file download.
@@ -49,6 +51,10 @@ usage() {
 while getopts "c:p:r:su:v:i:" opt; do
   case "${opt}" in
     c)
+      if [[ ! "${OPTARG}" == config* ]]; then
+        error_msg "Please specify correct MMTests configuration file."
+        usage
+      fi
       MMTESTS_CONFIG_FILE="${OPTARG}"
       ;;
     p)
@@ -78,6 +84,11 @@ while getopts "c:p:r:su:v:i:" opt; do
       ;;
   esac
 done
+
+if [ -z "$MMTESTS_CONFIG_FILE" ]; then
+  error_msg "Please specify MMTests configuration file."
+  usage
+fi
 
 SKIP_INSTALL=${SKIP_INSTALL:-"false"}
 TEST_PROG_VERSION=${TEST_PROG_VERSION:-"master"}
