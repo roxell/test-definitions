@@ -128,7 +128,6 @@ install_system_deps() {
 
 prepare_system() {
   # Install additional Perl dependencies.
-  pushd "${TEST_DIR}" || exit
   PERL_MM_USE_DEFAULT=1
   export PERL_MM_USE_DEFAULT
   cpan -f -i JSON Cpanel::JSON::XS List::BinarySearch
@@ -136,79 +135,119 @@ prepare_system() {
   export AUTO_PACKAGE_INSTALL
   downloaded=0
   counter=0
+  results_dir=$(basename "$MMTESTS_CONFIG_FILE")
   # Install benchmark according to the configuration file.
   while [ $downloaded -eq 0 ] && [ $counter -lt "$MMTESTS_MAX_RETRIES" ]; do
-    ./run-mmtests.sh -b -n -c "${MMTESTS_CONFIG_FILE}" benchmark && downloaded=1
+    ./run-mmtests.sh -b -n -c "${MMTESTS_CONFIG_FILE}" "${results_dir}" && downloaded=1
     counter=$((counter+1))
   done
-  popd || exit
 }
 
 run_test() {
-  pushd "${TEST_DIR}" || exit
   info_msg "Running ${MMTESTS_TYPE_NAME} test..."
   # It's required to export MMTEST_ITERATIONS as it will be used by
   # run-mmtests.sh from the MMTests package.
   export MMTEST_ITERATIONS=${MMTEST_ITERATIONS}
+  results_dir=$(basename "$MMTESTS_CONFIG_FILE")
   # Run benchmark according config file and with disabled monitoring.
-  # Results will be stored in work/log/benchmark directory.
   # Using nice to increase priority for the benchmark.
-  nice -n -5 ./run-mmtests.sh -np -c "${MMTESTS_CONFIG_FILE}" benchmark
+  nice -n -5 ./run-mmtests.sh -np -c "${MMTESTS_CONFIG_FILE}" "${results_dir}"
+}
 
-  MEMTOTAL_BYTES=$(free -b | grep Mem: | awk '{print $2}')
-  export MEMTOTAL_BYTES
-  NUMCPUS=$(grep -c '^processor' /proc/cpuinfo)
-  export NUMCPUS
-  NUMNODES=$(grep ^Node /proc/zoneinfo | awk '{print $2}' | sort | uniq | wc -l)
-  export NUMNODES
-  LLC_INDEX=$(find /sys/devices/system/cpu/ -type d -name "index*" | sed -e 's/.*index//' | sort -n | tail -1)
-  export LLC_INDEX
-  NUMLLCS=$(grep . /sys/devices/system/cpu/cpu*/cache/index"$LLC_INDEX"/shared_cpu_map | awk -F : '{print $NF}' | sort | uniq | wc -l)
-  export NUMLLCS
-
-  chmod u+x ./"${MMTESTS_CONFIG_FILE}"
-  eval 'source ./${MMTESTS_CONFIG_FILE}'
+extract_json() {
   # Extract results data from available logs for each benchmark in JSON format.
   # JSON files will be available in mmtests root directory.
+  jsons=()
+  results_loc="work/log"
+  log_dirs=()
 
-  # Note: benchmark name is not always equal to benchmark name from config file.
-  if [ "${MMTESTS_TYPE_NAME}" != "${MMTESTS}" ]; then
-    EXTRACT_NAMES="${MMTESTS}"
-  else
-    EXTRACT_NAMES="${MMTESTS_TYPE_NAME}"
+  if [ ! -d "${results_loc}" ]; then
+    echo "Results dir $results_loc does not exist."
+    return 1
   fi
-
-  echo "test(s) to extract: ${EXTRACT_NAMES}"
-  for benchmark_name in ${EXTRACT_NAMES}; do
-    echo "results for: $benchmark_name"
-    ${MMTEST_EXTR} -d work/log/ -b "${benchmark_name}" -n benchmark --print-json >> "../${MMTESTS_TYPE_NAME}_${benchmark_name}.json"
-
-    altreports=${altreport_mappings[${benchmark_name}]}
-    for altreport in ${altreports}; do
-      ${MMTEST_EXTR} -d work/log/ -b "${benchmark_name}" -n benchmark \
-      -a "${altreport}" --print-json > "../${MMTESTS_TYPE_NAME}_${benchmark_name}${altreport}.json"
+  # Find all log directories
+  while IFS= read -r -d '' log_dir; do
+      if [ -d "$log_dir" ]; then
+          iter_dir=$(basename "$log_dir")
+          if [[ "$iter_dir" =~ ^iter-([0-9]+)$ ]]; then
+              log_dirs+=("${log_dir%/iter-*}")
+          fi
+      fi
+  done < <(find "${results_loc}" -type d -print0)
+  # Filter & sort directories
+  mapfile -t logd < <(printf "%s\n" "${log_dirs[@]}" | sort -u)
+  for log_dir in "${logd[@]}"; do
+    # Find testname
+    full_testname=$(echo "$log_dir" | cut -d '/' -f 3)
+    # Remove useless text
+    testname=${full_testname#config-}
+    # Find benchmark names. It's possible when in single run several benchmarks used.
+    benchmarks=()
+    while IFS= read -r benchmark; do
+      benchmarks+=("$benchmark")
+    done < <(find "${log_dir}/iter-0" -type d | grep -E 'logs$' | grep -Eo 'iter-0/.+/logs' | cut -d '/' -f 2)
+    # Iterate through found benchmark names to extract results
+    for benchmark in "${benchmarks[@]}"; do
+      # Build JSON file name
+      # MARKERwords added intentionally, this allows to parse filename
+      # easily in the future.
+      results_json=BENCHMARK${benchmark}_CONFIG${testname}.json
+      # Call parser
+      ${MMTEST_EXTR} -d ${results_loc} -b "${benchmark}" -n "${full_testname}" --print-json > "${results_json}"
+      # Add JSON file name to array
+      jsons+=("${results_json}")
     done
   done
+  # It's required to return of array separated by new line
+  printf "%s\n" "${jsons[@]}"
+}
 
-  env_variables_prefix=${env_variable_mappings[${MMTESTS_TYPE_NAME}]}
-  if [ -z "$env_variables_prefix" ]; then
-    env_variables_prefix=${MMTESTS_TYPE_NAME^^}
+collect_details() {
+  # Collect benchmark run details
+  MEMTOTAL_BYTES=$(free -b | grep Mem: | awk '{print $2}')
+  NUMCPUS=$(grep -c '^processor' /proc/cpuinfo)
+  NUMNODES=$(grep ^Node /proc/zoneinfo | awk '{print $2}' | wc -l)
+  LLC_INDEX=$(find /sys/devices/system/cpu/ -type d -name "index*" | sed -e 's/.*index//' | sort -n | tail -1)
+  NUMLLCS=$(grep . /sys/devices/system/cpu/cpu*/cache/index"$LLC_INDEX"/shared_cpu_map | awk -F : '{print $NF}' | wc -l)
+  KERNEL_VERSION=$(uname -r)
+  cat <<EOF
+{
+  "MEMTOTAL_BYTES": "${MEMTOTAL_BYTES:-}",
+  "NUMCPUS": "${NUMCPUS:-}",
+  "NUMNODES": "${NUMNODES:-}",
+  "LLC_INDEX": "${LLC_INDEX:-}",
+  "NUMLLCS": "${NUMLLCS:-}",
+  "KERNEL_VERSION": "${KERNEL_VERSION:-}",
+  "MMTEST_ITERATIONS": "${MMTEST_ITERATIONS:-}",
+  "MMTESTS_CONFIG_FILE": "${MMTESTS_CONFIG_FILE:-}"
+}
+EOF
+}
+
+collect_results() {
+  # Extract results data from available logs for each benchmark in JSON format.
+  if output=$(extract_json); then
+    mapfile -t jsons <<< "$output"
+  else
+    echo "extract_json failed."
+    exit 1
   fi
-
-  vars=""
-  eval 'vars=${!'"$env_variables_prefix"'*}'
-  for variable in ${vars}; do
-    mykey=CONFIG_${variable}
-    mykey=${mykey//_/-}
-    myvalue=${!variable}
-    echo "$mykey":"$myvalue"
-    tmp=$(mktemp)
-    jq -c --arg key "$mykey" --arg value "$myvalue" '. += {($key):$value}' ../"${MMTESTS_TYPE_NAME}"_"${benchmark_name}".json > "$tmp" && mv "$tmp" ../"${MMTESTS_TYPE_NAME}"_"${benchmark_name}".json
+  # Collect benchmark run details in JSON object.
+  details=$(collect_details)
+  # Dump details to temp file
+  details_file=$(mktemp)
+  echo "$details" > "$details_file"
+  for json in "${jsons[@]}"; do
+    # Create a temp file to hold the merged JSON
+    merge_file=$(mktemp)
+    # Merge details and results JSON
+    jq -n \
+        --argfile d "$details_file" \
+        --argfile r "$json" \
+        '{details: $d, results: $r}' > "$merge_file"
+    # Replace results file
+    mv "$merge_file" "${OUTPUT}"/"$json"
   done
-
-  chmod a+r "../$MMTESTS_TYPE_NAME"*".json"
-
-  popd || exit
 }
 
 ! check_root && error_msg "Please run this script as root."
@@ -222,6 +261,9 @@ else
   get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
   # Install benchmark and Perl dependencies.
   prepare_system
-  create_out_dir "${OUTPUT}"
 fi
+
+create_out_dir "${OUTPUT}"
+pushd "${TEST_DIR}" || exit 1
 run_test
+collect_results
