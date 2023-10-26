@@ -164,6 +164,8 @@ run_test() {
   # run-mmtests.sh from the MMTests package.
   export MMTEST_ITERATIONS=${MMTEST_ITERATIONS}
   results_dir=$(basename "$MMTESTS_CONFIG_FILE")
+  # Disable packages auto installation
+  touch ~/.mmtests-never-auto-package-install
   # Run benchmark according config file and with disabled monitoring.
   # Using nice to increase priority for the benchmark.
   nice -n -5 ./run-mmtests.sh -np -c "${MMTESTS_CONFIG_FILE}" "${results_dir}"
