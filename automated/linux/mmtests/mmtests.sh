@@ -5,15 +5,6 @@ set -x
 # shellcheck disable=SC1091
 . ../../lib/sh-test-lib
 TEST_PROGRAM="mmtests"
-TEST_PROG_VERSION=${TEST_PROG_VERSION:-"master"}
-TEST_GIT_URL=https://github.com/gormanm/mmtests
-TEST_DIR=${TEST_DIR:-"$(pwd)/${TEST_PROGRAM}"}
-OUTPUT="${TEST_DIR}/output"
-SKIP_INSTALL=${SKIP_INSTALL:-"false"}
-MMTESTS_MAX_RETRIES=${MMTESTS_MAX_RETRIES:-"3"}
-MMTESTS_CONFIG_FILE=
-MMTEST_ITERATIONS=${MMTEST_ITERATIONS:-"10"}
-MMTEST_EXTR="./bin/extract-mmtests.pl"
 
 usage() {
   echo "\
@@ -87,6 +78,15 @@ while getopts "c:p:r:su:v:i:" opt; do
       ;;
   esac
 done
+
+SKIP_INSTALL=${SKIP_INSTALL:-"false"}
+TEST_PROG_VERSION=${TEST_PROG_VERSION:-"master"}
+TEST_GIT_URL=https://github.com/gormanm/mmtests
+TEST_DIR=${TEST_DIR:-"$(pwd)/${TEST_PROGRAM}"}
+OUTPUT="${TEST_DIR}/output"
+MMTESTS_MAX_RETRIES=${MMTESTS_MAX_RETRIES:-"3"}
+MMTEST_ITERATIONS=${MMTEST_ITERATIONS:-"10"}
+MMTEST_EXTR="${TEST_DIR}/bin/extract-mmtests.pl"
 
 check_perl_module() {
   # Function to check if a Perl module is installed
