@@ -64,6 +64,6 @@ run:
             [ -n "${MMTESTS_MAX_RETRIES}" ] && cmd="${cmd} -r '${MMTESTS_MAX_RETRIES}'";
             [ -n "${MMTEST_ITERATIONS}" ] && cmd="${cmd} -i '${MMTEST_ITERATIONS}'";
             eval $cmd
-        - if [ ! -z ${TEST_DIR} ]; then mv ${TEST_DIR}/../${TEST_NAME}*.json .; fi
-        - for file in ./${TEST_NAME}*.json; do ./json-to-lava.py $file >> ./output/result.txt; done
-        - ../../utils/send-to-lava.sh ./output/result.txt
+        - python3 mr2metrics.py $(ls /mmtests/output/BENCHMARK*) $TEST_DIR/output/metrics.json
+        # The following env variables available on test stage in pipeline
+        - python3 submit_metrics.py -s $QA_SERVER -g $QA_TEAM -p $QA_PROJECT -e $QA_ENVIRONMENT -b $BUILD_ID -m $TEST_DIR/output/metrics.json -a $(ls $TEST_DIR/output/BENCHMARK*)
