@@ -51,6 +51,13 @@ params:
     # MMTEST iterations for config
     MMTEST_ITERATIONS: 10
 
+    # SQUAD reporting settings
+    QA_SERVER: qa-reports.linaro.org
+    QA_TEAM: lkft-performance
+    QA_PROJECT: null
+    QA_ENVIRONMENT: null
+    BUILD_ID: null
+
 run:
     steps:
         - cd ./automated/linux/mmtests/
