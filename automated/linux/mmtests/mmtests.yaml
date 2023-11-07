@@ -60,6 +60,8 @@ params:
 
 run:
     steps:
+        # This requires secrets defined
+        - source ${LAVA_RESULT_DIR}/../../../secrets && export SQUAD_AUTH_TOKEN
         - cd ./automated/linux/mmtests/
         - |
             cmd="./mmtests.sh";
