@@ -48,6 +48,9 @@ params:
     # Maximum number of retries for the single benchmark source file download
     MMTESTS_MAX_RETRIES: 10
 
+    # MMTEST iterations for config
+    MMTEST_ITERATIONS: 10
+
 run:
     steps:
         - cd ./automated/linux/mmtests/
