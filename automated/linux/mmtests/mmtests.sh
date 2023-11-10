@@ -150,7 +150,8 @@ run_test() {
   export MMTEST_ITERATIONS=${MMTEST_ITERATIONS}
   # Run benchmark according config file and with disabled monitoring.
   # Results will be stored in work/log/benchmark directory.
-  ./run-mmtests.sh --no-monitor --config "${MMTESTS_CONFIG_FILE}" benchmark
+  # Using nice to increase priority for the benchmark.
+  nice -n -5 ./run-mmtests.sh -np -c "${MMTESTS_CONFIG_FILE}" benchmark
 
   MEMTOTAL_BYTES=$(free -b | grep Mem: | awk '{print $2}')
   export MEMTOTAL_BYTES
