@@ -14,6 +14,7 @@ SKIP_INSTALL=${SKIP_INSTALL:-"false"}
 MMTESTS_MAX_RETRIES=${MMTESTS_MAX_RETRIES:-"3"}
 MMTESTS_TYPE_NAME=
 MMTESTS_CONFIG_FILE=
+MMTEST_ITERATIONS=${MMTEST_ITERATIONS:-"10"}
 
 # DBENCH specific variables
 declare -A altreport_mappings=( ["dbench4"]="tput latency opslatency")
@@ -23,7 +24,7 @@ usage() {
   echo "\
   Usage: $0 [-s] [-v <TEST_PROG_VERSION>] [-u <TEST_GIT_URL>] [-p <TEST_DIR>]
           [-c <MMTESTS_CONFIG_FILE>] [-t <MMTESTS_TYPE_NAME>]
-          [-r <MMTESTS_MAX_RETRIES>]
+          [-r <MMTESTS_MAX_RETRIES>] [-i <MMTEST_ITERATIONS>]
 
   -v <TEST_PROG_VERSION>
     If this parameter is set, then the ${TEST_PROGRAM} suite is cloned. In
@@ -54,12 +55,15 @@ usage() {
     MMTests test type, e.g. sysbenchcpu, iozone, sqlite, etc.
 
   -r <MMTESTS_MAX_RETRIES>
-    Maximum number of retries for the single benchmark's source file download."
+    Maximum number of retries for the single benchmark's source file download.
+
+  -i <MMTEST_ITERATIONS>
+    The number of iterations to run the benchmark for."
 
   exit 1
 }
 
-while getopts "c:p:r:st:u:v:" opt; do
+while getopts "c:p:r:st:u:v:i:" opt; do
   case "${opt}" in
     c)
       MMTESTS_CONFIG_FILE="${OPTARG}"
@@ -85,6 +89,9 @@ while getopts "c:p:r:st:u:v:" opt; do
       ;;
     v)
       TEST_PROG_VERSION="${OPTARG}"
+      ;;
+    i)
+      MMTEST_ITERATIONS="${OPTARG}"
       ;;
     *)
       usage
@@ -138,6 +145,9 @@ prepare_system() {
 run_test() {
   pushd "${TEST_DIR}" || exit
   info_msg "Running ${MMTESTS_TYPE_NAME} test..."
+  # It's required to export MMTEST_ITERATIONS as it will be used by
+  # run-mmtests.sh from the MMTests package.
+  export MMTEST_ITERATIONS=${MMTEST_ITERATIONS}
   # Run benchmark according config file and with disabled monitoring.
   # Results will be stored in work/log/benchmark directory.
   ./run-mmtests.sh --no-monitor --config "${MMTESTS_CONFIG_FILE}" benchmark
