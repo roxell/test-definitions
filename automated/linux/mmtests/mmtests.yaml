@@ -61,6 +61,8 @@ params:
 run:
     steps:
         # This requires secrets defined
+        - mkdir -p /mnt/tuxrun
+        - mount -t 9p -o trans=virtio,version=9p2000.L hostshare /mnt/tuxrun
         - cd ./automated/linux/mmtests/
         - |
             cmd="./mmtests.sh";
