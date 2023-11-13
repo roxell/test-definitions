@@ -61,7 +61,6 @@ params:
 run:
     steps:
         # This requires secrets defined
-        - source ${LAVA_RESULT_DIR}/../../../secrets && export SQUAD_AUTH_TOKEN
         - cd ./automated/linux/mmtests/
         - |
             cmd="./mmtests.sh";
@@ -75,4 +74,5 @@ run:
             eval $cmd
         - python3 mr2metrics.py $(ls /mmtests/output/BENCHMARK*) $TEST_DIR/output/metrics.json
         # The following env variables available on test stage in pipeline
-        - python3 submit_metrics.py -s $QA_SERVER -g $QA_TEAM -p $QA_PROJECT -e $QA_ENVIRONMENT -b $BUILD_ID -m $TEST_DIR/output/metrics.json -a $(ls $TEST_DIR/output/BENCHMARK*)
+        - mv $TEST_DIR/output/metrics.json /mnt/tuxrun/
+        - mv $TEST_DIR/output/BENCHMARK* /mnt/tuxrun/
