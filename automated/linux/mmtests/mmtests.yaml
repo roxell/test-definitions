@@ -76,5 +76,4 @@ run:
             eval $cmd
         - python3 mr2metrics.py $(ls /mmtests/output/BENCHMARK*) $TEST_DIR/output/metrics.json
         # The following env variables available on test stage in pipeline
-        - mv $TEST_DIR/output/metrics.json /mnt/tuxrun/
-        - mv $TEST_DIR/output/BENCHMARK* /mnt/tuxrun/
+        - mv $TEST_DIR/output/* /mnt/tuxrun/
