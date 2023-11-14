@@ -20,39 +20,6 @@
 
 skiplist:
 
-  - reason: "LKFT: linux-next: kselftest: breakpoint_test_arm64 build failed"
-    url: https://bugs.linaro.org/show_bug.cgi?id=3208
-    environments: all
-    boards:
-      - dragonboard-410c
-      - hi6220-hikey
-      - juno-r2
-      - qemu_arm64
-      - x15
-      - nxp-ls2088
-      - fx700
-      - bcm2711-rpi-4-b
-      - dragonboard-845c
-    branches: all
-    tests:
-      - breakpoints:breakpoint_test_arm64
-
-  - reason:
-    url:
-    environments: all
-    boards: all
-    branches: all
-    tests:
-      - breakpoints:step_after_suspend_test
-
-  - reason:
-    url:
-    environments: all
-    boards: all
-    branches: all
-    tests:
-      - breakpoints:breakpoint_test
-
   - reason:
     url:
     environments: all
