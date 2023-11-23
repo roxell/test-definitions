@@ -270,9 +270,11 @@ collect_results() {
     mv "$merge_file" "${OUTPUT}"/"$json"
   done
 
+  _result="fail"
   if [ "$CHECK_RESULTS" -eq ${#json[@]} ]; then
-    touch /tmp/check_results_ok
+    _result="pass"
   fi
+  echo $json:$_result > /tmp/check_results
 }
 
 ! check_root && error_msg "Please run this script as root."

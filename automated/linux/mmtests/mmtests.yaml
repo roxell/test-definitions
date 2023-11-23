@@ -76,13 +76,10 @@ run:
             if [ ${SHARED_DIR} ]; then
               mv ${TEST_DIR}/${results_archive} /mnt/tuxrun/
               # It's required to explicitly report test result to LAVA to prevent job from being marked as failed
-              if [ -f /tmp/check_results_ok ; then
-                command -v lava-test-case > /dev/null 2>&1 && lava-test-case "test-shared" --result "pass"
-              else
-                command -v lava-test-case > /dev/null 2>&1 && lava-test-case "test-shared" --result "fail"
-              fi
+              command -v lava-test-case > /dev/null 2>&1 && lava-test-case "test-shared" --result "pass"
             else
               # Calculate network interface and configure network
               dhclient $(ip link | awk -F': ' '/^[0-9]/ { iface=$2; getline; if(/ether/) print iface }')
               ../../utils/upload-to-artifactorial.sh -a "$(ls ${TEST_DIR}/${results_archive})" -u "${ARTIFACTORIAL_URL}"
             fi
+            command -v lava-test-case > /dev/null 2>&1 && lava-test-case "$(cat /tmp/check_results|awk -F':' '{print($1)}')" --result "$(cat /tmp/check_results|awk -F':' '{print($2)}')"
