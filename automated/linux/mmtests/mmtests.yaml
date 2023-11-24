@@ -73,6 +73,11 @@ run:
         - |
             results_archive=$(echo ${MMTESTS_CONFIG_FILE} | sed -e 's|^.*config-|mmtests-|g')-$(date +'%Y%m%d%H%M').tar.xz
             cd ${TEST_DIR} ; tar cfJ $results_archive output ; cd -
+            if [ -f /tmp/check_results_ok ] ; then
+              command -v lava-test-case > /dev/null 2>&1 && lava-test-case "contains-results" --result "pass"
+            else
+              command -v lava-test-case > /dev/null 2>&1 && lava-test-case "contains-results" --result "fail"
+            fi
             if [ ${SHARED_DIR} ]; then
               mv ${TEST_DIR}/${results_archive} /mnt/tuxrun/
               command -v lava-test-case > /dev/null 2>&1 && lava-test-case "test-shared" --result "pass"
