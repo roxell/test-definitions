@@ -255,6 +255,10 @@ collect_results() {
   details_file=$(mktemp)
   echo "$details" > "$details_file"
   for json in "${jsons[@]}"; do
+    CHECK_RESULTS=0
+    if [ "$(jq '._OperationsSeen | (length > 0) and (all(.[]; . > 0))' "$json")" == "true" ] ; then
+      ((CHECK_RESULTS++))
+    fi
     # Create a temp file to hold the merged JSON
     merge_file=$(mktemp)
     # Merge details and results JSON
@@ -265,6 +269,10 @@ collect_results() {
     # Replace results file
     mv "$merge_file" "${OUTPUT}"/"$json"
   done
+
+  if [ "$CHECK_RESULTS" -eq ${#json[@]} ]; then
+    touch /tmp/check_results_ok
+  fi
 }
 
 ! check_root && error_msg "Please run this script as root."
