@@ -57,6 +57,9 @@ params:
     # Shared dir flag for tuxrun
     SHARED_DIR: false
 
+    # Collect full archive of results
+    FULL_ARCHIVE: false
+
 run:
     steps:
         - cd ./automated/linux/mmtests/
@@ -69,6 +72,7 @@ run:
             [ -n "${MMTESTS_CONFIG_FILE}" ] && cmd="${cmd} -c '${MMTESTS_CONFIG_FILE}'";
             [ -n "${MMTESTS_MAX_RETRIES}" ] && cmd="${cmd} -r '${MMTESTS_MAX_RETRIES}'";
             [ -n "${MMTEST_ITERATIONS}" ] && cmd="${cmd} -i '${MMTEST_ITERATIONS}'";
+            [ -n "${FULL_ARCHIVE}" ] && cmd="${cmd} -f";
             eval $cmd
         - |
             results_archive=$(echo ${MMTESTS_CONFIG_FILE} | sed -e 's|^.*config-|mmtests-|g')-$(date +'%Y%m%d%H%M').tar.xz

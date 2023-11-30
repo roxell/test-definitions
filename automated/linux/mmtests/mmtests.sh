@@ -10,7 +10,7 @@ usage() {
   echo "\
   Usage: $0 [-s] [-v <TEST_PROG_VERSION>] [-u <TEST_GIT_URL>] [-p <TEST_DIR>]
           [-c <MMTESTS_CONFIG_FILE>] [-r <MMTESTS_MAX_RETRIES>]
-          [-i <MMTEST_ITERATIONS>]
+          [-i <MMTEST_ITERATIONS>] [-f]
 
   -v <TEST_PROG_VERSION>
     If this parameter is set, then the ${TEST_PROGRAM} suite is cloned. In
@@ -43,12 +43,16 @@ usage() {
     Maximum number of retries for the single benchmark's source file download.
 
   -i <MMTEST_ITERATIONS>
-    The number of iterations to run the benchmark for."
+    The number of iterations to run the benchmark for.
+
+  -f
+    If this parameter is set, then the full archive of the benchmark logs is
+    saved. Otherwise only the JSON files are saved."
 
   exit 1
 }
 
-while getopts "c:p:r:su:v:i:" opt; do
+while getopts "c:p:r:su:v:i:f" opt; do
   case "${opt}" in
     c)
       if [[ ! "${OPTARG}" == config* ]]; then
@@ -79,6 +83,9 @@ while getopts "c:p:r:su:v:i:" opt; do
     i)
       MMTEST_ITERATIONS="${OPTARG}"
       ;;
+    f)
+      FULL_ARCHIVE=true
+      ;;
     *)
       usage
       ;;
@@ -98,6 +105,8 @@ OUTPUT="${TEST_DIR}/output"
 MMTESTS_MAX_RETRIES=${MMTESTS_MAX_RETRIES:-"3"}
 MMTEST_ITERATIONS=${MMTEST_ITERATIONS:-"10"}
 MMTEST_EXTR="${TEST_DIR}/bin/extract-mmtests.pl"
+# Name of the directory where results will be stored by MMTests
+RESULTS_DIR=$(basename "$MMTESTS_CONFIG_FILE")
 
 check_perl_module() {
   # Function to check if a Perl module is installed
@@ -149,26 +158,23 @@ prepare_system() {
   export AUTO_PACKAGE_INSTALL
   downloaded=0
   counter=0
-  results_dir=$(basename "$MMTESTS_CONFIG_FILE")
   # Install benchmark according to the configuration file.
   while [ $downloaded -eq 0 ] && [ $counter -lt "$MMTESTS_MAX_RETRIES" ]; do
-    ./run-mmtests.sh -b -n -c "${MMTESTS_CONFIG_FILE}" "${results_dir}" && downloaded=1
+    ./run-mmtests.sh -b -n -c "${MMTESTS_CONFIG_FILE}" "${RESULTS_DIR}" && downloaded=1
     counter=$((counter+1))
   done
 }
 
 run_test() {
-
   info_msg "Running ${MMTESTS_CONFIG_FILE} test..."
   # It's required to export MMTEST_ITERATIONS as it will be used by
   # run-mmtests.sh from the MMTests package.
   export MMTEST_ITERATIONS=${MMTEST_ITERATIONS}
-  results_dir=$(basename "$MMTESTS_CONFIG_FILE")
   # Disable packages auto installation
   touch ~/.mmtests-never-auto-package-install
   # Run benchmark according config file and with disabled monitoring.
   # Using nice to increase priority for the benchmark.
-  nice -n -5 ./run-mmtests.sh -np -c "${MMTESTS_CONFIG_FILE}" "${results_dir}"
+  nice -n -5 ./run-mmtests.sh -np -c "${MMTESTS_CONFIG_FILE}" "${RESULTS_DIR}"
 }
 
 extract_json() {
@@ -268,6 +274,9 @@ collect_results() {
         '{details: $d, results: $r}' > "$merge_file"
     # Replace results file
     mv "$merge_file" "${OUTPUT}"/"$json"
+    if [ "${FULL_ARCHIVE}" = "true" ]; then
+      mv "${TEST_DIR}/work/log/${RESULTS_DIR}" "${OUTPUT}"
+    fi
   done
 
   if [ "$CHECK_RESULTS" -eq ${#json[@]} ]; then
