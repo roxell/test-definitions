@@ -33,6 +33,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -64,6 +65,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -210,6 +212,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -244,6 +247,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -275,6 +279,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -307,6 +312,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -339,6 +345,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -385,6 +392,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -416,6 +424,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -448,6 +457,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -478,6 +488,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -518,6 +529,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -556,6 +568,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -586,6 +599,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -617,6 +631,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -648,6 +663,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
@@ -692,6 +708,7 @@ skiplist:
       - juno-r2
       - qcom-qdf2400
       - qrb5165-rb5
+      - rk3399-rock-pi-4b
       - x15
       - x86
       - qemu_arm
