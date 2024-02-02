@@ -107,6 +107,10 @@ MMTEST_ITERATIONS=${MMTEST_ITERATIONS:-"10"}
 MMTEST_EXTR="${TEST_DIR}/bin/extract-mmtests.pl"
 # Name of the directory where results will be stored by MMTests
 RESULTS_DIR=$(basename "$MMTESTS_CONFIG_FILE")
+# Output file name of sysinfo.py script
+SYSINFO_FILE="sysinfo.json"
+# Output file name of collect_env.py script
+CONFIG_DUMP="mmtests_config_env.json"
 
 check_perl_module() {
   # Function to check if a Perl module is installed
@@ -154,6 +158,10 @@ install_system_deps() {
 }
 
 prepare_system() {
+  # Copy scripts to the test directory
+  cp -f sysinfo.py "${TEST_DIR}"
+  cp -f collect_env.py "${TEST_DIR}"
+  pushd "${TEST_DIR}" || exit 1
   AUTO_PACKAGE_INSTALL=yes
   export AUTO_PACKAGE_INSTALL
   downloaded=0
@@ -226,25 +234,15 @@ extract_json() {
 }
 
 collect_details() {
-  # Collect benchmark run details
-  MEMTOTAL_BYTES=$(free -b | grep Mem: | awk '{print $2}')
-  NUMCPUS=$(grep -c '^processor' /proc/cpuinfo)
-  NUMNODES=$(grep ^Node /proc/zoneinfo | awk '{print $2}' | wc -l)
-  LLC_INDEX=$(find /sys/devices/system/cpu/ -type d -name "index*" | sed -e 's/.*index//' | sort -n | tail -1)
-  NUMLLCS=$(grep . /sys/devices/system/cpu/cpu*/cache/index"$LLC_INDEX"/shared_cpu_map | awk -F : '{print $NF}' | wc -l)
-  KERNEL_VERSION=$(uname -r)
-  cat <<EOF
-{
-  "MEMTOTAL_BYTES": "${MEMTOTAL_BYTES:-}",
-  "NUMCPUS": "${NUMCPUS:-}",
-  "NUMNODES": "${NUMNODES:-}",
-  "LLC_INDEX": "${LLC_INDEX:-}",
-  "NUMLLCS": "${NUMLLCS:-}",
-  "KERNEL_VERSION": "${KERNEL_VERSION:-}",
-  "MMTEST_ITERATIONS": "${MMTEST_ITERATIONS:-}",
-  "MMTESTS_CONFIG_FILE": "${MMTESTS_CONFIG_FILE:-}"
-}
-EOF
+  # Collect system & mmtests config info
+  python3 sysinfo.py
+  python3 collect_env.py "$MMTESTS_CONFIG_FILE"
+  # Collect run details
+  jq -n \
+    --slurpfile s /mmtests/mmtests_env.json \
+    --arg MMTEST_ITERATIONS "${MMTEST_ITERATIONS:-}" \
+    --arg MMTESTS_CONFIG_FILE "${MMTESTS_CONFIG_FILE:-}" \
+    '{MMTEST_ITERATIONS: $MMTEST_ITERATIONS, MMTESTS_CONFIG_FILE: $MMTESTS_CONFIG_FILE} + ($s[0])'
 }
 
 collect_results() {
@@ -267,11 +265,13 @@ collect_results() {
     fi
     # Create a temp file to hold the merged JSON
     merge_file=$(mktemp)
-    # Merge details and results JSON
+    # Merge sysinfo, details and results JSON
     jq -n \
-        --argfile d "$details_file" \
-        --argfile r "$json" \
-        '{details: $d, results: $r}' > "$merge_file"
+      --slurpfile s "${TEST_DIR}"/${SYSINFO_FILE} \
+      --slurpfile c "${TEST_DIR}"/${CONFIG_DUMP} \
+      --slurpfile d "$details_file" \
+      --slurpfile r "$json" \
+      '{sys_info: $s[0], details: $d[0], results: $r[0]}' > "$merge_file"
     # Replace results file
     mv "$merge_file" "${OUTPUT}"/"$json"
     if [ "${FULL_ARCHIVE}" = "true" ]; then
@@ -295,6 +295,8 @@ else
   install_perl_deps
   # Clone MMTests repository.
   get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
+  # Due to logic of get_test_program function, its needed to get back
+  cd - || exit 1
   # Install benchmark and Perl dependencies.
   prepare_system
 fi
