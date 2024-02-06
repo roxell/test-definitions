@@ -291,17 +291,14 @@ collect_results() {
     if check_results "$json"; then
       ((CHECK_RESULTS++))
     fi
-    # Create a temp file to hold the merged JSON
-    merge_file=$(mktemp)
     # Merge sysinfo, details and results JSON
     jq -n \
       --slurpfile s "${TEST_DIR}"/${SYSINFO_FILE} \
       --slurpfile c "${TEST_DIR}"/${CONFIG_DUMP} \
       --slurpfile d "$details_file" \
       --slurpfile r "$json" \
-      '{sys_info: $s[0], details: $d[0], results: $r[0]}' > "$merge_file"
-    # Replace results file
-    mv "$merge_file" "${OUTPUT}"/"$json"
+      '{sys_info: $s[0], details: $d[0], results: $r[0]}' > "${OUTPUT}"/"$json"
+
     if [ "${FULL_ARCHIVE}" = "true" ]; then
       mv "${TEST_DIR}/work/log/${RESULTS_DIR}" "${OUTPUT}"
     fi
