@@ -233,6 +233,33 @@ extract_json() {
   printf "%s\n" "${jsons[@]}"
 }
 
+check_results() {
+  # MMTests JSON extractor returns emtpy results in some cases.
+  local operations_check
+  local results_check
+  local result_data_check
+
+  # Check if "_OperationsSeen" is present and not empty
+  operations_check=$(jq '._OperationsSeen | (length > 0) and (all(.[]; . > 0))' "$1")
+  if [ "$operations_check" != "true" ]; then
+    return 1
+  fi
+
+  # Check if "results" is present and not empty
+  results_check=$(jq '.results | select(. != null) | keys | length > 0' "$1")
+  if [ "$results_check" != "true" ]; then
+    return 1
+  fi
+
+  # Check if "_ResultData" is present in "results" and not empty
+  result_data_check=$(jq '.results._ResultData | select(. != null) | keys | length > 0' "$1")
+  if [ "$result_data_check" != "true" ]; then
+    return 1
+  fi
+
+  return 0
+}
+
 collect_details() {
   # Collect system & mmtests config info
   python3 sysinfo.py
@@ -258,9 +285,10 @@ collect_results() {
   # Dump details to temp file
   details_file=$(mktemp)
   echo "$details" > "$details_file"
+
+  CHECK_RESULTS=0
   for json in "${jsons[@]}"; do
-    CHECK_RESULTS=0
-    if [ "$(jq '._OperationsSeen | (length > 0) and (all(.[]; . > 0))' "$json")" == "true" ] ; then
+    if check_results "$json"; then
       ((CHECK_RESULTS++))
     fi
     # Create a temp file to hold the merged JSON
