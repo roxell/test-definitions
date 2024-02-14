@@ -230,26 +230,31 @@ extract_json() {
   printf "%s\n" "${jsons[@]}"
 }
 
-collect_details() {
-  # Collect benchmark run details
-  MEMTOTAL_BYTES=$(free -b | grep Mem: | awk '{print $2}')
-  NUMCPUS=$(grep -c '^processor' /proc/cpuinfo)
-  NUMNODES=$(grep ^Node /proc/zoneinfo | awk '{print $2}' | wc -l)
-  LLC_INDEX=$(find /sys/devices/system/cpu/ -type d -name "index*" | sed -e 's/.*index//' | sort -n | tail -1)
-  NUMLLCS=$(grep . /sys/devices/system/cpu/cpu*/cache/index"$LLC_INDEX"/shared_cpu_map | awk -F : '{print $NF}' | wc -l)
-  KERNEL_VERSION=$(uname -r)
-  cat <<EOF
-{
-  "MEMTOTAL_BYTES": "${MEMTOTAL_BYTES:-}",
-  "NUMCPUS": "${NUMCPUS:-}",
-  "NUMNODES": "${NUMNODES:-}",
-  "LLC_INDEX": "${LLC_INDEX:-}",
-  "NUMLLCS": "${NUMLLCS:-}",
-  "KERNEL_VERSION": "${KERNEL_VERSION:-}",
-  "MMTEST_ITERATIONS": "${MMTEST_ITERATIONS:-}",
-  "MMTESTS_CONFIG_FILE": "${MMTESTS_CONFIG_FILE:-}"
-}
-EOF
+check_results() {
+  # MMTests JSON extractor returns emtpy results in some cases.
+  local operations_check
+  local results_check
+  local result_data_check
+
+  # Check if "_OperationsSeen" is present and not empty
+  operations_check=$(jq '._OperationsSeen | (length > 0) and (all(.[]; . > 0))' "$1")
+  if [ "$operations_check" != "true" ]; then
+    return 1
+  fi
+
+  # Check if "results" is present and not empty
+  results_check=$(jq '.results | select(. != null) | keys | length > 0' "$1")
+  if [ "$results_check" != "true" ]; then
+    return 1
+  fi
+
+  # Check if "_ResultData" is present in "results" and not empty
+  result_data_check=$(jq '.results._ResultData | select(. != null) | keys | length > 0' "$1")
+  if [ "$result_data_check" != "true" ]; then
+    return 1
+  fi
+
+  return 0
 }
 
 collect_results() {
@@ -264,9 +269,9 @@ collect_results() {
   # Collect system & mmtests config info
   python3 "$COLLECT_INFO" -c "$MMTESTS_CONFIG_FILE" -o "${INFO_FILE}" -i "${MMTEST_ITERATIONS}"
 
+  CHECK_RESULTS=0
   for json in "${jsons[@]}"; do
-    CHECK_RESULTS=0
-    if [ "$(jq '._OperationsSeen | (length > 0) and (all(.[]; . > 0))' "$json")" == "true" ] ; then
+    if check_results "$json"; then
       ((CHECK_RESULTS++))
     fi
     # Merge info and results JSON
