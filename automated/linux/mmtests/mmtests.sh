@@ -154,6 +154,7 @@ install_system_deps() {
 }
 
 prepare_system() {
+  pushd "${TEST_DIR}" || exit 1
   AUTO_PACKAGE_INSTALL=yes
   export AUTO_PACKAGE_INSTALL
   downloaded=0
@@ -163,6 +164,7 @@ prepare_system() {
     ./run-mmtests.sh -b -n -c "${MMTESTS_CONFIG_FILE}" "${RESULTS_DIR}" && downloaded=1
     counter=$((counter+1))
   done
+  popd || exit 1
 }
 
 run_test() {
@@ -295,6 +297,8 @@ else
   install_perl_deps
   # Clone MMTests repository.
   get_test_program "${TEST_GIT_URL}" "${TEST_DIR}" "${TEST_PROG_VERSION}" "${TEST_PROGRAM}"
+  # Due to logic of get_test_program function, its needed to get back
+  cd - || exit 1
   # Install benchmark and Perl dependencies.
   prepare_system
 fi
