@@ -107,6 +107,9 @@ MMTEST_ITERATIONS=${MMTEST_ITERATIONS:-"10"}
 MMTEST_EXTR="${TEST_DIR}/bin/extract-mmtests.pl"
 # Name of the directory where results will be stored by MMTests
 RESULTS_DIR=$(basename "$MMTESTS_CONFIG_FILE")
+# Output file name of collect_info.py script
+INFO_FILE="/tmp/info.json"
+COLLECT_INFO=$PWD/collect_info.py
 
 check_perl_module() {
   # Function to check if a Perl module is installed
@@ -257,25 +260,21 @@ collect_results() {
     echo "extract_json failed."
     exit 1
   fi
-  # Collect benchmark run details in JSON object.
-  details=$(collect_details)
-  # Dump details to temp file
-  details_file=$(mktemp)
-  echo "$details" > "$details_file"
+
+  # Collect system & mmtests config info
+  python3 "$COLLECT_INFO" -c "$MMTESTS_CONFIG_FILE" -o "${INFO_FILE}" -i "${MMTEST_ITERATIONS}"
+
   for json in "${jsons[@]}"; do
     CHECK_RESULTS=0
     if [ "$(jq '._OperationsSeen | (length > 0) and (all(.[]; . > 0))' "$json")" == "true" ] ; then
       ((CHECK_RESULTS++))
     fi
-    # Create a temp file to hold the merged JSON
-    merge_file=$(mktemp)
-    # Merge details and results JSON
+    # Merge info and results JSON
     jq -n \
-        --argfile d "$details_file" \
-        --argfile r "$json" \
-        '{details: $d, results: $r}' > "$merge_file"
-    # Replace results file
-    mv "$merge_file" "${OUTPUT}"/"$json"
+      --slurpfile i "${INFO_FILE}" \
+      --slurpfile r "$json" \
+      '{sys_info: $i[0].sys_info, variables: $i[0].variables, results: $r[0]}' > "${OUTPUT}/$json"
+
     if [ "${FULL_ARCHIVE}" = "true" ]; then
       mv "${TEST_DIR}/work/log/${RESULTS_DIR}" "${OUTPUT}"
     fi
