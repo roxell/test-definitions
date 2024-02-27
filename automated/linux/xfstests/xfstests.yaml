@@ -1,0 +1,36 @@
+metadata:
+    name: xfstests
+    format: "Lava-Test Test Definition 1.0"
+    description: "xfstests"
+    maintainer:
+        - anders.roxell@linaro.org
+        - naresh.kamboju@linaro.org
+    os:
+        - debian
+        - ubuntu
+    scope:
+        - functional
+    devices:
+        - all
+    environment:
+        - lava-test-shell
+
+params:
+    TEST_DEV: "/dev/loop0"
+    # example: DEV=/dev/loop0
+    SCRATCH_DEV: "/dev/loop1"
+    # example: SCRATCH_DEV=/dev/loop1
+    TEST_DIR: "/mnt/test"
+    # example: TEST_DIR=/mnt/test
+    SCRATCH_MNT: "/mnt/scratch"
+    # example: SCRATCH_MNT=/mnt/scratch
+
+    FILESYSTEM: "ext4"
+    SIZE: "5G"
+    SKIP_INSTALL: "true"
+
+run:
+    steps:
+        - cd ./automated/linux/xfstests/
+        - ./xfstests.sh -d "${TEST_DEV}" -e "${SCRATCH_DEV}" -f "${FILESYSTEM}" -m "${SCRATCH_MNT}" -s "${SKIP_INSTALL}" -t "${TEST_DIR}" -z "${SIZES}"
+        - ../../utils/send-to-lava.sh ./output/result.txt
