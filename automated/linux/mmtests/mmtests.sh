@@ -253,6 +253,9 @@ check_results() {
 }
 
 collect_results() {
+  # Remove old check results file
+  rm -f /tmp/check_results_ok
+
   # Extract results data from available logs for each benchmark in JSON format.
   if output=$(extract_json); then
     mapfile -t jsons <<< "$output"
