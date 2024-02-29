@@ -124,7 +124,7 @@ install_perl_deps() {
     if ! check_perl_module "${module}"; then
       cpan -f -i "${module}"
     else
-      echo "Perl module ${module} is already installed."
+      echo "INFO: perl module ${module} is already installed"
     fi
   done
   unset PERL_MM_USE_DEFAULT
@@ -189,7 +189,7 @@ extract_json() {
   log_dirs=()
 
   if [ ! -d "${results_loc}" ]; then
-    echo "Results dir $results_loc does not exist."
+    echo "ERROR: results dir $results_loc does not exist"
     return 1
   fi
   # Find all log directories
@@ -259,7 +259,7 @@ collect_results() {
   if output=$(extract_json); then
     mapfile -t jsons <<< "$output"
   else
-    echo "extract_json failed."
+    echo "ERROR: results JSON extraction failed"
     exit 1
   fi
 
