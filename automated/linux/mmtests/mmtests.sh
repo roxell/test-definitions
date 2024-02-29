@@ -184,7 +184,6 @@ run_test() {
 
 extract_json() {
   # Extract results data from available logs for each benchmark in JSON format.
-  # JSON files will be available in mmtests root directory.
   jsons=()
   results_loc="work/log"
   log_dirs=()
@@ -287,6 +286,8 @@ collect_results() {
 
   if [ "$CHECK_RESULTS" -eq ${#json[@]} ]; then
     touch /tmp/check_results_ok
+    # Remove intermediate JSON files
+    rm -f "${TEST_DIR}"/*.json
   else
     echo "ERROR: some checks failed"
   fi
