@@ -101,29 +101,68 @@ create_fsgqa_test_users_groups() {
     exit_on_fail "groupadd-fsgqa"
 }
 
+# Needs all the variables
+function system_info()
+{
+	echo -e "\n\n*************************************"
+	echo "KERNEL=$(uname -r)"
+	echo "XFSPROGS=$(mkfs.xfs -V | awk '{print $3}')"
+	echo "XFSDUMP=$(type xfsdump)"
+	echo "FIO=$(fio -v)"
+	echo "LOOP=$LOOP"
+	echo "FSTYPE=$FSTYPE"
+	echo "DEV_TYPE=$DEV_TYPE"
+	echo "TEST_DEV=$TEST_DEV"
+	echo "SCRATCH_DEV=$SCRATCH_DEV"
+	echo "LOGWRITES_DEV=$LOGWRITES_DEV"
+	echo "LOGWRITES_MNT=$LOGWRITES_MNT"
+	echo "SCRATCH_LOGDEV=$SCRATCH_LOGDEV"
+	echo "SCRATCH_RTDEV=$SCRATCH_RTDEV"
+	echo "TEST_DIR=$TEST_DIR"
+	echo "SCRATCH_MNT=$SCRATCH_MNT"
+	echo "RUNTESTS=$RUNTESTS"
+	echo "SKIPTESTS=$SKIPTESTS"
+	echo "MAX_SIZE=$MAX_SIZE"
+	echo "BLKSIZE=$BLKSIZE"
+	echo "MKFS_OPTS=$MKFS_OPTS"
+	echo "CHECK_OPTS=$CHECK_OPTS"
+	echo "SKIP_LEVEL=$SKIP_LEVEL"
+	echo "NO_MKFS=$NO_MKFS"
+	echo "FSCK=$FSCK"
+	echo "FSCK_OPTS=$FSCK_OPTS"
+	echo "OVLBASEFSTYP=$OVLBASEFSTYP"
+	echo -e "*************************************\n\n"
+	# show mountpoints
+	echo -e "*********** mount info **************\n\n"
+	mount
+	echo -e "*************************************\n\n"
+
+	report system_info PASS 0
+}
+
 # Needs RUNTESTS, SKIPTESTS, MKFS_OPTS, FSCK_OPTS, CHECK_OPTS and REPORT_PASS, REPORT_FAIL, KNOWN_ISSUE
 function check_tests()
 {
     # backup original OUTPUTFILE, each XFSTEST will use different OUTPUTFILE
     BAK_OUTPUTFILE=${OUTPUTFILE}
-    for XFSTEST in $RUNTESTS; do
+    for XFSTEST in "${RUNTESTS}"; do
         ret=0
         # Skip tests that are failing, for now.  Some need fixing, others expected
-        if echo $SKIPTESTS | grep -qw $XFSTEST; then
-            echo "Skipping test $XFSTEST due to known failure"
+        if echo "${SKIPTESTS}" | grep -qw "${XFSTEST}"; then
+            echo "Skipping test "${XFSTEST}" due to known failure"
             continue
         fi
-        if echo $SKIPTESTS | grep -q "\([^/]\|^\)[[:digit:]]\{3\}"; then
+        if echo "${SKIPTESTS}" | grep -q "\([^/]\|^\)[[:digit:]]\{3\}"; then
             # We have old style test seq number in SKIPTESTS, e.g. 300
             # filter all tests with the same seq number, no matter it's
             # generic/300 or xfs/300
-            if echo $SKIPTESTS | grep -q "\([^/]\|^\)$(basename $XFSTEST)"; then
-                echo "Skipping test $XFSTEST due to known failure"
+            if echo "${SKIPTESTS}" | grep -q "\([^/]\|^\)$(basename "${XFSTEST}")"; then
+                echo "Skipping test "${XFSTEST}" due to known failure"
                 continue
             fi
         fi
-        if [ "$FSTYPE" == "btrfs" ] && grep -H -m 1 dmflakey tests/$XFSTEST ; then
-            echo "Skipping dmfalkey test $XFSTEST on $FSTYPE due to unstable"
+        if [ ""${FSTYPE}"" == "btrfs" ] && grep -H -m 1 dmflakey tests/"${XFSTEST}" ; then
+            echo "Skipping dmfalkey test "${XFSTEST}" on "${FSTYPE}" due to unstable"
             continue
         fi
 
@@ -134,22 +173,22 @@ function check_tests()
         # Rename log file by adding dir name prefix, so results/generic/300.full
         # will be results/generic/generic-300.full, results/ext4/300.full will be
         # results/ext4/ext4-300.full
-        XFSTEST_LOGNAME=$(dirname $XFSTEST)/${XFSTEST/\//-}
+        XFSTEST_LOGNAME=$(dirname "${XFSTEST}")/${XFSTEST/\//-}
         OUTPUTFILE="results/${XFSTEST_LOGNAME}.log"
         mkdir -p $(dirname $OUTPUTFILE)
-        echo "Running test $XFSTEST"
-        if test -f tests/$XFSTEST; then
-            xlog head -n 10 tests/$XFSTEST
+        echo "Running test "${XFSTEST}""
+        if test -f tests/"${XFSTEST}"; then
+            xlog head -n 10 tests/"${XFSTEST}"
         else
-            echo "The test $XFSTEST does not seem to exist."
+            echo "The test "${XFSTEST}" does not seem to exist."
             continue
         fi
         # Clear the dmesg ring buffer, save dmesg for each test separately
         dmesg -c >/dev/null
-        echo "./checking $XFSTEST" > /dev/kmsg
-        MOUNT_OPTIONS="$MOUNT_OPTS" MKFS_OPTIONS="$MKFS_OPTS" xlog ./check $CHECK_OPTS $XFSTEST
+        echo "./checking "${XFSTEST}"" > /dev/kmsg
+        MOUNT_OPTIONS=""${MOUNT_OPTS}"" MKFS_OPTIONS="$MKFS_OPTS" xlog ./check    "${CHECK_OPTS}" "${XFSTEST}"
         ret=$?
-        dmesgfile="$XFSTEST.dmesg.log"
+        dmesgfile=""${XFSTEST}".dmesg.log"
         dmesg > results/"${dmesgfile}"
         # Clear the dmesg ring buffer to avoid rstrnt-report-log also report
         # the same failure that xfstests _check_dmesg does.
@@ -157,43 +196,43 @@ function check_tests()
 
         false_alarm=0
         if test $ret -ne 0; then
-            rstrnt-report-log -l results/$XFSTEST_LOGNAME.log
-            if [ -f results/$XFSTEST.full ]; then
-                cp results/$XFSTEST.full results/$XFSTEST_LOGNAME.full
-                rstrnt-report-log -l results/$XFSTEST_LOGNAME.full
+            rstrnt-report-log -l results/"${XFSTEST}"_LOGNAME.log
+            if [ -f results/"${XFSTEST}".full ]; then
+                cp results/"${XFSTEST}".full results/"${XFSTEST}"_LOGNAME.full
+                rstrnt-report-log -l results/"${XFSTEST}"_LOGNAME.full
             fi
-            if [ -f results/$XFSTEST.out.bad ]; then
-                cp results/$XFSTEST.out.bad results/$XFSTEST_LOGNAME.out.bad
-                rstrnt-report-log -l results/$XFSTEST_LOGNAME.out.bad
+            if [ -f results/"${XFSTEST}".out.bad ]; then
+                cp results/"${XFSTEST}".out.bad results/"${XFSTEST}"_LOGNAME.out.bad
+                rstrnt-report-log -l results/"${XFSTEST}"_LOGNAME.out.bad
                 # Gather the full diff
-                diff -u <(tr '`' "'" < tests/$XFSTEST.out) results/$XFSTEST.out.bad  > results/$XFSTEST_LOGNAME.out.bad.diff
-                rstrnt-report-log -l results/$XFSTEST_LOGNAME.out.bad.diff
-                sed -n '3,$ p' results/$XFSTEST_LOGNAME.out.bad.diff | grep "^+.*No space left on device" && false_alarm=1
-                sed -n '3,$ p' results/$XFSTEST_LOGNAME.out.bad.diff | grep "^+.*Input/output error" && false_alarm=1
-                sed -n '3,$ p' results/$XFSTEST_LOGNAME.out.bad.diff | grep "^+.*I/O error" && false_alarm=1
-                sed -n '3,$ p' results/$XFSTEST_LOGNAME.out.bad.diff | grep "^+.*not supported" && false_alarm=1
+                diff -u <(tr '`' "'" < tests/"${XFSTEST}".out) results/"${XFSTEST}".out.bad  > results/"${XFSTEST}"_LOGNAME.out.bad.diff
+                rstrnt-report-log -l results/"${XFSTEST}"_LOGNAME.out.bad.diff
+                sed -n '3,$ p' results/"${XFSTEST}"_LOGNAME.out.bad.diff | grep "^+.*No space left on device" && false_alarm=1
+                sed -n '3,$ p' results/"${XFSTEST}"_LOGNAME.out.bad.diff | grep "^+.*Input/output error" && false_alarm=1
+                sed -n '3,$ p' results/"${XFSTEST}"_LOGNAME.out.bad.diff | grep "^+.*I/O error" && false_alarm=1
+                sed -n '3,$ p' results/"${XFSTEST}"_LOGNAME.out.bad.diff | grep "^+.*not supported" && false_alarm=1
             fi
             if [ -f results/$dmesgfile ]; then
-                cp results/$dmesgfile results/$XFSTEST_LOGNAME.dmesg.log
-                rstrnt-report-log -l results/$XFSTEST_LOGNAME.dmesg.log
-                grep "possible circular locking dependency detected" results/$XFSTEST_LOGNAME.dmesg.log &&
+                cp results/$dmesgfile results/"${XFSTEST}"_LOGNAME.dmesg.log
+                rstrnt-report-log -l results/"${XFSTEST}"_LOGNAME.dmesg.log
+                grep "possible circular locking dependency detected" results/"${XFSTEST}"_LOGNAME.dmesg.log &&
                 false_alarm=1
-                grep "MAX_LOCKDEP_ENTRIES too low" results/$XFSTEST_LOGNAME.dmesg.log &&
+                grep "MAX_LOCKDEP_ENTRIES too low" results/"${XFSTEST}"_LOGNAME.dmesg.log &&
                 false_alarm=1
             fi
             if [ $false_alarm -eq 0 ] ; then
                 ret=1
-                rstrnt-report-result $XFSTEST FAIL 0
+                rstrnt-report-result "${XFSTEST}" FAIL 0
             fi
             # Work around, so that loop device bug does not interrupt the test,
             # might be nice to do the same with the dm device release bug
             release_loops
         elif test "$REPORT_PASS" == "1"; then
-            TESTTIME=`grep -w ^$XFSTEST results/check.time | awk '{print $2}'`
-            if [ -f results/$XFSTEST.notrun ]; then
+            TESTTIME=`grep -w ^"${XFSTEST}" results/check.time | awk '{print $2}'`
+            if [ -f results/"${XFSTEST}".notrun ]; then
                 XFSTEST="${XFSTEST}[notrun]"
             fi
-            rstrnt-report-result $XFSTEST PASS $TESTTIME
+            rstrnt-report-result "${XFSTEST}" PASS "${TESTTIME}"
         fi
     done
     OUTPUTFILE=${BAK_OUTPUTFILE}
@@ -205,34 +244,34 @@ function check()
     local groups="${CHECK_GROUPS:-auto}"
 
     # And go!
-    pushd /opt/xfstests/
+    pushd "${XFSTESTS_PATH}"
 
     # Run all "auto" tests, excluding dmapi if FSTYPE is xfs
-    # If FSTYPE is not xfs, -x dmapi would cause check to generate empty $RUNTESTS list with newer xfstests version
-    if [ -z "$RUNTESTS" ]; then
-        if [ "$FSTYPE" == "xfs" ]; then
-            ./check -n $CHECK_OPTS -g $groups -x dmapi | grep -E "^$FSTYPE/|^generic/|^shared/|^[[:digit:]]{3}$" >alltests.log
+    # If FSTYPE is not xfs, -x dmapi would cause check to generate empty "${RUNTESTS}" list with newer xfstests version
+    if [ -z ""${RUNTESTS}"" ]; then
+        if [ ""${FSTYPE}"" == "xfs" ]; then
+            ./check -n    "${CHECK_OPTS}" -g $groups -x dmapi | grep -E "^"${FSTYPE}"/|^generic/|^shared/|^[[:digit:]]{3}$" >alltests.log
         else
-            ./check -n $CHECK_OPTS -g $groups | grep -E "^$FSTYPE/|^generic/|^shared/|^[[:digit:]]{3}$" >alltests.log
+            ./check -n    "${CHECK_OPTS}" -g $groups | grep -E "^"${FSTYPE}"/|^generic/|^shared/|^[[:digit:]]{3}$" >alltests.log
         fi
     else
-        echo $RUNTESTS > alltests.log
+        echo "${RUNTESTS}" > alltests.log
     fi
     rstrnt-report-log -l alltests.log
     RUNTESTS=`cat alltests.log`
-    if [ -z "$RUNTESTS" ]; then
+    if [ -z ""${RUNTESTS}"" ]; then
         report RUNTESTS FAIL 0
         popd
         return 1
     fi
     echo "got RUNTESTS" > /dev/kmsg
 
-    for ((n=0;n<$LOOP;n++));do
+    for ((n=0;n<"${LOOP}";n++));do
         check_tests
     done
 
     # Loop until a fail is detected if LOOP=0
-    if test $LOOP -eq 0; then
+    if test "${LOOP}" -eq 0; then
         while check_tests; do :;done
     fi
     popd
@@ -243,12 +282,12 @@ function run_full()
 {
     # Just run the default preset function
     preset_full
-    for FSTYPE in $FSTYPES; do
+    for FSTYPE in "${FSTYPE}"S; do
         # The variable BLKSIZES was set in preset_full
         # preset_full function
         # setup_blksize will handle this case properly and it won't
         # modify MKFS_OPTS based on this
-        for BLKSIZE in $BLKSIZES; do
+        for BLKSIZE in "${BLKSIZES}"; do
             export BLKSIZE
             # Now to the full fs-dependent setup
             setup_full
@@ -306,4 +345,6 @@ format_disk_partitions "${SCRATCH_MNT}" "${FILESYSTEM}"
 
 losetup "${DEVICE}"
 
-run_xfstests "${FILESYSTEM}"
+# run_xfstests "${FILESYSTEM}"
+
+run_full
