@@ -28,7 +28,7 @@ SCRATCH_IMG="/mnt/scratch.img"
 # SCRATCH_IMG=scratch.img
 TEST_DEV=/dev/loop0
 SCRATCH_DEV=/dev/loop1
-TEST_DIR=/mnt/test
+TEST_DIR=/mnt/tests
 SCRATCH_MNT=/mnt/scratch
 FILESYSTEM="ext4"
 T_SIZE="5G"
@@ -125,12 +125,12 @@ format_disk_partitions() {
 # fallocate - manipulate file space
 # fallocate_manipulate_file_space "/test-dir" "5G"
 fallocate_manipulate_file_space() {
-    TEST_DIR=$1
+    IMG=$1
     SIZE=$2
     echo
     echo "fallocate - manipulate file space"
-    fallocate -l "${SIZE}" "${TEST_DIR}"
-    exit_on_fail "fallocate-l-${SIZE}-${TEST_DIR}"
+    fallocate -l "${SIZE}" "${IMG}"
+    exit_on_fail "fallocate-l-${SIZE}-${IMG}"
 }
 
 # Create fsgqa test users and groups
