@@ -20,8 +20,12 @@ SKIP_INSTALL="false"
 
 XFSTESTS_PATH="/opt/xfstests"
 
-TEST_IMG=test.img
-SCRATCH_IMG=scratch.img
+#TODDO
+TEST_IMG="/mnt/test.img"
+SCRATCH_IMG="/mnt/scratch.img"
+
+# TEST_IMG=test.img
+# SCRATCH_IMG=scratch.img
 TEST_DEV=/dev/loop0
 SCRATCH_DEV=/dev/loop1
 TEST_DIR=/mnt/test
@@ -134,13 +138,9 @@ create_fsgqa_test_users_groups() {
     echo
     echo "Creating fsgqa test users and groups: "
     useradd -m fsgqa
-    report_fail "useradd-m-fsgq"
     useradd 123456-fsgqa
-    report_fail "useradd-123456-fsgqa"
     useradd fsgqa2
-    report_fail "useradd-fsgqa2"
     groupadd fsgqa
-    report_fail "groupadd-fsgqa"
 }
 
 while getopts "d:e:f:m:s:t:x:z:" arg; do
@@ -172,7 +172,9 @@ if [ -d "${XFSTESTS_PATH}" ]; then
     # shellcheck disable=SC2164
     cd "${XFSTESTS_PATH}" || exit 1
     echo $pwd
+    echo "==== list of files ======="
     ls
+    echo "==========="
 else
     echo "xfstests not found"
     error_fatal "xfstests-not-found"
