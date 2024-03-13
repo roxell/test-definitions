@@ -166,7 +166,6 @@ while getopts "d:e:f:m:s:t:x:z:" arg; do
 done
 
 # Test run.
-[ -b "${DEVICE}" ] || error_msg "Please specify a block device with '-d'"
 ! check_root && error_msg "You need to be root to run this script."
 create_out_dir "${OUTPUT}"
 
