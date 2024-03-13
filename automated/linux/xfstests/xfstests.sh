@@ -87,11 +87,11 @@ run_xfstests() {
     echo
     echo "run xfstests : ${FILESYSTEM}"
     test_setup
-    if [ ""${FILESYSTEM}"" == "xfs" ]; then
+    if [ "${FILESYSTEM}" == "xfs" ]; then
         ./check -g ${FILESYSTEM}/quick -x dmapi 2>&1 | tee -a "${RESULT_LOG}"
-    elif [ ""${FILESYSTEM}"" == "ext2" ]; then
+    elif [ "${FILESYSTEM}" == "ext2" ]; then
         ./check -g generic -R xunit 2>&1 | tee -a "${RESULT_LOG}"
-    elif [ ""${FILESYSTEM}"" == "ext3" ]; then
+    elif [ "${FILESYSTEM}" == "ext3" ]; then
         ./check -g generic -R xunit  2>&1 | tee -a "${RESULT_LOG}"
     else
 	    #TODO
@@ -127,7 +127,7 @@ format_disk_partitions() {
 }
 
 # fallocate - manipulate file space
-# fallocate-manipulate-file-space "/test-dir" "5G"
+# fallocate_manipulate_file_space "/test-dir" "5G"
 fallocate_manipulate_file_space() {
     TEST_DIR=$1
     SIZE=$2
@@ -189,14 +189,14 @@ mkdir -p "${SCRATCH_MNT}"
 
 create_fsgqa_test_users_groups
 
-fallocate-manipulate-file-space "${TEST_IMG}" "${T_SIZE}"
-fallocate-manipulate-file-space "${SCRATCH_IMG}" "${S_SIZE}"
+fallocate_manipulate_file_space "${TEST_IMG}" "${T_SIZE}"
+fallocate_manipulate_file_space "${SCRATCH_IMG}" "${S_SIZE}"
 
 format_disk_partitions "${TEST_IMG}" "${FILESYSTEM}"
 format_disk_partitions "${SCRATCH_IMG}" "${FILESYSTEM}"
 
-TEST_DEV='losetup "${TEST_IMG}"'
-SCRATCH_DEV='losetup "${SCRATCH_IMG}"'
+TEST_DEV=`losetup -f "${TEST_IMG}" --show`
+SCRATCH_DEV=`losetup -f "${SCRATCH_IMG}" --show`
 
 # Run xfstests
 run_xfstests "${FILESYSTEM}"
