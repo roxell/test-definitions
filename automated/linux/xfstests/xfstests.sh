@@ -198,4 +198,4 @@ SCRATCH_DEV=`losetup -f "${SCRATCH_IMG}" --show`
 run_xfstests "${FILESYSTEM}"
 
 # Parse xfstests results
-parse_results "${OUTPUT}"
+results_parser "${OUTPUT}"
