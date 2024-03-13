@@ -178,7 +178,7 @@ install_deps "${pkgs}" "${SKIP_INSTALL}"
 if [ -d "${XFSTESTS_PATH}" ]; then
     echo "xfstests found on rootfs"
     # shellcheck disable=SC2164
-    pushd "${XFSTESTS_PATH}" || exit 1
+    cd "${XFSTESTS_PATH}" || exit 1
 else
     echo "xfstests not found"
     error_fatal "xfstests-not-found"
