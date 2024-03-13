@@ -33,5 +33,5 @@ params:
 run:
     steps:
         - cd ./automated/linux/xfstests/
-        - ./xfstests.sh -d "${TEST_DEV}" -e "${SCRATCH_DEV}" -f "${FILESYSTEM}" -m "${SCRATCH_MNT}" -s "${SKIP_INSTALL}" -t "${TEST_DIR}" -x "${T_SIZE}" -z "${S_SIZES}"
+        - ./xfstests.sh -d "${TEST_DEV}" -e "${SCRATCH_DEV}" -f "${FILESYSTEM}" -m "${SCRATCH_MNT}" -s "${SKIP_INSTALL}" -t "${TEST_DIR}" -x "${T_SIZE}" -z "${S_SIZE}"
         - ../../utils/send-to-lava.sh ./output/result.txt
