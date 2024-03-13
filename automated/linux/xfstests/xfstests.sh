@@ -108,16 +108,6 @@ run_xfstests() {
     echo "====================="
 }
 
-
-# losetup "/dev/sdb"
-losetup() {
-    DEVICE=$1
-    echo
-    echo "Loop setup : ${DEVICE}"
-    LOOP_DEV='losetup -f "${DEVICE}" --show'
-    return "${LOOP_DEV}"
-}
-
 # format_disk_partitions "/dev/sdb" "ext4"
 format_disk_partitions() {
     DEVICE=$1
@@ -135,7 +125,7 @@ fallocate_manipulate_file_space() {
     SIZE=$2
     echo
     echo "fallocate - manipulate file space"
-    fallocate -l "${SIZE}" "${TEST_DIR}" --show
+    fallocate -l "${SIZE}" "${TEST_DIR}"
     exit_on_fail "fallocate-l-${SIZE}-${TEST_DIR}"
 }
 
