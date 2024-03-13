@@ -1,6 +1,7 @@
 #!/bin/sh
 # Shell Script for Running XFS Tests
 
+set -x
 # Load required libraries
 
 # shellcheck disable=SC1091
@@ -87,13 +88,16 @@ run_xfstests() {
     echo "run xfstests : ${FILESYSTEM}"
     test_setup
     if [ ""${FILESYSTEM}"" == "xfs" ]; then
-        ./check -g ${FSTYPE}/quick -x dmapi 2>&1 | tee -a "${RESULT_LOG}"
+        ./check -g ${FILESYSTEM}/quick -x dmapi 2>&1 | tee -a "${RESULT_LOG}"
     elif [ ""${FILESYSTEM}"" == "ext2" ]; then
-        ./check -g generic -b -R xunit 2>&1 | tee -a "${RESULT_LOG}"
+        ./check -g generic -R xunit 2>&1 | tee -a "${RESULT_LOG}"
     elif [ ""${FILESYSTEM}"" == "ext3" ]; then
-        ./check -g generic -b -R xunit  2>&1 | tee -a "${RESULT_LOG}"
+        ./check -g generic -R xunit  2>&1 | tee -a "${RESULT_LOG}"
     else
-        ./check -g ${FSTYPE}/quick -b -R xunit 2>&1 | tee -a "${RESULT_LOG}"
+	    #TODO
+	    # Run on 
+#        ./check -g ${FILESYSTEM}/quick -R xunit 2>&1 | tee -a "${RESULT_LOG}"
+        ./check -R xunit 2>&1 | tee -a "${RESULT_LOG}"
     fi
     
     #TODO
