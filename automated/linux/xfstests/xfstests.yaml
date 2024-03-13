@@ -16,21 +16,22 @@ metadata:
         - lava-test-shell
 
 params:
+    # example: TEST_DEV=/dev/loop0
     TEST_DEV: "/dev/loop0"
-    # example: DEV=/dev/loop0
-    SCRATCH_DEV: "/dev/loop1"
     # example: SCRATCH_DEV=/dev/loop1
-    TEST_DIR: "/mnt/test"
+    SCRATCH_DEV: "/dev/loop1"
     # example: TEST_DIR=/mnt/test
-    SCRATCH_MNT: "/mnt/scratch"
+    TEST_DIR: "/mnt/test"
     # example: SCRATCH_MNT=/mnt/scratch
+    SCRATCH_MNT: "/mnt/scratch"
 
     FILESYSTEM: "ext4"
-    SIZE: "5G"
+    T_SIZE: "5G"
+    S_SIZE: "8G"
     SKIP_INSTALL: "true"
 
 run:
     steps:
         - cd ./automated/linux/xfstests/
-        - ./xfstests.sh -d "${TEST_DEV}" -e "${SCRATCH_DEV}" -f "${FILESYSTEM}" -m "${SCRATCH_MNT}" -s "${SKIP_INSTALL}" -t "${TEST_DIR}" -z "${SIZES}"
+        - ./xfstests.sh -d "${TEST_DEV}" -e "${SCRATCH_DEV}" -f "${FILESYSTEM}" -m "${SCRATCH_MNT}" -s "${SKIP_INSTALL}" -t "${TEST_DIR}" -x "${S_SIZE}" -z "${T_SIZES}"
         - ../../utils/send-to-lava.sh ./output/result.txt
