@@ -116,7 +116,7 @@ format_disk_partitions() {
     local FILESYSTEM=$2
     echo
     echo "Format disk partitions of: ${DEVICE}"
-    format_partitions "${DEVICE}" "${FILESYSTEM}"
+    mkfs.${FILESYSTEM} "${DEVICE}"
     exit_on_fail "format-disk-partitions"
 }
 
