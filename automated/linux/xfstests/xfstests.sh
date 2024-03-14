@@ -75,7 +75,7 @@ test_setup() {
 
 # run_xfstests ext4
 run_xfstests() {
-    FILESYSTEM=$1
+    local FILESYSTEM=$1
     echo
     echo "run xfstests : ${FILESYSTEM}"
     test_setup
@@ -88,6 +88,9 @@ run_xfstests() {
         ./check -g generic -R xunit  2>&1 | tee -a "${RESULT_LOG}"
     else
         ./check -g "${FILESYSTEM}"/quick -R xunit 2>&1 | tee -a "${RESULT_LOG}"
+	#TODO
+	# Run all tests
+        ./check  2>&1 | tee -a "${RESULT_LOG}"
     fi
     
     #TODO
@@ -98,8 +101,8 @@ run_xfstests() {
 
 # format_disk_partitions "/dev/sdb" "ext4"
 format_disk_partitions() {
-    DEVICE=$1
-    FILESYSTEM=$2
+    local DEVICE=$1
+    local FILESYSTEM=$2
     echo
     echo "Format disk partitions of: ${DEVICE}"
     format_partitions "${DEVICE}" "${FILESYSTEM}"
@@ -109,8 +112,8 @@ format_disk_partitions() {
 # fallocate - manipulate file space
 # fallocate_manipulate_file_space "/test-dir" "5G"
 fallocate_manipulate_file_space() {
-    IMG=$1
-    SIZE=$2
+    local IMG=$1
+    local SIZE=$2
     echo
     echo "fallocate - manipulate file space"
     fallocate -l "${SIZE}" "${IMG}"
