@@ -79,6 +79,7 @@ run_xfstests() {
     echo
     echo "run xfstests : ${FILESYSTEM}"
     test_setup
+    file check
     if [ "${FILESYSTEM}" = "xfs" ]; then
         ./check -g ${FILESYSTEM}/quick -x dmapi 2>&1 | tee -a "${RESULT_LOG}"
     elif [ "${FILESYSTEM}" = "ext2" ]; then
