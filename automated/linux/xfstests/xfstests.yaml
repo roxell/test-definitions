@@ -20,8 +20,8 @@ params:
     TEST_DEV: "/dev/loop0"
     # example: SCRATCH_DEV=/dev/loop1
     SCRATCH_DEV: "/dev/loop1"
-    # example: TEST_DIR=/mnt/tests
-    TEST_DIR: "/mnt/tests"
+    # example: TEST_DIR=/mnt/test
+    TEST_DIR: "/mnt/test"
     # example: SCRATCH_MNT=/mnt/scratch
     SCRATCH_MNT: "/mnt/scratch"
 
