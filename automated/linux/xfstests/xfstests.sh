@@ -80,9 +80,12 @@ run_xfstests() {
     echo "run xfstests : ${FILESYSTEM}"
     test_setup
     echo "===== Start ====="
+    file test.img
+    file scratch.img
+    file *.img
+    ls /mnt/
     df
     mount
-    mount | grep mnt
     file check
     echo "===== End ====="
 
