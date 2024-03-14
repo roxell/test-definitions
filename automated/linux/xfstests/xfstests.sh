@@ -20,12 +20,8 @@ SKIP_INSTALL="false"
 
 XFSTESTS_PATH="/opt/xfstests"
 
-#TODDO
-TEST_IMG="/mnt/test.img"
-SCRATCH_IMG="/mnt/scratch.img"
-
-# TEST_IMG=test.img
-# SCRATCH_IMG=scratch.img
+TEST_IMG=test.img
+SCRATCH_IMG=scratch.img
 TEST_DEV=/dev/loop0
 SCRATCH_DEV=/dev/loop1
 TEST_DIR=/mnt/tests
@@ -57,20 +53,12 @@ results_parser() {
    OUTPUT="$1"
 
    # Parse pass test cases
-   find results/ -type f -name "*.full" -print0 | while IFS= read -r -d $'\0' file; do
-    echo "${file#results/}" | sed -e "s/\//-/g" -e "s/.full$//g" -e "s/$/ pass/"
-   done >> "${RESULT_PASS}"
-   
-   # Parse fail test cases   
-   find results/ -type f -name "*.out.bad" -print0 | while IFS= read -r -d $'\0' file; do
-    echo "${file#results/}" | sed -e "s/\//-/g" -e "s/.out.bad$//g" -e "s/$/ fail/"
-   done >> "${RESULT_FAIL}"
-
+   find results_march-14/*/*.full -print0 | awk -v RS='\0' -F'/' '{print $2"-"$3" pass"}' | sed 's/.full$//' >> "${RESULT_PASS}"
+   # Parse fail test cases
+   find results_march-14/*/*.out.bad -print0 | awk -v RS='\0' -F'/' '{print $2"-"$3" fail"}' | sed 's/.out.bad$//' >> "${RESULT_FAIL}"
    # Parse skip test cases
-   find results/ -type f -name "*.notrun" -print0 | while IFS= read -r -d $'\0' file; do
-    echo "${file#results/}" | sed -e "s/\//-/g" -e "s/.notrun$//g" -e "s/$/ skip/"
-   done >> "${RESULT_SKIP}"
-   
+   find results_march-14/*/*.notrun -print0 | awk -v RS='\0' -F'/' '{print $2"-"$3" skip"}' | sed 's/.notrun$//' >> "${RESULT_SKIP}"
+   # Append all the results to results.txt file
    cat "${RESULT_PASS}" "${RESULT_FAIL}" "${RESULT_SKIP}" 2>&1 | tee -a "${RESULT_FILE}"
 }
 
@@ -103,7 +91,7 @@ run_xfstests() {
 	    #TODO
 	    # Run on 
 #        ./check -g ${FILESYSTEM}/quick -R xunit 2>&1 | tee -a "${RESULT_LOG}"
-        ./check -R xunit 2>&1 | tee -a "${RESULT_LOG}"
+        ./check -g quick -R xunit 2>&1 | tee -a "${RESULT_LOG}"
     fi
     
     #TODO
