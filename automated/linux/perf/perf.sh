@@ -76,6 +76,7 @@ run_perf_stat() {
 # Run perf test tests
 run_perf_test() {
     # Test 'perf test'
+    export PERF_TEST_CORESIGHT_DATADIR=/var/tmp
     info_msg "Performing 'perf test'..."
     perf test -v 2>&1 | tee "${RESULT_LOG}"
     report_pass "perf_test"
