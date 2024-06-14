@@ -204,6 +204,7 @@ if [ -n "${RUNNER}" ]; then
       error_msg "${RUNNER} is not installed into the file system."
     fi
     export KSELFTESTROOT="${KSELFTEST_PATH}"
+    echo "ARGH=================================================="
     mv /usr/local/lib/python3.11/dist-packages/kselftests.py /usr/local/lib/python3.11/dist-packages/libkirk/
     for test in ${TST_CMDFILES}; do
         pipe0_status "${RUNNER} --framework kselftest --run-suite ${test} \
