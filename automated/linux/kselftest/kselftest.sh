@@ -207,6 +207,10 @@ if [ -n "${RUNNER}" ]; then
     echo "ARGH=================================================="
     mv /usr/local/lib/python3.11/dist-packages/kselftests.py /usr/local/lib/python3.11/dist-packages/libkirk/
     for test in ${TST_CMDFILES}; do
+        echo "${RUNNER} --framework kselftest --run-suite ${test} \
+                        --env KSELFTESTROOT=${KSELFTEST_PATH} --skip-file ${SKIPFILE_PATH} \
+                        --json-report /tmp/kirk-report.json \
+                        --verbose" "tee ${LOGFILE}"
         pipe0_status "${RUNNER} --framework kselftest --run-suite ${test} \
                         --env KSELFTESTROOT=${KSELFTEST_PATH} --skip-file ${SKIPFILE_PATH} \
                         --json-report /tmp/kirk-report.json \
