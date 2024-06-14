@@ -24,6 +24,8 @@ TST_CASENAME=""
 SHARD_NUMBER=1
 SHARD_INDEX=1
 
+RUNNER=""
+
 # Architecture-specific tarball name defaults.
 if [ "$(uname -m)" = "aarch64" ]; then
     TESTPROG="kselftest_aarch64.tar.gz"
@@ -41,6 +43,7 @@ usage() {
                     [-u url]
                     [-p path]
                     [-L List of skip test cases]
+                    [-r new runner (kirk)]
                     [-S kselftest-skipfile]
                     [-b board]
                     [-g branch]
@@ -48,7 +51,7 @@ usage() {
     exit 1
 }
 
-while getopts "i:n:c:T:t:s:u:p:L:S:b:g:e:h" opt; do
+while getopts "i:n:c:T:t:s:u:p:L:r:S:b:g:e:h" opt; do
     case "${opt}" in
         i) SHARD_INDEX="${OPTARG}" ;;
         n) SHARD_NUMBER="${OPTARG}" ;;
@@ -61,6 +64,7 @@ while getopts "i:n:c:T:t:s:u:p:L:S:b:g:e:h" opt; do
         # List of known unsupported test cases to be skipped
         L) SKIPLIST="${OPTARG}" ;;
         p) KSELFTEST_PATH="${OPTARG}" ;;
+        r) export RUNNER="${OPTARG}";;
         S)
 
            #OPT=$(echo "${OPTARG}" | grep "http")
@@ -127,6 +131,11 @@ if [ -n "${SKIPFILE_YAML}" ]; then
 fi
 
 
+parse_json_results() {
+    jq -r '.results| .[]| "\(.test_fqn) \(.test.result)"'  "$1" \
+        | sed 's/brok/fail/; s/conf/skip/'  >> "${RESULT_FILE}"
+}
+
 parse_output() {
     ./parse-output.py < "${LOGFILE}" | tee -a "${RESULT_FILE}"
 }
@@ -188,31 +197,49 @@ done < "${skips}"
 echo "========================================"
 rm -f "${skips}"
 
-if [ -n "${TST_CASENAME}" ]; then
-    ./run_kselftest.sh -t "${TST_CASENAME}" 2>&1 | tee -a "${LOGFILE}"
-elif [ -n "${TST_CMDFILES}" ]; then
-    cp kselftest-list.txt kselftest-list.txt.original
-    # shellcheck disable=SC2086
+if [ -n "${RUNNER}" ]; then
+    eval "${RUNNER}" --version
+    # shellcheck disable=SC2181
+    if [ $? -ne "0" ]; then
+      error_msg "${RUNNER} is not installed into the file system."
+    fi
+    export KSELFTESTROOT="${KSELFTEST_PATH}"
+    mv /usr/local/lib/python3.11/dist-packages/kselftests.py /usr/local/lib/python3.11/dist-packages/libkirk/
     for test in ${TST_CMDFILES}; do
-        cp kselftest-list.txt.original kselftest-list.txt
-        grep "^${test}:" kselftest-list.txt | tee kselftest-list.tmp
-        split --verbose --numeric-suffixes=1 -n l/"${SHARD_INDEX}"/"${SHARD_NUMBER}" kselftest-list.tmp > shardfile
-        echo "============== Tests to run ==============="
-        cat shardfile
-        echo "===========End Tests to run ==============="
-        if [ -s shardfile ]; then
-            report_pass "shardfile-${test}"
-        else
-            report_fail "shardfile-${test}"
-            continue
-        fi
-        cp shardfile kselftest-list.txt
-        ./run_kselftest.sh -c ${test} 2>&1 | tee -a "${LOGFILE}"
+        pipe0_status "${RUNNER} --framework kselftest --run-suite ${test} \
+                        --skip-file ${SKIPFILE_PATH} \
+                        --json-report /tmp/kirk-report.json \
+                        --verbose" "tee ${LOGFILE}"
+        parse_json_results "/tmp/kirk-report.json"
     done
-    cp kselftest-list.txt.original kselftest-list.txt
 else
-    ./run_kselftest.sh 2>&1 | tee "${LOGFILE}"
+    if [ -n "${TST_CASENAME}" ]; then
+        ./run_kselftest.sh -t "${TST_CASENAME}" 2>&1 | tee -a "${LOGFILE}"
+    elif [ -n "${TST_CMDFILES}" ]; then
+        cp kselftest-list.txt kselftest-list.txt.original
+        # shellcheck disable=SC2086
+        for test in ${TST_CMDFILES}; do
+            cp kselftest-list.txt.original kselftest-list.txt
+            grep "^${test}:" kselftest-list.txt | tee kselftest-list.tmp
+            split --verbose --numeric-suffixes=1 -n l/"${SHARD_INDEX}"/"${SHARD_NUMBER}" kselftest-list.tmp > shardfile
+            echo "============== Tests to run ==============="
+            cat shardfile
+            echo "===========End Tests to run ==============="
+            if [ -s shardfile ]; then
+                report_pass "shardfile-${test}"
+            else
+                report_fail "shardfile-${test}"
+                continue
+            fi
+            cp shardfile kselftest-list.txt
+            ./run_kselftest.sh -c ${test} 2>&1 | tee -a "${LOGFILE}"
+        done
+        cp kselftest-list.txt.original kselftest-list.txt
+    else
+        ./run_kselftest.sh 2>&1 | tee "${LOGFILE}"
+    fi
+
+    # shellcheck disable=SC2164
+    cd "$saved_pwd" || exit
+    parse_output
 fi
-# shellcheck disable=SC2164
-cd "$saved_pwd" || exit
-parse_output

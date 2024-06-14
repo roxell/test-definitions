@@ -57,8 +57,13 @@ params:
     # Which bucket to run, default '1' which is the same as no sharding, run it as LTP upstream decides.
     SHARD_INDEX: 1
 
+    # New kirk runner (https://github.com/linux-test-project/kirk.git)
+    # Needs to be installed onto the rootfs.
+    # Set RUNNER to full path to kik or to kirk if its in the PATH.
+    RUNNER: ""
+
 run:
     steps:
         - cd ./automated/linux/kselftest/
-        - ./kselftest.sh -c "${TST_CMDFILES}" -T "${TST_CASENAME}" -t "${TESTPROG}" -s "${SKIP_INSTALL}" -u "${TESTPROG_URL}" -L "${SKIPLIST}" -S "${SKIPFILE}" -b "${BOARD}" -g "${BRANCH}" -e "${ENVIRONMENT}" -p "${KSELFTEST_PATH}" -n "${SHARD_NUMBER}" -i "${SHARD_INDEX}"
+        - ./kselftest.sh -c "${TST_CMDFILES}" -T "${TST_CASENAME}" -t "${TESTPROG}" -s "${SKIP_INSTALL}" -u "${TESTPROG_URL}" -L "${SKIPLIST}" -r "${RUNNER}" -S "${SKIPFILE}" -b "${BOARD}" -g "${BRANCH}" -e "${ENVIRONMENT}" -p "${KSELFTEST_PATH}" -n "${SHARD_NUMBER}" -i "${SHARD_INDEX}"
         - ../../utils/send-to-lava.sh ./output/result.txt
