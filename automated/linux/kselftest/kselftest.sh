@@ -203,12 +203,12 @@ if [ -n "${RUNNER}" ]; then
     if [ $? -ne "0" ]; then
       error_msg "${RUNNER} is not installed into the file system."
     fi
-    export KSELFTESTROOT="${KSELFTEST_PATH}"
+    #export KSELFTESTROOT="${KSELFTEST_PATH}"
     echo "ARGH=================================================="
     mv /usr/local/lib/python3.11/dist-packages/kselftests.py /usr/local/lib/python3.11/dist-packages/libkirk/
     for test in ${TST_CMDFILES}; do
         pipe0_status "${RUNNER} --framework kselftest --run-suite ${test} \
-                        --skip-file ${SKIPFILE_PATH} \
+                        --env KSELFTESTROOT=${KSELFTEST_PATH} --skip-file ${SKIPFILE_PATH} \
                         --json-report /tmp/kirk-report.json \
                         --verbose" "tee ${LOGFILE}"
         parse_json_results "/tmp/kirk-report.json"
