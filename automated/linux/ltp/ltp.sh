@@ -181,6 +181,7 @@ run_ltp() {
     cat runtest/shardfile
     echo "===========End Tests to run ==============="
 
+    mv /usr/local/lib/python3.11/dist-packages/ltp.py /usr/local/lib/python3.11/dist-packages/libkirk/
     if [ -n "${RUNNER}" ]; then
         eval "${RUNNER}" --version
         # shellcheck disable=SC2181
@@ -189,6 +190,7 @@ run_ltp() {
         fi
         pipe0_status "${RUNNER} --framework ltp --run-suite shardfile \
                                 -d ${LTP_TMPDIR} --env LTP_COLORIZE_OUTPUT=0 \
+                                --env LTPROOT=${LTP_INSTALL_PATH} \
                                 --skip-file ${SKIPFILE_PATH} \
                                 --json-report /tmp/kirk-report.json \
                                 --verbose" "tee ${OUTPUT}/LTP_${LOG_FILE}.out"
