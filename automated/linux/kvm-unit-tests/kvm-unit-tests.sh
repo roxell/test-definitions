@@ -72,10 +72,7 @@ install() {
 
 # Test run.
 ! check_root && error_msg "This script must be run as root"
-saved_pwd=$(pwd)
 create_out_dir "${OUTPUT}"
-# shellcheck disable=SC2164
-cd "${OUTPUT}"
 
 info_msg "About to run kvm unit tests ..."
 info_msg "Output directory: ${OUTPUT}"
@@ -97,7 +94,7 @@ fi
 
 # Run kvm unit tests
 kvm_unit_tests_run_test
+cd - || exit 1
 
 # Parse and print kvm unit tests results
-cd "$saved_pwd" || exit
 parse_output
