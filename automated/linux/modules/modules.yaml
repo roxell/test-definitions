@@ -16,6 +16,10 @@ metadata:
         - x86
 
 params:
+    # If BLACKLIST_MODULES is specified with a list of space separated modules then
+    # they will be filtered out and not loaded.
+    BLACKLIST_MODULES: ""
+
     # If MODULES_LIST is specified with a list of space separated modules then
     # MOUDLES_SUBDIRS wont have any affect.
     MODULES_LIST: ""
@@ -36,5 +40,5 @@ params:
 run:
     steps:
         - cd ./automated/linux/modules/
-        - ./modules.sh -d "${MODULES_SUBDIRS}" -l "${MODULES_LIST}" -c "${MODULE_MODPROBE_NUMBER}" -n "${SHARD_NUMBER}" -i "${SHARD_INDEX}"
+        - ./modules.sh -b "${BLACKLIST_MODULES}" -d "${MODULES_SUBDIRS}" -l "${MODULES_LIST}" -c "${MODULE_MODPROBE_NUMBER}" -n "${SHARD_NUMBER}" -i "${SHARD_INDEX}"
         - ../../utils/send-to-lava.sh ./output/result.txt
