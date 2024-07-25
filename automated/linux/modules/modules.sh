@@ -77,7 +77,11 @@ report() {
 }
 
 run () {
+	mount -t debugfs nodev /sys/kernel/debug/
+	mount
 	for module in ${MODULES_LIST}; do
+		echo clear > /sys/kernel/debug/kmemleak
+		echo scan > /sys/kernel/debug/kmemleak
 		# don't insert/remove modules that is already inserted.
 		if ! lsmod | grep "^${module}"; then
 			for num in $(seq "${MODULE_MODPROBE_NUMBER}"); do
@@ -90,6 +94,7 @@ run () {
 				dmesg -l 0,1,2,3,4,5
 			done
 		fi
+		cat /sys/kernel/debug/kmemleak
 	done
 }
 
