@@ -78,6 +78,7 @@ report() {
 
 run () {
 	mount -t debugfs nodev /sys/kernel/debug/
+	echo "mount"
 	mount
 	for module in ${MODULES_LIST}; do
 		echo clear > /sys/kernel/debug/kmemleak
@@ -94,6 +95,7 @@ run () {
 				dmesg -l 0,1,2,3,4,5
 			done
 		fi
+		echo "scan: kmemleak"
 		cat /sys/kernel/debug/kmemleak
 	done
 }
