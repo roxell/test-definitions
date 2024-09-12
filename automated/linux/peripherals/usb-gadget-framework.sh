@@ -42,7 +42,7 @@ echo "0123456789" > strings/0x409/serialnumber
 echo "My Gadget" > strings/0x409/manufacturer
 echo "Test Device" > strings/0x409/product
 
-run_test "dd bs=1M count=16 if=/dev/zero of=/tmp/lun0.img"
+run_test "dd bs=1b count=1 if=/dev/zero of=/tmp/lun0.img"
 
 # Create function and configure endpoint (e.g., mass storage, serial)
 mkdir -p functions/mass_storage.0
