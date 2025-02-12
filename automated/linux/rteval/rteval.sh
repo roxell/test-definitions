@@ -126,7 +126,7 @@ install_rt_tests() {
 	esac
 	git clone https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git
 	pushd rt-tests || exit
-	git checkout v1.8
+	git checkout v2.8
 	make && make install
 	popd || exit
 	rm -rf rt-tests
