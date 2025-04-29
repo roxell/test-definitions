@@ -707,6 +707,23 @@ get_test_program() {
 	fi
 }
 
+git_retry()
+{
+	local git_url="$1"
+	local retries=5
+	local delay=3
+	local count=0
+
+	while [ "$count" -lt "$retries" ]; do
+		if git clone "$git_url"; then
+			exit 0
+		fi
+		count=$((count + 1))
+		echo "Retry $count/$retries in $delay seconds..."
+		sleep "$delay"
+	done
+}
+
 exit_cleanup()
 {
 	# cleanup the temp decompressed config & kernel image
