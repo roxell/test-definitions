@@ -94,7 +94,10 @@ def parse_cpu_info():
 def parse_memory_info():
     """Parse memory information from /proc/meminfo."""
     mem_info = run_command("grep MemTotal /proc/meminfo")
-    total = int(re.search(r"\d+", mem_info).group(0)) // 1024
+    match = re.search(r"\d+", mem_info)
+    if not match:
+        raise AttributeError("No numeric value found")
+    total = int(match.group(0)) // 1024
     return {
         "Total": f"{total} MB",
         "Speed": UNKNOWN,
@@ -143,7 +146,10 @@ def parse_os_info():
         with open("/etc/os-release", "r", encoding="utf-8") as f:
             for line in f:
                 if line.startswith("PRETTY_NAME"):
-                    os_info = line.split("=")[1].strip().strip('"')
+                    parts = line.split("=", 1)
+                    if len(parts) < 2:
+                        raise IndexError("Malformed PRETTY_NAME line")
+                    os_info = parts[1].strip().strip('"')
                     break
     except Exception:
         os_info = "error retrieving OS information"
@@ -229,7 +235,12 @@ def read_sha256_file(file_path):
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             line = f.readline().strip()
-            sha256 = line.split()[0]
+            if not line:
+                raise IndexError("Empty file")
+            parts = line.split()
+            if not parts:
+                raise IndexError("No space separator found")
+            sha256 = parts[0]
             return sha256
     except IOError:
         log.error("Unable to read %s", file_path)
@@ -285,7 +296,7 @@ def parse_boottime():
                 for time_str, name in [line.split(maxsplit=1)]
             }
     except Exception as e:
-        log.error("Parsing blame output:", e)
+        log.error("Parsing blame output: %s", e)
 
     try:
         time_output = run_command("systemd-analyze time")
@@ -334,13 +345,14 @@ def mmtest_extract_json(benchmark, r_root, c_name, extractor):
     """
     command = f"{extractor} -d {r_root} -b {benchmark} -n {c_name} --print-json"
     json_output = run_command(command)
-    results_data = json.loads(json_output)
+    try:
+        results_data = json.loads(json_output)
 
-    if results_data:
-        return results_data
-
-    log.error("results data for %s", benchmark)
-    return None
+        if results_data:
+            return results_data
+    except json.JSONDecodeError:
+        log.error("results data for %s", benchmark)
+        return None
 
 
 def check_results(results_data):
