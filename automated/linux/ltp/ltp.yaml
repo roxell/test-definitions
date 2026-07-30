@@ -46,6 +46,9 @@ params:
     # Extra arguments to pass directly to the kirk runner
     EXTRA_KIRK_ARGS: ""
 
+    # Path to the kirk binary, defaults to 'kirk' on PATH
+    KIRK_PATH: kirk
+
     # If the following parameter is set, then the LTP suite is
     # cloned and used unconditionally. In particular, the version
     # of the suite is set to the commit pointed to by the
@@ -78,5 +81,5 @@ params:
 run:
     steps:
         - cd ./automated/linux/ltp/
-        - ./ltp.sh -T "${TST_CMDFILES}" -s "${SKIP_INSTALL}" -v "${LTP_VERSION}" -M "${TIMEOUT_MULTIPLIER}" -R "${ROOT_PASSWD}" -k "${EXTRA_KIRK_ARGS}" -b "${BOARD}" -d "${LTP_TMPDIR}" -g "${BRANCH}" -e "${ENVIRONMENT}" -i "${LTP_INSTALL_PATH}" -S "${SKIPFILE}" -p "${TEST_DIR}" -u "${TEST_GIT_URL}" -t "${BUILD_FROM_TAR}" -n "${SHARD_NUMBER}" -c "${SHARD_INDEX}" -w "${KIRK_WORKERS}"
+        - ./ltp.sh -T "${TST_CMDFILES}" -s "${SKIP_INSTALL}" -v "${LTP_VERSION}" -M "${TIMEOUT_MULTIPLIER}" -R "${ROOT_PASSWD}" -r "${KIRK_PATH}" -k "${EXTRA_KIRK_ARGS}" -b "${BOARD}" -d "${LTP_TMPDIR}" -g "${BRANCH}" -e "${ENVIRONMENT}" -i "${LTP_INSTALL_PATH}" -S "${SKIPFILE}" -p "${TEST_DIR}" -u "${TEST_GIT_URL}" -t "${BUILD_FROM_TAR}" -n "${SHARD_NUMBER}" -c "${SHARD_INDEX}" -w "${KIRK_WORKERS}"
         - ../../utils/send-to-lava.sh ./output/result.txt

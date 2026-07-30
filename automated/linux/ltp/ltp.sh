@@ -30,7 +30,7 @@ BUILD_FROM_TAR="false"
 SHARD_NUMBER=1
 SHARD_INDEX=1
 
-RUNNER="kirk"
+KIRK_PATH="kirk"
 KIRK_WORKERS=1
 EXTRA_KIRK_ARGS=""
 
@@ -50,6 +50,7 @@ usage() {
                       [-v LTP_VERSION]
                       [-M Timeout_Multiplier]
                       [-R root_password]
+                      [-r path to kirk binary ]
                       [-u git url]
                       [-p build directory]
                       [-t build from tarfile ]
@@ -60,7 +61,7 @@ usage() {
     exit 0
 }
 
-while getopts "M:T:S:b:d:g:e:i:s:v:R:u:p:t:c:n:w:k:" arg; do
+while getopts "M:T:S:b:d:g:e:i:s:v:R:r:u:p:t:c:n:w:k:" arg; do
    case "$arg" in
      T)
         TST_CMDFILES="${OPTARG}"
@@ -116,6 +117,11 @@ while getopts "M:T:S:b:d:g:e:i:s:v:R:u:p:t:c:n:w:k:" arg; do
      # Slow machines need more timeout Default is 5min and multiply * MINUTES
      M) export LTP_TIMEOUT_MUL="${OPTARG}";;
      R) export PASSWD="${OPTARG}";;
+     r)
+        if [[ "$OPTARG" != '' ]]; then
+          KIRK_PATH="$OPTARG"
+        fi
+        ;;
      u)
         if [[ "$OPTARG" != '' ]]; then
           TEST_GIT_URL="$OPTARG"
@@ -184,20 +190,16 @@ run_ltp() {
     cat runtest/shardfile
     echo "===========End Tests to run ==============="
 
-    if [ -z "${RUNNER}" ] && [ -x "${LTP_INSTALL_PATH}/kirk" ]; then
-        RUNNER="${LTP_INSTALL_PATH}/kirk"
-    fi
-
-    eval "${RUNNER}" --version
+    eval "${KIRK_PATH}" --version
     # shellcheck disable=SC2181
     if [ $? -ne "0" ]; then
-      error_msg "${RUNNER} is not installed into the file system."
+      error_msg "${KIRK_PATH} is not installed into the file system."
     fi
     if [ "${KIRK_WORKERS}" = "max" ]; then
       KIRK_WORKERS=$(grep ^processor /proc/cpuinfo | wc -l)
     fi
     export LTP_COLORIZE_OUTPUT=0
-    pipe0_status "${RUNNER} ${EXTRA_KIRK_ARGS} --run-suite shardfile \
+    pipe0_status "${KIRK_PATH} ${EXTRA_KIRK_ARGS} --run-suite shardfile \
                             -d ${LTP_TMPDIR} \
                             ${SKIPFILE_PATH:+--skip-file} ${SKIPFILE_PATH} \
                             ${KIRK_WORKERS:+--workers} ${KIRK_WORKERS} \
