@@ -190,9 +190,7 @@ run_ltp() {
     cat runtest/shardfile
     echo "===========End Tests to run ==============="
 
-    eval "${KIRK_PATH}" --version
-    # shellcheck disable=SC2181
-    if [ $? -ne "0" ]; then
+    if ! "${KIRK_PATH}" --version; then
       error_msg "${KIRK_PATH} is not installed into the file system."
     fi
     if [ "${KIRK_WORKERS}" = "max" ]; then
