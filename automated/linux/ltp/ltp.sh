@@ -190,8 +190,13 @@ run_ltp() {
     cat runtest/shardfile
     echo "===========End Tests to run ==============="
 
+    local kirk_bin
+    kirk_bin="$(command -v "${KIRK_PATH}")" \
+        || error_msg "${KIRK_PATH} is not installed into the file system."
+    KIRK_PATH="${kirk_bin}"
+
     if ! "${KIRK_PATH}" --version; then
-      error_msg "${KIRK_PATH} is not installed into the file system."
+      error_msg "${KIRK_PATH} does not run."
     fi
     if [ "${KIRK_WORKERS}" = "max" ]; then
       KIRK_WORKERS=$(grep ^processor /proc/cpuinfo | wc -l)
