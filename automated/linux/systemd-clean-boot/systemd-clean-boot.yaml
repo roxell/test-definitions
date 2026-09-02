@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: GPL-2.0-only
+# Copyright (C) 2026 Linaro Ltd.
+metadata:
+    format: Lava-Test Test Definition 1.0
+    name: systemd-clean-boot
+    description: |
+        Wait until systemd has finished booting, then check that every unit
+        came up. This is a sanity check to run before the real tests, so a
+        broken image is reported as a boot problem and not as a hundred
+        confusing test failures.
+
+        A degraded system has finished booting, it just has a unit that did
+        not start. The two are reported separately.
+    maintainer:
+        - anders.roxell@linaro.org
+    os:
+        - debian
+        - ubuntu
+        - fedora
+        - centos
+        - openembedded
+    scope:
+        - functional
+    devices:
+        - all
+
+params:
+    # How long to wait for systemd to settle, in seconds.
+    TIMEOUT: 120
+
+run:
+    steps:
+        - cd ./automated/linux/systemd-clean-boot/
+        - ./systemd-clean-boot.sh -t "${TIMEOUT}"
+        - ../../utils/send-to-lava.sh ./output/result.txt
