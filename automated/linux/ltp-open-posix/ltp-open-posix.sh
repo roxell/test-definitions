@@ -73,7 +73,7 @@ parse_ltp_grp_output() {
     sed -i 's/\s\s*/ /g' "${GRP_RESULT_FILE}"
     sed -i 's/Testing //g' "${GRP_RESULT_FILE}"
     {
-    sed 's/PASS/pass/; s/FAIL/fail/; s/CONF/skip/' "${GRP_RESULT_FILE}" | awk '{ if($5 == 1) {print $1 " " $4} else {print $1 " " $2} }'
+    sed 's/PASS/pass/; s/FAIL/fail/; s/CONF/skip/' "${GRP_RESULT_FILE}" | awk '{ if($5 > 0) {print $1 " " $4} else {print $1 " " $2} }'
     grep -e "UNRESOLVED" -e "UNTESTED" -e "UNSUPPORTED" -e "HUNG" -e "SKIPPED" "${GRP_OUTPUT_FILE}.bak" \
 	    | awk -F':' '{print $1 $3}' \
 	    | awk -F'/' '{print $NF}' \
@@ -92,11 +92,39 @@ run_ltp_open_posix() {
     parse_ltp_output
 }
 
+run_ltp_open_posix_all() {
+    if [ -f "$1/run.sh" ]; then
+        [ -x "$1/run.sh" ] || error_msg "Open POSIX runner is not executable: $1/run.sh"
+        (cd "$1" && ./run.sh) 2>&1 | tee -a "${GRP_OUTPUT_FILE}" \
+            || error_msg "Cannot save Open POSIX output"
+        runner_count=$((runner_count + 1))
+    else
+        for test_directory in "$1"/*; do
+            [ -d "${test_directory}" ] && [ ! -L "${test_directory}" ] || continue
+            run_ltp_open_posix_all "${test_directory}"
+        done
+    fi
+}
+
 # Run specific LTP open posix group tests
 run_ltp_open_posix_grp() {
-    # shellcheck disable=SC2164
     GRP_TEST=$1
-    "${LTP_PRE_INSTALL}"/bin/run-posix-option-group-test.sh "${GRP_TEST}" | tee "${GRP_OUTPUT_FILE}"
+    if [ "${GRP_TEST}" = "all" ]; then
+        : > "${GRP_OUTPUT_FILE}" || error_msg "Cannot create Open POSIX output file"
+        runner_count=0
+        for test_group in ${TEST}; do
+            [ -d "${LTP_PRE_INSTALL}/${test_group}" ] \
+                || error_msg "Cannot find installed Open POSIX ${test_group} tests"
+            previous_runner_count=${runner_count}
+            run_ltp_open_posix_all "${LTP_PRE_INSTALL}/${test_group}"
+            [ "${runner_count}" -gt "${previous_runner_count}" ] \
+                || error_msg "No installed Open POSIX ${test_group} runners found"
+            [ "$(grep -c '^Testing ' "${GRP_OUTPUT_FILE}")" -eq "${runner_count}" ] \
+                || error_msg "Open POSIX ${test_group} runner produced no summary"
+        done
+    else
+        "${LTP_PRE_INSTALL}"/bin/run-posix-option-group-test.sh "${GRP_TEST}" | tee "${GRP_OUTPUT_FILE}"
+    fi
     parse_ltp_grp_output
 }
 
