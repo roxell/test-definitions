@@ -82,7 +82,7 @@ parse_ltp_grp_output() {
 }
 
 run_ltp_open_posix_installed() {
-    runners=$(find "${LTP_PRE_INSTALL}/$1" -name speculative -prune -o -name run.sh -print | sort)
+    runners=$(find "${LTP_PATH}/$1" -name speculative -prune -o -name run.sh -print | sort)
     [ -n "${runners}" ] || error_msg "No installed Open POSIX $1 runners found"
     for runner in ${runners}; do
         (cd "${runner%/run.sh}" && LOGFILE="${OUTPUT}/logfile.$1-test" ./run.sh) 2>&1 \
