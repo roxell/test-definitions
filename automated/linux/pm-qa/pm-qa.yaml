@@ -26,6 +26,9 @@ metadata:
         - juno
         - hi6220-hikey
         - apq8016-sbc
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     RELEASE: "pm-qa-v0.5.2"

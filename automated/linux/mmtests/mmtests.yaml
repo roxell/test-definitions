@@ -16,6 +16,9 @@ metadata:
         - debian
     devices:
         - juno-r2
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 params:
     # Skips the installation of benchmark(s) and required dependencies
     SKIP_INSTALL: true

@@ -12,6 +12,9 @@ metadata:
     devices:
         - imx7s-warp
         - hikey
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     VIDEO_DEVICE: "/dev/video0"

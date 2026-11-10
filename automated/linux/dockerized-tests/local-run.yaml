@@ -26,6 +26,9 @@ metadata:
     scope:
         - functional
         - performance
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Relative path to test definition file

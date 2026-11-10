@@ -13,6 +13,9 @@ metadata:
         - functional
     devices:
         - imx8mm
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 run:
     steps:

@@ -12,6 +12,9 @@ metadata:
     devices:
         - dragonboard410c
         - dragonboard820c
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     DISPLAY: ":0"

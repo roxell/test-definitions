@@ -10,6 +10,9 @@ metadata:
         - functional
     devices:
         - hip07-d05
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 params:
     HOME_DIR: '/home/debiand05'
     MNT_DIR: '/mnt'

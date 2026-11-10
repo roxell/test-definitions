@@ -19,6 +19,9 @@ metadata:
         - i386
     environment:
         - lava-test-shell
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 params:
     # Spectre meltdown checker version
     SMC_VERSION: v0.46

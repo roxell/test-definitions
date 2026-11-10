@@ -10,6 +10,9 @@ metadata:
         - functional
     devices:
         - docker
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     BOARD: "generic-armhf"

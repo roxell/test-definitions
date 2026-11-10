@@ -13,6 +13,9 @@ metadata:
         - dragonboard-845c
         - hi960-hikey
         - stm32mp1
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 params:
     ARMNN_TARBALL: 'https://snapshots.linaro.org/components/armnn/latest/armnn.tar.xz'
     TEST_DIR: '/usr/local/bin'

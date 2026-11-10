@@ -12,6 +12,9 @@ metadata:
         - hi6220-hikey
         - hi960-hikey
         - juno
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     LISA_REPOSITORY: https://github.com/ARM-software/lisa

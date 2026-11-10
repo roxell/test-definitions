@@ -17,6 +17,9 @@ metadata:
     devices:
         - dragonboard410c
         - dragonboard820c
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Parameters to be passed to the test.  These should be overriden based on

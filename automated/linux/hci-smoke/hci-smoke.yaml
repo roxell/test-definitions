@@ -23,6 +23,9 @@ metadata:
         - imx8mmevk
         - imx6ullevk
         - rpi4
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     DEVICE: hci0

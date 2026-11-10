@@ -15,6 +15,9 @@ metadata:
     devices:
         - imx8mm-evk
         - imx6ull-evk
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     SKIP_INSTALL: "False"

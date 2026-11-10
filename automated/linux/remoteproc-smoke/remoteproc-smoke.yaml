@@ -16,6 +16,9 @@ metadata:
         - functional
     devices:
         - qcs6490-rb3gen2
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # leave empty to auto-detect and test all remoteprocs present

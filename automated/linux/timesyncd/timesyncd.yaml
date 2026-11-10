@@ -21,6 +21,9 @@ metadata:
         - apq8016-sbc
         - imx8mmevk
         - imx6ullevk
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 params:
     NTP_SERVER: "pool.ntp.org"
     SKIP_INSTALL: "true"

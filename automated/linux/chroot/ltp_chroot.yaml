@@ -11,6 +11,9 @@ metadata:
         - functional
     devices:
         - qemu-arm64
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 params:
     #Parameters that is here for the chroot
     NEW_ROOTFS: https://snapshots.linaro.org/openembedded/lkft/lkft/rocko/am57xx-evm/lkft/linux-next/441/rpb-console-image-lkft-am57xx-evm-20190115034131-441.rootfs.tar.xz

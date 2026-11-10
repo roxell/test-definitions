@@ -20,6 +20,9 @@ metadata:
         - imx8mq-evk
         - bcm2711-rpi-4-b
         - stm32mp32mp157c-dk2
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 run:
     steps:

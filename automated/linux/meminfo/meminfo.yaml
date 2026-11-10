@@ -14,6 +14,9 @@ metadata:
         - functional
     devices:
         - rzn1d
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 run:
     steps:

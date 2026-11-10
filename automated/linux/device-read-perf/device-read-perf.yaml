@@ -18,6 +18,9 @@ metadata:
         - d03
         - d05
         - ifc6410
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Specify test device. For example: sda

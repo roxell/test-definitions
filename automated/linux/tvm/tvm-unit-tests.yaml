@@ -17,6 +17,9 @@ metadata:
         - functional
     devices:
         - dragonboard-845c
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 params:
     TVM_TARBALL: 'http://snapshots.linaro.org/components/tvm/latest/tvm.tar.xz'
     TEST_DIR: '/usr/local/bin'

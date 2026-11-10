@@ -16,6 +16,9 @@ metadata:
         - imx8mm
         - imx6ull
         - stm32mp15-disco
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
         UBOOT_VAR_TOOL: "fw_printenv"

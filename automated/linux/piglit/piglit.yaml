@@ -15,6 +15,9 @@ metadata:
         - functional
     devices:
         - dragonboard410c
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 # Exclude via OPTIONS:
 # * glx, because those are driver specific

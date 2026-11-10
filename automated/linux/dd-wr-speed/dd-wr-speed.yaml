@@ -16,6 +16,9 @@ metadata:
         - performance
     environment:
         - lava-test-shell
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # The currenty working directory will be used by default.

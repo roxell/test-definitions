@@ -14,6 +14,9 @@ metadata:
         - lol
     scope:
         - functional
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     IS_CHECK: "False"

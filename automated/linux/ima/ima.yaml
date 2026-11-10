@@ -24,6 +24,9 @@ metadata:
         - d05
         - imx8mmevk
         - imx6ullevk
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 params:
     # Specify a space-separated configs that are specific to your
     # IMA implementation. The default list includes:

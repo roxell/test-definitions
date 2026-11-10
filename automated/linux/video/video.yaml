@@ -24,6 +24,9 @@ metadata:
     devices:
         - imx8mm
         - imx6ull
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # https://example.com/image.jpg

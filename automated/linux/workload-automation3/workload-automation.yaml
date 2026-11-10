@@ -17,6 +17,9 @@ metadata:
         - x15
     scope:
         - performance
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     SKIP_INSTALL: "false"

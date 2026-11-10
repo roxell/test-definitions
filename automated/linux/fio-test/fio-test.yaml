@@ -25,6 +25,9 @@ metadata:
         - performance
     environment:
         - lava-test-shell
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Specify block device partition that used for fio test. Example: /dev/sdb1

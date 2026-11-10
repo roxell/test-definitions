@@ -25,6 +25,9 @@ metadata:
         - d05
         - soca9
         - rzn1d
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     SKIP_INSTALL: "false"

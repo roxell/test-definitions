@@ -13,6 +13,9 @@ metadata:
         - centos
     devices:
         - x86
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 install:
     deps:

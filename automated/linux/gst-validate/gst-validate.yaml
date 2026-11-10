@@ -11,6 +11,9 @@ metadata:
         - functional
     devices:
         - dragonboard410c
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 # MAIN_DIR:
 # * Directory where gst-validate will run, needs to contain gst-integration-testsuites,

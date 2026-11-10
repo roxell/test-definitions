@@ -17,6 +17,9 @@ metadata:
         - functional
     environment:
         - lava-test-shell
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     ISOL_CORES:   "2,3"

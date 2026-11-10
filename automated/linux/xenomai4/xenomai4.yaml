@@ -11,6 +11,9 @@ metadata:
         - performance
     devices:
         - imx8mm-lpddr4-evk
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     TEST_LIST: "basic-xbuf \

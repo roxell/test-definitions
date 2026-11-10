@@ -25,6 +25,9 @@ metadata:
         - thunderX
         - hi6220-hikey
         - apq8016-sbc
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     INTERFACE: ""

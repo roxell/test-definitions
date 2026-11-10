@@ -20,6 +20,9 @@ metadata:
         - thunderX
         - d03
         - d05
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     ARRAY_SIZE: "200"

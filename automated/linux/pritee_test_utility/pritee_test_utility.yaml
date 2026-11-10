@@ -11,6 +11,9 @@ metadata:
     devices:
         - hi6220-hikey
         - dragonboard-410c
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     OPTS: "-drmpath:/usr/share/playready"

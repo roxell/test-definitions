@@ -15,6 +15,9 @@ metadata:
         - Ubuntu
     devices:
         - all
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # labgrid env configure file.

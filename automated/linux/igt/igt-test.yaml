@@ -13,6 +13,9 @@ metadata:
     devices:
         - dragonboard-410c
         - x15
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     HDMI_DEV_NAME: "HDMI-A-1"

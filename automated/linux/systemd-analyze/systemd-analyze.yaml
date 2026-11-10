@@ -21,6 +21,9 @@ metadata:
         - boot performance
     devices:
         - all
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     SKIP_INSTALL: true

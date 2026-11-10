@@ -28,6 +28,9 @@ metadata:
         - x15
         - x86
         - i386
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
         # How long the test will run for. DURATION can be set

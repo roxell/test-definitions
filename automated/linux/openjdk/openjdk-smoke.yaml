@@ -20,6 +20,9 @@ metadata:
         - d02
         - d03
         - overdrive
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Specify JDK vesion.

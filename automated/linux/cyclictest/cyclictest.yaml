@@ -26,6 +26,9 @@ metadata:
         - thunderX
         - d03
         - d05
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Priority of highest prio thread.

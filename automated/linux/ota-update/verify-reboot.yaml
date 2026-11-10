@@ -17,6 +17,9 @@ metadata:
     devices:
         - imx8mm
         - imx6ull
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
         UBOOT_VAR_TOOL: "fw_printenv"

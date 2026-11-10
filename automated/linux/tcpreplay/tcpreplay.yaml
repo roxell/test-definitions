@@ -15,6 +15,9 @@ metadata:
   devices:
     - juno
     - x86
+  dependency_path:
+    - /automated/lib/*
+    - /automated/utils/*
 
 params:
   # Interface to replay traffic on

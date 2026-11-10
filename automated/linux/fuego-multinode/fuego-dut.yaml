@@ -11,6 +11,9 @@ metadata:
     devices:
         - rpi3-b-32
         - beaglebone-black
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     INTERFACE: "eth0"

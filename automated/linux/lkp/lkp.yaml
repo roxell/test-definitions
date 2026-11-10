@@ -22,6 +22,9 @@ metadata:
     devices:
         - aarch64
         - x86_64
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 params:
     # The git repository used for download and installation.
     # If not specified, the standard one is used.

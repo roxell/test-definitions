@@ -27,6 +27,9 @@ metadata:
         - I/O performance
     devices:
         - x86
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
         # Set of tests: 'throughput' benchmarks throughput, while

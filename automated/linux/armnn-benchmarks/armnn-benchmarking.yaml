@@ -11,6 +11,9 @@ metadata:
         - functional
     devices:
         - synquacer
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 params:
     LINK_SNAPSHOT: 'https://snapshots.linaro.org/componenets/armnn/latest-master/armnn-full.tar.xz'
     MLPERF: 'https://github.com/arm-software/armnn-mlperf'

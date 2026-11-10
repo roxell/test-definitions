@@ -14,6 +14,9 @@ metadata:
         - functional
     devices:
         - all
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Number of audio channel to use

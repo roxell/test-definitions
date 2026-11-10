@@ -25,6 +25,9 @@ metadata:
 
     scope:
         - functional
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     TORTURE_TIME: 600

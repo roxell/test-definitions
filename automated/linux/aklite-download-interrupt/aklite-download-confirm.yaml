@@ -17,6 +17,9 @@ metadata:
     devices:
         - imx8mm
         - bcm2711-rpi-4-b
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 run:
     steps:

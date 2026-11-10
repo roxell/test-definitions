@@ -32,6 +32,9 @@ metadata:
         - nxp-ls2088
         - x15
         - x86
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
         # If the following parameter is set, then the packetdrill suite is

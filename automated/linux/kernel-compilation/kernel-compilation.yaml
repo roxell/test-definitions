@@ -23,6 +23,9 @@ metadata:
         - thunderX
         - d03
         - d05
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Specify released Kernel version that availabe on:

@@ -14,6 +14,9 @@ metadata:
         - imx8mp-verdin-laa
     scope:
         - functional
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     OSTREE_URL: "https://ostree.lavacloud.io/"

@@ -28,6 +28,9 @@ metadata:
     devices:
         - imx8mm
         - imx6ull
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     PTOOL: "pkcs11-tool --module /usr/lib/libckteec.so.0.1.0"

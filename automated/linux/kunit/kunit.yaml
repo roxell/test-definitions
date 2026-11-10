@@ -20,6 +20,9 @@ metadata:
         - juno
         - hi6220-hikey
         - x86
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # This will try to find all modules that ends with '*test.ko'

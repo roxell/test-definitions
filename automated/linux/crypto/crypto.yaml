@@ -15,6 +15,9 @@ metadata:
         - all
     environment:
         - lava-test-shell
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 run:
     steps:

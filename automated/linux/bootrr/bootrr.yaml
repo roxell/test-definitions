@@ -18,6 +18,9 @@ metadata:
         - dragonboard-410c
         - dragonboard-820c
         - qcs6490-rb3gen2
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Refer to https://github.com/linux-msm/bootrr/tree/master/boards for boards supported.

@@ -11,6 +11,9 @@ metadata:
         - functional
     devices:
         - x86
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Base URL to download from

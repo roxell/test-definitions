@@ -15,6 +15,9 @@ metadata:
         - mustang
         - midway
         - juno
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 run:
     steps:

@@ -13,6 +13,9 @@ metadata:
         - dragonboard-845c
         - hi960-hikey
         - stm32mp1
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 params:
     TVM_WHEEL: 'https://github.com/tlc-pack/tlcpack/releases/download/v0.7.dev1/tlcpack-0.7.dev1-cp38-cp38-manylinux2010_x86_64.whl'
     TVM_BENCH: 'https://github.com/tom-gall/tvm-bench.git'

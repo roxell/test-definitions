@@ -26,6 +26,9 @@ metadata:
     devices:
         - rzn1d
         - soca9
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
         DEVICE: "/dev/sdXN"
