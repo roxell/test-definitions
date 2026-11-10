@@ -12,6 +12,9 @@ metadata:
         - hi6220-hikey
         - apq8016-sbc
         - juno
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 run:
     steps:

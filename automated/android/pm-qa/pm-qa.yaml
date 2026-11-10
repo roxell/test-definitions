@@ -18,6 +18,10 @@ metadata:
         - juno
         - hi6220-hikey
         - apq8016-sbc
+    dependency_path:
+        - /automated/bin/*/busybox
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     SKIP_INSTALL: "false"

@@ -19,6 +19,9 @@ metadata:
     devices:
         - juno
         - hi6220-hikey
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # specify the android version

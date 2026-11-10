@@ -14,6 +14,10 @@ metadata:
     environment:
         - lava-test-shell
         - local-test-runner
+    dependency_path:
+        - /automated/bin/*/busybox
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # /data partition will be tested by default.

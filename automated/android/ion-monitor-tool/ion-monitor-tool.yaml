@@ -8,6 +8,9 @@ metadata:
         - ubuntu
     devices:
         - lxc
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     HEAP: "/sys/kernel/debug/ion/display"

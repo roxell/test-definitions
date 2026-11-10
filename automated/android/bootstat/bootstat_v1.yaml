@@ -12,6 +12,9 @@ metadata:
         - functional
     devices:
         - hikey
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 run:
     steps:

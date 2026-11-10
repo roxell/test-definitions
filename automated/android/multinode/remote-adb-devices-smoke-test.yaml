@@ -12,6 +12,9 @@ metadata:
         - lxc
     scope:
         - functional
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     DEVICE_WORKER_MAPPING_FILE: "/tmp/deviceWorkerMapping"

@@ -12,6 +12,10 @@ metadata:
         - lxc
     scope:
         - functional
+    dependency_path:
+        - /automated/android/tradefed/*
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     SKIP_INSTALL: "false"

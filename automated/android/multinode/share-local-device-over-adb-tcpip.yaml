@@ -16,6 +16,9 @@ metadata:
         - lxc
     scope:
         - functional
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     ADB_PORT: "5555"

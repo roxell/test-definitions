@@ -13,6 +13,9 @@ metadata:
         - lxc
     scope:
         - functional
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 run:
     steps:

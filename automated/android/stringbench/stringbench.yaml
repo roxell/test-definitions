@@ -16,6 +16,9 @@ metadata:
     devices:
         - juno
         - hi6220-hikey
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Specify device serial no. when more than one device connected.

@@ -12,6 +12,9 @@ metadata:
         - lxc
     scope:
         - functional
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Specify timeout in seconds for wait_boot_completed and wait_homescreen.

@@ -20,6 +20,9 @@ metadata:
     environment:
         - lava-test-shell
         - local-test-runner
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Specify device serial no. when more than one device connected.

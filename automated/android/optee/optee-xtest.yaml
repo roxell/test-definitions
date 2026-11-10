@@ -13,6 +13,9 @@ metadata:
         - hi6220-hikey
         - hi6220-hikey-bl
         - juno
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     # Test suite level: [0-15]

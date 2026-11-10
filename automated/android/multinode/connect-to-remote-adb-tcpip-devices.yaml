@@ -12,6 +12,9 @@ metadata:
         - lxc
     scope:
         - functional
+    dependency_path:
+        - /automated/lib/*
+        - /automated/utils/*
 
 params:
     ADB_CONNECT_TIMEOUT_SECS: "60"
