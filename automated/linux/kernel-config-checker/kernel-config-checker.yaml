@@ -1,28 +1,12 @@
 metadata:
     name: kernel-config-checker
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Check the kernel config file for the presence of required
 		  CONFIG_* values."
     maintainer:
         - luis.machado@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-    scope:
-        - functional
-        - performance
     environment:
         - lava-test-shell
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
-        - mustang
-        - moonshot
-        - thunderX
-        - d03
-        - d05
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

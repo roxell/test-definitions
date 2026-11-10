@@ -1,21 +1,11 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: alsa-smoke
     description: "Run alsa smoke tests. The test checks if
       there are playback and record devices available.
       No actual playback or record tests are performed."
     maintainer:
         - milosz.wasilewski@oss.qualcomm.com
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - imx8mm-lpddr4-evk
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

@@ -1,15 +1,9 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: imagenet-resnet50
     description: "imagenet-resnet50 job, running resnet50 benchmark through mlperf."
     maintainer:
         - theodore.grey@linaro.org
-    os:
-        - debian
-    scope:
-        - functional
-    devices:
-        - hip07-d05
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

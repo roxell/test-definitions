@@ -1,25 +1,10 @@
 metadata:
     name: lapack
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Build and run lapack (Linear Algebra PACKage) tests natively"
 
     maintainer:
         - naresh.kamboju@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - arndale
-        - mustang
-        - overdrive
-        - d05
-        - d03
-        - hi6220-hikey
-        - apq8016-sbc
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

@@ -1,16 +1,9 @@
 metadata:
     name: optee-xtest-qemu
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "OP-TEE sanity test suite using QEMU"
     maintainer:
         - fathi.boudra@linaro.org
-    os:
-        - openembedded
-        - debian
-    scope:
-        - functional
-    devices:
-        - x86
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

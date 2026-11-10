@@ -1,31 +1,14 @@
 metadata:
     name: svsematest
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "svsematest starts two threads or, optionally, forks
                   two processes that are synchronized via SYSV semaphores
                   and measures the latency between releasing a semaphore
                   on one side and getting it on the other side."
     maintainer:
         - Daniel Wagner <wagi@monom.org>
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-        - openembedded
-    scope:
-        - performance
-        - preempt-rt
     environment:
         - lava-test-shell
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
-        - mustang
-        - moonshot
-        - thunderX
-        - d03
-        - d05
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

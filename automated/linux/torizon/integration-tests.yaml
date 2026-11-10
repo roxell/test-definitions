@@ -2,17 +2,10 @@
 # Copyright (C) 2024 Linaro Ltd.
 metadata:
     name: integration-tests
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run appliance integration tests in LAVA."
     maintainer:
         - stevan.radakovic@linaro.org
-    os:
-        - debian
-        - ubuntu
-    devices:
-        - qemu
-    scope:
-        - functional
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

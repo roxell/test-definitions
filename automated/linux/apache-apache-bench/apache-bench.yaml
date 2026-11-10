@@ -1,23 +1,11 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: apache-apache-bench
     description: "Apachebench is a benchmark created to measure
                   the webserver performance on HTTP protocol. This
                   test runs apachebench against apache webserver"
     maintainer:
         - milosz.wasilewski@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - mustang
-        - overdrive
-        - d02
-        - d03
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

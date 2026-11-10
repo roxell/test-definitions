@@ -2,19 +2,10 @@
 # Copyright (C) 2025 Linaro Ltd.
 metadata:
     name: labgrid
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run labgrid tests in lava docker test shell"
     maintainer:
         - chase.qi@linaro.org
-    scope:
-        - performance
-        - functional
-    os:
-        - python:3.13 # Debian Trixie based docker image.
-        - Debian
-        - Ubuntu
-    devices:
-        - all
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

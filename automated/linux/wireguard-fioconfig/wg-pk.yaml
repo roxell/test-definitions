@@ -1,5 +1,5 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: wireguard-fioconfig
     description: "Generate wireguard public key before server
                   starts and check that key is updated
@@ -7,19 +7,7 @@ metadata:
 
     maintainer:
         - brendan.wood@foundries.io
-    os:
-        - openembedded
-    scope:
-        - functional
 
-    devices:
-        - imx6mm-evk
-        - imx8mm-evk
-        - imx8mm-evk-sec
-        - imx8mp-evk
-        - imx8mq-evk
-        - bcm2711-rpi-4-b
-        - stm32mp32mp157c-dk2
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

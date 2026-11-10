@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2024 Foundries.io
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: aklite-apps
     description: "Run apps without registration
     The test checks if docker-compose apps can be started
@@ -16,14 +16,7 @@ metadata:
 
     maintainer:
         - milosz.wasilewski@foundries.io
-    os:
-        - openembedded
-    scope:
-        - functional
 
-    devices:
-        - imx8mm
-        - bcm2711-rpi-4-b
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

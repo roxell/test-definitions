@@ -1,5 +1,5 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: vdsotest
     description: |
                   vdsotest is a utility for testing and benchmarking a Linux VDSO.
@@ -14,20 +14,6 @@ metadata:
     maintainer:
         - naresh.kamboju@linaro.org
         - anders.roxell@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - openembedded
-    scope:
-        - performance
-        - functional
-    devices:
-        - juno
-        - x15
-        - x86
-        - i386
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

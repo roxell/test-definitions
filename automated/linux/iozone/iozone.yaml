@@ -1,31 +1,11 @@
 metadata:
     name: iozone
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "IOzone is a filesystem benchmark tool. The benchmark generates and
                   measures a variety of file operations."
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - ubuntu
-        - debian
-        - centos
-        - fedora
-        - openembedded
-    devices:
-        - d03
-        - d05
-        - juno
-        - beaglebone-black
-        - hi6220-hikey
-        - apq8016-sbc
-        - mustang
-        - moonshot
-        - thunderX
-        - x15
-        - x86
 
-    scope:
-        - performance
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

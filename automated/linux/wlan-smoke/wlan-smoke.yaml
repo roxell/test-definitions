@@ -1,18 +1,9 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: wlan-smoke
     description: "Basic WLAN smoke tests"
     maintainer:
         - nicolas.dechesne@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - dragonboard410c
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

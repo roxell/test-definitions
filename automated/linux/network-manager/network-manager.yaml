@@ -1,23 +1,11 @@
 metadata:
     name: network-manager-smoke
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "The test runs basic nmcli subcommands"
     maintainer:
         - milosz.wasilewski@foundries.io
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-    scope:
-        - functional
     environment:
         - lava-test-shell
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
-        - imx8mmevk
-        - imx6ullevk
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

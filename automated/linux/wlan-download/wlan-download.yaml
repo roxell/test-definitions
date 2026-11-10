@@ -1,19 +1,9 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: wlan-download
     description: "Basic WLAN download test, requires ip, iw, wpa_supplicant and dhclient"
     maintainer:
         - anibal.limon@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - dragonboard410c
-        - dragonboard820c
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

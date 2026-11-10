@@ -1,22 +1,10 @@
 metadata:
     name: workload-automation-linux
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Workload Automation on Linux"
     maintainer:
         - milosz.wasilewski@linaro.org
         - chase.qi@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    devices:
-        - juno
-        - hi6220-hikey
-        - apq8016-sbc
-        - x15
-    scope:
-        - performance
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

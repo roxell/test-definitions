@@ -1,15 +1,9 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: imagenet-ssd-resnet32
     description: "imagenet-ssd-resnet32 job, running resnet32 benchmark through mlperf."
     maintainer:
         - theodore.grey@linaro.org
-    os:
-        - debian
-    scope:
-        - functional
-    devices:
-        - hip07-d05
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

@@ -1,5 +1,5 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: rteval
     description: |
                   Rteval is a python program written to evaluate the performance of a
@@ -15,16 +15,6 @@ metadata:
                   collected during the run and the statistical analysis of the run.
     maintainer:
         - anders.roxell@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - openembedded
-    scope:
-        - performance
-    devices:
-        - x86
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

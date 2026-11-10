@@ -1,6 +1,6 @@
 metadata:
     name: libhugetlbfs
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Build and run libhugetlbfs tests.
                   Runs through $WORD_SIZE bit libhugetlbfs on target system.
                   The default WORD_SIZE is 64 bit to accomodate 64 bit systems
@@ -10,22 +10,6 @@ metadata:
     maintainer:
         - steve.capper@linaro.org
         - naresh.kamboju@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - rtsm_ve-armv8
-        - arndale
-        - mustang
-        - overdrive
-        - d05
-        - d03
-        - hi6220-hikey
-        - apq8016-sbc
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

@@ -1,5 +1,5 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: el2go-registration
     description: "Basic test suite EdgeLock2Go integration.
         The test enables EL2GO registration to the
@@ -21,13 +21,6 @@ metadata:
         This is done by setting RESET_SE05X to True."
     maintainer:
         - milosz.wasilewski@foundries.io
-    os:
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - imx8mm
-        - imx6ull
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

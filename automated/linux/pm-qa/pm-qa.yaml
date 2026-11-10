@@ -1,6 +1,6 @@
 metadata:
     name: pm-qa
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Test power management (PM-QA). Currently, the test runs
                   cpufreq, cpuidle, cpuhotplug, thermal and cputopology by
                   default and individual test can be run by setting TESTS
@@ -9,23 +9,6 @@ metadata:
     maintainer:
         - lisa.nguyen@linaro.org
         - chase.qi@linaro.org
-    os:
-        - ubuntu
-        - debian
-        - openembedded
-    scope:
-        - functional
-        - performance
-    devices:
-        - panda
-        - panda-es
-        - arndale
-        - vexpress-a9
-        - vexpress-tc2
-        - beaglebone-black
-        - juno
-        - hi6220-hikey
-        - apq8016-sbc
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

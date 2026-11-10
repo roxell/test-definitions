@@ -1,6 +1,6 @@
 metadata:
     name: rtla-timerlat
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "The rtla timerlat tool is an interface for the timerlat
                   tracer. The timerlat tracer dispatches a kernel thread per-cpu.
                   These threads set a periodic timer to wake themselves up and
@@ -9,25 +9,8 @@ metadata:
                   timer latency."
     maintainer:
         - Daniel Wagner <wagi@monom.org>
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - openembedded
-    scope:
-        - performance
-        - preempt-rt
     environment:
         - lava-test-shell
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
-        - mustang
-        - moonshot
-        - thunderX
-        - d03
-        - d05
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

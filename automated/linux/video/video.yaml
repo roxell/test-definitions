@@ -1,5 +1,5 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: video-compare
     description: |
         The test compares two images. The second image
@@ -13,17 +13,6 @@ metadata:
 
     maintainer:
         - mwasilew@quicinc.com
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - imx8mm
-        - imx6ull
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

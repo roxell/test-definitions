@@ -1,21 +1,13 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2022 Foundries.io
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: ota-update-verify
     description: "Verify system booted with upgrade"
 
     maintainer:
         - milosz.wasilewski@foundries.io
-    os:
-        - openembedded
-    scope:
-        - functional
 
-    devices:
-        - imx8mm
-        - imx6ull
-        - stm32mp15-disco
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

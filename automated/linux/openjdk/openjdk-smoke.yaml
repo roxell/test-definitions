@@ -1,25 +1,10 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: openjdk-smoke-test
     description: "Install openjdk, compile and run HelloWorld."
     maintainer:
         - milosz.wasilewski@linaro.org
         - chase.qi@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - juno
-        - hi6220-hikey
-        - apq8016-sbc
-        - mustang
-        - d02
-        - d03
-        - overdrive
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

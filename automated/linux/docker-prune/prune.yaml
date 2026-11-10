@@ -1,19 +1,13 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2021 Foundries.io
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: docker-prune
     description: "Download OTA update and prune
     old container images"
 
     maintainer:
         - brendan.wood@foundries.io
-    os:
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - imx8mm
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

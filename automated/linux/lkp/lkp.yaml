@@ -1,5 +1,5 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: lkp
     description: |
       lkp-tests (Linux Kernel Performance) is an open source tool that allows
@@ -13,15 +13,7 @@ metadata:
 
     maintainer:
         - someone@linaro.org
-    os:
-        - debian
-        - ubuntu
-    scope:
-        - functional
 
-    devices:
-        - aarch64
-        - x86_64
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

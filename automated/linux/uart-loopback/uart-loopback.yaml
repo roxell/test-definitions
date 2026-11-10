@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2019 Schneider Electric
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: uart-loopback
     description: "UART functional test.
                   This runs a functional test across two connected UARTs.
@@ -9,19 +9,6 @@ metadata:
                   parity, CTS/RTS, and stop bit settings."
     maintainer:
         - ryan.harkin@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - openembedded
-    scope:
-        - functional
-        - uart
-        - loopback
-    devices:
-        - rzn1d
-        - soca9
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

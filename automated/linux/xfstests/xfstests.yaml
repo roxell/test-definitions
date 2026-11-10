@@ -1,18 +1,11 @@
 metadata:
     name: xfstests
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "xfstests is a test suite for validating the reliability and
                   stability of file systems in the Linux kernel."
     maintainer:
         - anders.roxell@linaro.org
         - naresh.kamboju@linaro.org
-    os:
-        - debian
-        - ubuntu
-    scope:
-        - functional
-    devices:
-        - all
     environment:
         - lava-test-shell
     dependency_path:

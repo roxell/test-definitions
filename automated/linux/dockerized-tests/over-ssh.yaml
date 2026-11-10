@@ -1,31 +1,11 @@
 metadata:
     name: over-ssh
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run tests from https://git.linaro.org/qa/test-definitions.git with
                   docker. Test run will be triggered over ssh"
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - ubuntu
-        - debian
-        - centos
-        - fedora
-        - openembedded
-    devices:
-        - d03
-        - d05
-        - juno
-        - beaglebone-black
-        - hi6220-hikey
-        - apq8016-sbc
-        - mustang
-        - moonshot
-        - thunderX
-        - x15
 
-    scope:
-        - functional
-        - performance
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

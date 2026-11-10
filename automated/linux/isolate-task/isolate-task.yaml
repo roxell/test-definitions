@@ -1,20 +1,11 @@
 metadata:
     name: verify_isolation
     version: "1.0"
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Verify kernel configuration. Isolate application and verify
                   that kernel tick/resch interrups do not occur more than 1/sec."
     maintainer:
         - ravineet.singh@linaro.org
-    os:
-        - debian
-        - ubuntu
-    devices:
-        - juno
-        - arndale
-        - x86
-    scope:
-        - functional
     environment:
         - lava-test-shell
     dependency_path:

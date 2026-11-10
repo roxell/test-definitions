@@ -1,17 +1,9 @@
 metadata:
     name: badblocks
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run a read-only test for bad blocks"
     maintainer:
         - ryan.harkin@linaro.org
-    os:
-        - openembedded
-        - debian
-    scope:
-        - functional
-    devices:
-        - imx7s-warp
-        - sun8i-h2-plus-bananapi-m2-zero
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

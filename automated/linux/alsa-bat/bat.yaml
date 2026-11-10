@@ -1,19 +1,9 @@
 metadata:
     name: alsabat
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run the ALSA Basic Audio Test"
     maintainer:
         - broonie@kernel.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - oe
-    scope:
-        - functional
-    devices:
-        - all
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

@@ -1,19 +1,10 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: usb-gadget-framework
     description: |
                  USB Gadget Framework test
     maintainer:
         - anders.roxell@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - rockpi4
-        - x86
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

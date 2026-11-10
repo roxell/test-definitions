@@ -2,18 +2,10 @@
 # Copyright (C) 2025 Linaro Ltd.
 metadata:
     name: rollback-tests
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run appliance rollback tests in LAVA."
     maintainer:
         - stevan.radakovic@linaro.org
-    os:
-        - debian
-        - ubuntu
-    devices:
-        - qemu
-        - lol
-    scope:
-        - functional
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

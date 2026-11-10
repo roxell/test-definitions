@@ -1,28 +1,11 @@
 metadata:
     name: fio-test
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "FIO or Flexible IO is a versatile IO workload generator test
                   on Linux."
     maintainer:
         - naresh.kamboju@linaro.org
         - chase.qi@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-        - openembedded
-    devices:
-        - mustang
-        - overdrive
-        - d05
-        - d03
-        - moonshot
-        - thunderX
-        - hi6220-hikey
-        - apq8016-sbc
-    scope:
-        - performance
     environment:
         - lava-test-shell
     dependency_path:

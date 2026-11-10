@@ -1,18 +1,9 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: igt-test
     description: "Run igt-gpu-tools with a given test list"
     maintainer:
         - arthur.she@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - dragonboard-410c
-        - x15
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

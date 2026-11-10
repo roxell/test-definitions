@@ -1,5 +1,5 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: tvm-unit-tests
     description: "Carry out tvm unit tests from the
     TVM/tests/scripts dir
@@ -11,12 +11,6 @@ metadata:
     crt unit tests."
     maintainer:
         - theodore.grey@linaro.org
-    os:
-        - debian
-    scope:
-        - functional
-    devices:
-        - dragonboard-845c
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

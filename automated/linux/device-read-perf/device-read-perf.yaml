@@ -1,23 +1,10 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: device-read-perf
     description: "Use 'hdparm -t' to perform timings of block device reads for
                   benchmark and comparison purposes."
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - openembedded
-    scope:
-        - performance
-    devices:
-        - mustang
-        - d03
-        - d05
-        - ifc6410
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

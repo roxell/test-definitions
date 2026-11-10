@@ -1,18 +1,9 @@
 metadata:
     name: cryptsetup
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Cryptsetup benchmark tests"
     maintainer:
         - nicolas.dechesne@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - crypto
-    devices:
-        - all
     environment:
         - lava-test-shell
     dependency_path:

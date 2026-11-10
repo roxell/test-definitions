@@ -1,5 +1,5 @@
 metadata:
-  format: Lava-Test Test Definition 1.0
+  format: Lava-Test Test Definition 2.0
   name: secure-boot-enabled
   description: |
     Validate UEFI SecureBoot is enabled by checking the value of variable
@@ -8,16 +8,6 @@ metadata:
     https://uefi.org/specs/UEFI/2.10/03_Boot_Manager.html#globally-defined-variables
   maintainer:
     - javier.tia@linaro.org
-  os:
-    - debian
-    - ubuntu
-    - centos
-    - fedora
-    - archlinux
-  devices:
-    - all
-  scope:
-    - functional
   dependency_path:
     - /automated/lib/*
     - /automated/utils/*

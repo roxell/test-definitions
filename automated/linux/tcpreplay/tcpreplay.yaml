@@ -1,20 +1,9 @@
 metadata:
-  format: Lava-Test Test Definition 1.0
+  format: Lava-Test Test Definition 2.0
   name: tcpreplay
   description: Replay a PCAP file using tcpreplay and verify via TUN interface
   maintainer:
     - anders.roxell@linaro.org
-  os:
-    - debian
-    - ubuntu
-    - centos
-    - fedora
-    - openembedded
-  scope:
-    - functional
-  devices:
-    - juno
-    - x86
   dependency_path:
     - /automated/lib/*
     - /automated/utils/*

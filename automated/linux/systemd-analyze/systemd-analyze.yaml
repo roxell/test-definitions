@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2024 Linaro Ltd.
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: systemd-analyze
     description: |
         systemd-analyze may be used to determine system boot-up performance
@@ -11,16 +11,6 @@ metadata:
         system manager debugging.
     maintainer:
         - anders.roxell@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - openembedded
-    scope:
-        - boot performance
-    devices:
-        - all
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

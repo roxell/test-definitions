@@ -1,18 +1,9 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: pyarmnn-benchmark
     description: "Part of ml-bench, pyarmnn-bench testing validity of pyarmnn pip wheels."
     maintainer:
         - theodore.grey@linaro.org
-    os:
-        - debian
-    scope:
-        - functional
-    devices:
-        - synquacer
-        - dragonboard-845c
-        - hi960-hikey
-        - stm32mp1
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

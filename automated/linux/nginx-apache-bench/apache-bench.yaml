@@ -1,23 +1,11 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: ngingx-apache-bench
     description: "Apachebench is a benchmark created to measure
                   the webserver performance on HTTP protocol. This
                   test runs apachebench against apache nginx"
     maintainer:
         - milosz.wasilewski@linaro.org
-    os:
-        - debian
-        - centos
-    scope:
-        - performance
-    devices:
-        - mustang
-        - overdrive
-        - thunderX
-        - d02
-        - d03
-        - d05
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

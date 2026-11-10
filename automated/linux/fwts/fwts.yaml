@@ -1,24 +1,10 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: Firmware-Test-Suite
     description: "FirmWare Test Suite (fwts)"
     maintainer:
         - anders.roxell@linaro.org
         - naresh.kamboju@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - dragonboard410c
-        - hi6220-hikey
-        - juno
-        - x15
-        - x86
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

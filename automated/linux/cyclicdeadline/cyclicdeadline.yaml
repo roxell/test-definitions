@@ -1,31 +1,14 @@
 metadata:
     name: cyclicdeadline
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "cyclicdeadline is a test that is similar to cyclictest
                   but instead of using SCHED_FIFO and nanosleep() to
                   measure jitter, it uses SCHED_DEADLINE and has the
                   deadline be the wakeup interval."
     maintainer:
         - Daniel Wagner <wagi@monom.org>
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - openembedded
-    scope:
-        - performance
-        - preempt-rt
     environment:
         - lava-test-shell
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
-        - mustang
-        - moonshot
-        - thunderX
-        - d03
-        - d05
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

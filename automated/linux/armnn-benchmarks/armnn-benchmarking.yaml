@@ -1,16 +1,10 @@
  
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: armnn-mlperf-benchmark
     description: "Carry out armnn-mlperf benchmark test."
     maintainer:
         - theodore.grey@linaro.org
-    os:
-        - debian
-    scope:
-        - functional
-    devices:
-        - synquacer
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

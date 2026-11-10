@@ -1,20 +1,9 @@
 metadata:
     name: disk-partitioning-test
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Disk partitioning test."
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-    devices:
-        - mustang
-        - hi6220-hikey
-        - apq8016-sbc
-    scope:
-        - functional
     environment:
         - lava-test-shell
     dependency_path:

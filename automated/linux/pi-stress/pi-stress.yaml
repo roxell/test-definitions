@@ -1,28 +1,11 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: pi-stress
     description: "pi_stress checks Priority Inheritence Mutexes and their
                   ability to avoid Priority Inversion from occuring by running
                   groups of threads that cause Priority Inversions."
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - openembedded
-    scope:
-        - functional
-        - preempt-rt
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
-        - mustang
-        - moonshot
-        - thunderX
-        - d03
-        - d05
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

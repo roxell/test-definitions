@@ -1,17 +1,10 @@
 metadata:
     name: gpiod
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run a gpiod suite"
     maintainer:
         - anders.roxell@linaro.org
         - chase.qi@linaro.org
-    os:
-        - OE
-    scope:
-        - functional
-    devices:
-        - hikey
-        - x86
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

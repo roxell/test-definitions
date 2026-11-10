@@ -1,20 +1,10 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: libcurl
     description: "Test exercising libcurl support
         for certificates without SAN"
     maintainer:
         - milosz.wasilewski@foundries.io
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - imx8mm-evk
-        - imx6ull-evk
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

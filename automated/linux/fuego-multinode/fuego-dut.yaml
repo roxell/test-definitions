@@ -1,16 +1,9 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: fuego-dut
     description: "Run fuego tests with LAVA. Refer to http://fuegotest.org/"
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - debian
-    scope:
-        - functional
-    devices:
-        - rpi3-b-32
-        - beaglebone-black
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

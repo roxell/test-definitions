@@ -1,23 +1,10 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: bootrr
     description: "Run bootrr https://github.com/linux-msm/bootrr"
     maintainer:
         - milosz.wasilewski@oss.qualcomm.com
         - chase.qi@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - apq8016-sbc
-        - dragonboard-410c
-        - dragonboard-820c
-        - qcs6490-rb3gen2
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

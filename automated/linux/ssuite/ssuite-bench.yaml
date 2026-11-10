@@ -1,5 +1,5 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: S-suite
     description: |
                   The S-suite is a suite of I/O-performance benchmarks.
@@ -17,16 +17,6 @@ metadata:
                      difficult to guarantee a high responsiveness
     maintainer:
         - paolo.valente@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - openembedded
-    scope:
-        - I/O performance
-    devices:
-        - x86
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

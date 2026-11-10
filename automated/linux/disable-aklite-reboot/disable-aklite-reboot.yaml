@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2021 Foundries.io
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: disable-aklite-reboot
     description: "Disable automatic reboot after update.
     This is required when running long test. It prevents
@@ -10,14 +10,7 @@ metadata:
 
     maintainer:
         - milosz.wasilewski@foundries.io
-    os:
-        - openembedded
-    scope:
-        - functional
 
-    devices:
-        - imx8mm
-        - bcm2711-rpi-4-b
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

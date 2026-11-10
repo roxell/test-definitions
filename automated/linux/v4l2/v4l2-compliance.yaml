@@ -1,17 +1,9 @@
 metadata:
     name: v4l2-compliance
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "v4l2 Compliance test suite"
     maintainer:
         - ryan.harkin@linaro.org
-    os:
-        - openembedded
-        - debian
-    scope:
-        - functional
-    devices:
-        - imx7s-warp
-        - hikey
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

@@ -1,16 +1,9 @@
 metadata:
     name: xenomai4
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run 'evl test' from Xenomai4"
     maintainer:
         - milosz.wasilewski@foundries.io
-    os:
-        - openembedded
-    scope:
-        - functional
-        - performance
-    devices:
-        - imx8mm-lpddr4-evk
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

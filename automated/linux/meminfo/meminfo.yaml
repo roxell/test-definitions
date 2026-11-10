@@ -1,19 +1,9 @@
 metadata:
     name: meminfo
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Collect the information in /proc/meminfo after boot."
     maintainer:
         - ryan.harkin@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - oe
-    scope:
-        - functional
-    devices:
-        - rzn1d
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

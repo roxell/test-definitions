@@ -1,18 +1,11 @@
 metadata:
     name: widevine_unittest
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Widevine Content Decryption Modules (CDMs) are how streaming services
                   protect content using HTML5 video to web browsers without relying on
                   an NPAPI plugin like Flash or Silverlight. This test runs widevine_ce_cdm_unittest"
     maintainer:
         - arthur.she@linaro.org
-    os:
-        - openembedded
-        - debian
-    scope:
-        - functional
-    devices:
-        - imx8mq-evk
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

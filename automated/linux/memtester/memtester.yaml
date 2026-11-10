@@ -1,19 +1,9 @@
 metadata:
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     name: memtester
     description: "Stress test to find memory subsystem faults"
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - openembedded
-    scope:
-        - functional
-        - stress
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

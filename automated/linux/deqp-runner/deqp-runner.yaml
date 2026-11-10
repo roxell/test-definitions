@@ -1,19 +1,11 @@
 metadata:
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     name: deqp-runner
     description: "The drawElements Quality Program (deqp) Testing allows to test OpenGL API's, uses
                   OpenGL ES CTS from https://github.com/KhronosGroup/VK-GL-CTS."
 
     maintainer:
         - anibal.limon@linaro.org
-    os:
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - dragonboard410c
-        - dragonboard820c
-        - dragonboard845c
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

@@ -1,6 +1,6 @@
 metadata:
     name: mmtests
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "MMTests is a configurable test suite that runs performance tests
                   against arbitrary workloads. This is not the only test framework
                   but care is taken to make sure the test configurations are accurate,
@@ -12,10 +12,6 @@ metadata:
         - anders.roxell@linaro.org
         - naresh.kamboju@linaro.org
         - romagnoli.mirco@gmail.com
-    os:
-        - debian
-    devices:
-        - juno-r2
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

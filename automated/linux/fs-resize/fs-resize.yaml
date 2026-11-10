@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2021 Foundries.io
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: fs-resize
     description: "Test if rootfs was properly resized
 
@@ -11,18 +11,7 @@ metadata:
 
     maintainer:
         - milosz.wasilewski@foundries.io
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-        - openembedded
-    scope:
-        - functional
 
-    devices:
-        - imx8mm
-        - bcm2711-rpi-4-b
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

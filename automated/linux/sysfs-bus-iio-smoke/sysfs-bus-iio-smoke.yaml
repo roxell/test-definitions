@@ -1,22 +1,11 @@
 metadata:
     name: sysfs-bus-iio-smoke
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Range checks for particular properties in the sysfs bus iio subsystem."
     maintainer:
         - luis.machado@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-    scope:
-        - functional
-        - performance
     environment:
         - lava-test-shell
-    devices:
-        - dragonboard410c
-        - dragonboard820c
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

@@ -1,16 +1,10 @@
 metadata:
     name: ltp-chroot
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run a chroot"
     maintainer:
         - anders.roxell@linaro.org
         - chase.qi@linaro.org
-    os:
-        - OE
-    scope:
-        - functional
-    devices:
-        - qemu-arm64
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

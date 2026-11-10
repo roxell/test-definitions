@@ -1,5 +1,5 @@
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: hci-smoke
     description: "Basic HCI smoke tests
         The test will run the following commands:
@@ -11,18 +11,6 @@ metadata:
         in DUT's proximity."
     maintainer:
         - nicolas.dechesne@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - dragonboard410c
-        - imx8mmevk
-        - imx6ullevk
-        - rpi4
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

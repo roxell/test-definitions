@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2022 Foundries.io
 metadata:
-    format: Lava-Test Test Definition 1.0
+    format: Lava-Test Test Definition 2.0
     name: ota-update-reboot
     description: "Verify system booted with upgrade. In case of u-boot
         upgrade it should boot to primary partition with proper
@@ -9,14 +9,7 @@ metadata:
 
     maintainer:
         - milosz.wasilewski@foundries.io
-    os:
-        - openembedded
-    scope:
-        - functional
 
-    devices:
-        - imx8mm
-        - imx6ull
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

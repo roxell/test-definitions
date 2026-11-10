@@ -1,6 +1,6 @@
 metadata:
     name: ima-smoke
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Check if IMA is enabled in the kernel
           The test only checks kernel configs presence,
           IMA initialization and presence of measurements
@@ -9,21 +9,8 @@ metadata:
           requirement to use TPM."
     maintainer:
         - milosz.wasilewski@foundries.io
-    os:
-        - debian
-        - ubuntu
-        - fedora
-        - centos
-    scope:
-        - functional
     environment:
         - lava-test-shell
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
-        - d05
-        - imx8mmevk
-        - imx6ullevk
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

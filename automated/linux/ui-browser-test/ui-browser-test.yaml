@@ -1,17 +1,10 @@
 metadata:
     name: ui-browser-test
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "ui browser tests by using robot frame work
                   Test runs chromium, chrome and firefox browser test cases."
     maintainer:
         - naresh.kamboju@linaro.org
-    os:
-        - debian
-    scope:
-        - functional
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*
