@@ -1,19 +1,12 @@
 metadata:
     name: piglit-glslparser
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "piglit glslparser test for android. The GLSL Parser provides
                   a front end for parsing and operating on OpenGL Shading
                   Language code. "
     maintainer:
         - yongqin.liu@linaro.org
         - chase.qi@linaro.org
-    os:
-        - android
-    scope:
-        - functional
-    devices:
-        - juno
-        - hi6220-hikey
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

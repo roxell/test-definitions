@@ -1,18 +1,10 @@
 metadata:
     name: apk-automation
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Automate testing with Android APK."
     maintainer:
         - milosz.wasilewski@linaro.org
         - chase.qi@linaro.org
-    os:
-        - android
-    devices:
-        - juno
-        - hi6220-hikey
-        - x15
-    scope:
-        - performance
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

@@ -1,17 +1,10 @@
 metadata:
     name: ping
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "ping test"
     maintainer:
         - yongqin.liu@linaro.org
         - chase.qi@linaro.org
-    os:
-        - android
-    scope:
-        - performance
-    devices:
-        - juno
-        - hi6220-hikey
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

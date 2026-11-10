@@ -1,17 +1,10 @@
 metadata:
     name: cts
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run tradefed based tests in LAVA."
     maintainer:
         - milosz.wasilewski@linaro.org
         - chase.qi@linaro.org
-    os:
-        - debian
-        - ubuntu
-    devices:
-        - lxc
-    scope:
-        - functional
     dependency_path:
         - /automated/android/tradefed/*
         - /automated/lib/*

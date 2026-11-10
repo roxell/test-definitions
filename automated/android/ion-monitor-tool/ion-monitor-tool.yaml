@@ -1,13 +1,9 @@
 metadata:
     name: ion-monitor-tool
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run ion monitor tool to check memory leaks."
     maintainer:
         - axel.lebourhis@linaro.org
-    os:
-        - ubuntu
-    devices:
-        - lxc
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

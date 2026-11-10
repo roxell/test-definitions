@@ -1,17 +1,9 @@
 metadata:
     name: bionic-benchmarks-with-units
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Collect the bionic-benchmarks data and try to analyse it."
     maintainer:
         - daniel.diaz@linaro.org
-    os:
-        - android
-    devices:
-        - juno
-        - hi6220-hikey
-        - x15
-    scope:
-        - performance
     environment:
         - lava-test-shell
     dependency_path:

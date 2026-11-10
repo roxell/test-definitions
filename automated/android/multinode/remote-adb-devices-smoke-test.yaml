@@ -1,17 +1,10 @@
 metadata:
     name: remote-adb-devices-smoke-test
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Smoke test demonstrating access to adb devices over TCP/IP."
     maintainer:
         - karsten@fairphone.com
         - softwareteam@fairphone.com
-    os:
-        - debian
-        - ubuntu
-    devices:
-        - lxc
-    scope:
-        - functional
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

@@ -1,17 +1,10 @@
 metadata:
     name: release-remote-adb-tcpip-devices
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Disconnect from remote adb devices and cleanup."
     maintainer:
         - karsten@fairphone.com
         - softwareteam@fairphone.com
-    os:
-        - debian
-        - ubuntu
-    devices:
-        - lxc
-    scope:
-        - functional
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

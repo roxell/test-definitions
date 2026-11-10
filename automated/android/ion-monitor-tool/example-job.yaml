@@ -12,7 +12,6 @@ priority: medium
 visibility: public
 
 metadata:
-  os: android
   android.version: 9.0.0
   test: ion-monitor
 

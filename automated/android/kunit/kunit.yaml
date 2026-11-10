@@ -1,19 +1,11 @@
 metadata:
     name: kunit-tests
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: |
         Run the KUnit test on Android based on the tradefed framework
         provided by google.
     maintainer:
         - yongqin.liu@linaro.org
-    os:
-        - android
-    devices:
-        - db845c
-        - rb5
-        - sm8550
-    scope:
-        - functional
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

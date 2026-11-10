@@ -1,17 +1,10 @@
 metadata:
     name: meminfo
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Collect the information in /proc/meminfo after boot."
     maintainer:
         - yongqin.liu@linaro.org
         - chase.qi@linaro.org
-    os:
-        - android
-    scope:
-        - functional
-    devices:
-        - juno
-        - hi6220-hikey
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*

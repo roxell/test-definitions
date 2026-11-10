@@ -1,19 +1,12 @@
 metadata:
     name: libc-bench
-    format: "Lava-Test Test Definition 1.0"
+    format: "Lava-Test Test Definition 2.0"
     description: "Run libc-bench to benchmark the performance of bionic.
                   The source can be viewed here:
                   https://android-git.linaro.org/platform/external/libc-bench"
     maintainer:
         - yongqin.liu@linaro.org
         - chase.qi@linaro.org
-    os:
-        - android
-    scope:
-        - performance
-    devices:
-        - juno
-        - hi6220-hikey
     dependency_path:
         - /automated/lib/*
         - /automated/utils/*
