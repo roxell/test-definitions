@@ -4,7 +4,7 @@
 """Generate markdown documentation from YAML test definitions.
 
 Walks the test directories, reads YAML files with metadata sections,
-and generates markdown pages, an index table, and a tags page.
+and generates markdown pages and an index table.
 Run this before building the docs.
 """
 
@@ -21,16 +21,10 @@ DOCS_DIR = "docs"
 log = logging.getLogger(__name__)
 
 
-def tag_anchor(tag):
-    """Convert a tag name to a URL anchor."""
-    return tag.lower().replace(" ", "-").replace("/", "")
-
-
 def parse_test_definition(filepath):
     """Parse a YAML test definition file.
 
-    Returns a dict with name, description, scope, os, devices, maintainer,
-    and steps. Returns None if the file has no metadata section.
+    Returns a dict with name, description, maintainer and steps. Returns None if the file has no metadata section.
     """
     try:
         with open(filepath, "r") as f:
@@ -58,33 +52,18 @@ def parse_test_definition(filepath):
     return {
         "name": metadata["name"],
         "description": metadata.get("description", ""),
-        "scope": metadata.get("scope", []),
-        "os": metadata.get("os", []),
-        "devices": metadata.get("devices", []),
         "maintainer": metadata.get("maintainer", []),
         "steps": steps,
     }
 
 
-def build_frontmatter(name, scope_list):
+def build_frontmatter(name):
     """Build YAML frontmatter for a markdown page."""
-    lines = ["---", "title: %s" % name]
-    if scope_list:
-        lines.append("tags:")
-        for item in scope_list:
-            lines.append(" - %s" % item)
-    lines.append("---")
-    return "\n".join(lines)
+    return "\n".join(["---", "title: %s" % name, "---"])
 
 
 def build_md_list(header, items):
-    """Build a markdown section with a header and bullet list.
-
-    Returns an empty string for empty lists, so sections such as OS, Scope
-    and Devices are omitted for 'Lava-Test Test Definition 2.0' files.
-    """
-    if not items:
-        return ""
+    """Build a markdown section with a header and bullet list."""
     lines = ["\n## %s\n" % header]
     for item in items:
         lines.append(" * %s" % item)
@@ -93,7 +72,7 @@ def build_md_list(header, items):
 
 def build_test_page(rel_path, definition):
     """Build the full markdown content for a test page."""
-    parts = [build_frontmatter(definition["name"], definition["scope"])]
+    parts = [build_frontmatter(definition["name"])]
     parts.append("\n# %s\n" % rel_path)
 
     parts.append("\n## Description\n")
@@ -103,10 +82,6 @@ def build_test_page(rel_path, definition):
         parts.append(build_md_list("Maintainer", definition["maintainer"]))
     else:
         parts.append("\n## Maintainer\n")
-
-    parts.append(build_md_list("OS", definition["os"]))
-    parts.append(build_md_list("Scope", definition["scope"]))
-    parts.append(build_md_list("Devices", definition["devices"]))
 
     parts.append("\n## Steps to reproduce\n")
     for line in definition["steps"]:
@@ -137,46 +112,17 @@ def write_test_page(filepath, docs_dir, definition):
     return rel_path
 
 
-def collect_tags(tags, definition, rel_path):
-    """Add tags from a test definition to the tags dict."""
-    for scope in definition["scope"]:
-        anchor = tag_anchor(scope)
-        if anchor not in tags:
-            tags[anchor] = {"label": scope, "pages": []}
-        tags[anchor]["pages"].append(
-            {"name": definition["name"], "path": rel_path + ".md"}
-        )
-
-
 def collect_table_row(test_tables, table_dirs, definition, rel_path):
     """Add a row to the appropriate index table."""
     for table_name in table_dirs:
         if rel_path.startswith(table_name):
-            scope_links = ", ".join(
-                "[%s](tags.md#%s)" % (s, tag_anchor(s)) for s in definition["scope"]
-            )
             test_tables[table_name].append(
                 {
                     "name": "[%s](%s.md)" % (definition["name"], rel_path),
                     "description": definition["description"],
-                    "scope": scope_links,
                 }
             )
             break
-
-
-def generate_tags_page(docs_dir, tags):
-    """Generate the tags index page."""
-    path = os.path.join(docs_dir, "tags.md")
-    lines = ["# Tags\n"]
-    for anchor in sorted(tags):
-        entry = tags[anchor]
-        lines.append('<h2 id="%s">%s</h2>\n' % (anchor, entry["label"]))
-        for page in sorted(entry["pages"], key=lambda p: p["name"]):
-            lines.append("- [%s](%s)\n" % (page["name"], page["path"]))
-        lines.append("")
-    with open(path, "w") as f:
-        f.write("\n".join(lines))
 
 
 def generate_index(docs_dir, table_dirs, test_tables, table_filename):
@@ -186,11 +132,11 @@ def generate_index(docs_dir, table_dirs, test_tables, table_filename):
     for table_name in table_dirs:
         test_table = test_tables[table_name]
         lines.append('\n## <span class="tag">%s</span>\n' % table_name)
-        lines.append("| Name | Description | Scope |")
-        lines.append("| --- | --- | --- |")
+        lines.append("| Name | Description |")
+        lines.append("| --- | --- |")
         for row in sorted(test_table, key=lambda r: r["name"]):
             desc = row["description"].replace("\n", "")
-            lines.append("| %s | %s | %s |" % (row["name"], desc, row["scope"]))
+            lines.append("| %s | %s |" % (row["name"], desc))
         lines.append("")
     with open(path, "w") as f:
         f.write("\n".join(lines) + "\n")
@@ -220,7 +166,6 @@ def main():
     logging.basicConfig(level=logging.WARNING if args.verbose else logging.ERROR)
 
     test_tables = {name: [] for name in args.table_dirs}
-    tags = {}
     generated = 0
 
     for table_dir in args.table_dirs:
@@ -233,13 +178,11 @@ def main():
                 if definition is None:
                     continue
                 rel_path = write_test_page(filepath, args.docs_dir, definition)
-                collect_tags(tags, definition, rel_path)
                 collect_table_row(test_tables, args.table_dirs, definition, rel_path)
                 generated += 1
 
     generate_index(args.docs_dir, args.table_dirs, test_tables, args.table_file)
-    generate_tags_page(args.docs_dir, tags)
-    print("Generated %d test doc(s) + index + tags (%d tags)" % (generated, len(tags)))
+    print("Generated %d test doc(s) + index" % generated)
 
 
 if __name__ == "__main__":
