@@ -1,22 +1,9 @@
 metadata:
     name: disk-boot
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Boot Linux operating system from pre-installed hard disk and mount rootfs"
     maintainer:
         - naresh.kamboju@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - d02
-        - d03
-        - d05
-        - overdrive
-        - moonshot
     environment:
         - manual-test
 

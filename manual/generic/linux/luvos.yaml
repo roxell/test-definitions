@@ -1,21 +1,12 @@
 metadata:
     name: LuvOS
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Execute all tests included in LuvOS. LuvOS is a distribution
         based on OpenEmbedded build system. It includes UEFI and ACPI test
         suites. More details in wiki:
         https://wiki.linaro.org/LEG/Engineering/LUV"
     maintainer:
         - milosz.wasilewski@linaro.org
-    os:
-        - luvOS
-    scope:
-        - functional
-    devices:
-        - d02
-        - d03
-        - d05
-        - overdrive
     environment:
         - manual-test
 

@@ -1,16 +1,9 @@
 metadata:
     name: manual-ota
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if OTA update for Foundries Factory is sucessful."
     maintainer:
         - brendan.wood@foundires.io
-    os:
-        - ubuntu
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - am64x
     environment:
         - manual-test
 

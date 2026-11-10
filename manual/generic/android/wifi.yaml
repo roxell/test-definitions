@@ -1,17 +1,9 @@
 metadata:
     name: andriod-wifi
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if wifi module works well"
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - android
-    scope:
-        - functional
-    devices:
-        - panda
-        - panda-es
-        - hi6220-hikey
     environment:
         - manual-test
 

@@ -1,20 +1,9 @@
 metadata:
     name: usb-storage
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Basic test for USB keyboard functionality"
     maintainer:
         - botao.sun@linaro.org
-    os:
-        - ubuntu
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - panda
-        - panda-es
-        - arndale
-        - hi6220-hikey
-        - apq8016-sbc
     environment:
         - manual-test
 

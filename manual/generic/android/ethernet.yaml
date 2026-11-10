@@ -1,19 +1,9 @@
 metadata:
     name: andriod-ethernet
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if ethernet can be configured and works well"
     maintainer:
         - botao.sun@linaro.org
-    os:
-        - android
-    scope:
-        - functional
-    devices:
-        - panda
-        - panda-es
-        - vexpress-a9
-        - vexpress-tc2
-        - arndale
     environment:
         - manual-test
 

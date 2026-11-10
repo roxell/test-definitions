@@ -1,18 +1,9 @@
 metadata:
     name: ds5-remote-debug
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test remote debug feature in ARM DS-5 for hardware board."
     maintainer:
         - botao.sun@linaro.org
-    os:
-        - ubuntu
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - panda
-        - panda-es
-        - arndale
     environment:
         - manual-test
 

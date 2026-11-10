@@ -1,18 +1,9 @@
 metadata:
     name: andriod-sd-mmc
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if the SD/MMC cards are properly registered by kernel"
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - android
-    scope:
-        - functional
-    devices:
-        - panda
-        - panda-es
-        - arndale
-        - hi6220-hikey
     environment:
         - manual-test
 

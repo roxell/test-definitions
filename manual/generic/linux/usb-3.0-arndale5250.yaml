@@ -1,15 +1,9 @@
 metadata:
     name: usb-3.0-arndale5250
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Check enablement of USB 3.0 on Samsung Arndale 5250 board."
     maintainer:
         - botao.sun@linaro.org
-    os:
-        - ubuntu
-    scope:
-        - functional
-    devices:
-        - arndale
     environment:
         - manual-test
 

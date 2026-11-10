@@ -1,22 +1,11 @@
 metadata:
     name: aklite-full-disk
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test aktualizr-lite behaviour in full disk condition.
         Also check if it goes back to it's normal behaviour after freeing
         more space in the disk."
     maintainer:
         - milosz.wasilewski@foundries.io
-    os:
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - imx6mm-evk
-        - imx8mm-evk
-        - imx8mp-evk
-        - imx8mq-evk
-        - bcm2711-rpi-4-b
-        - stm32mp32mp157c-dk2
     environment:
         - manual-test
 

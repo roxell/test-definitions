@@ -1,16 +1,9 @@
 metadata:
     name: dragon410c-user-led
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if user LED working on Dragonboard 410c."
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - android
-        - debian
-    scope:
-        - functional
-    devices:
-        - apq8016-sbc
     environment:
         - manual-test
 

@@ -1,16 +1,9 @@
 metadata:
     name: kvm-arm32-guest-on-arm64-host
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test kvm running on arm32 bit guest on arm64 bit host"
     maintainer:
         - naresh.kamboju@linaro.org
-    os:
-        - ubuntu
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - hi6220-hikey
     environment:
         - manual-test
 

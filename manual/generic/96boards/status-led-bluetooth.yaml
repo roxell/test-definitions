@@ -1,17 +1,9 @@
 metadata:
     name: status-led-bluetooth
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if BT status LED works on 96board."
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - android
-        - debian
-    scope:
-        - functional
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
     environment:
         - manual-test
 

@@ -1,25 +1,11 @@
 metadata:
     name: software-raid5
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Use Linux utility mdadm to create, rebuilt and delete
                   software RAID5. RAID5 consists of block-level striping with
                   distributed parity."
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - d02
-        - d03
-        - d05
-        - overdrive
-        - moonshot
-        - thunderX
     environment:
         - manual-test
 

@@ -1,19 +1,9 @@
 metadata:
     name: andriod-usb-host-mouse
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if USB mouse can be detected and works properly"
     maintainer:
         - botao.sun@linaro.org
-    os:
-        - android
-    scope:
-        - functional
-    devices:
-        - panda
-        - panda-es
-        - vexpress-a9
-        - vexpress-tc2
-        - arndale
     environment:
         - manual-test
 

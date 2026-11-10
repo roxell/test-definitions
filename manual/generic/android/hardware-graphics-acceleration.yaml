@@ -1,16 +1,9 @@
 metadata:
     name: hardware-graphics-acceleration
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if hardware graphics acceleration is enabled."
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - android
-    scope:
-        - functional
-    devices:
-        - apq8016-sbc
-        - hi6220-hikey
     environment:
         - manual-test
 

@@ -1,16 +1,9 @@
 metadata:
     name: android-ui-auto-mount
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if SD card can mounted automatically."
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - android
-    scope:
-        - functional
-    devices:
-        - apq8016-sbc
-        - hi6220-hikey
     environment:
         - manual-test
 

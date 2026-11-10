@@ -1,20 +1,9 @@
 metadata:
     name: hdmi-resolution-switching-cmd
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Check if switching HDMI resolution on monitor works from Terminal."
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - ubuntu
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - panda
-        - panda-es
-        - arndale
-        - hi6220-hikey
-        - apq8016-sbc
     environment:
         - manual-test
 

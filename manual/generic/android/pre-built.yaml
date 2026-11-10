@@ -1,19 +1,9 @@
 metadata:
     name: andriod-pre-built
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if the pre-build image can be installed and boot-up ok"
     maintainer:
         - botao.sun@linaro.org
-    os:
-        - android
-    scope:
-        - functional
-    devices:
-        - panda
-        - panda-es
-        - vexpress-a9
-        - vexpress-tc2
-        - arndale
     environment:
         - manual-test
 

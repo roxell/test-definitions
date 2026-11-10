@@ -1,23 +1,9 @@
 metadata:
     name: usb-keyboard
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Basic test for USB keyboard functionality"
     maintainer:
         - botao.sun@linaro.org
-    os:
-        - android
-        - ubuntu
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - panda
-        - panda-es
-        - arndale
-        - vexpress-a9
-        - vexpress-tc2
-        - hi6220-hikey
-        - apq8016-sbc
     environment:
         - manual-test
 

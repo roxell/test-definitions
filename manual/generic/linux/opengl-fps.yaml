@@ -1,17 +1,9 @@
 metadata:
     name: opengl-fps
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Measure OpenGL FPS with glxgears and Tux Racer."
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - debian
-    scope:
-        - benchmark
-    devices:
-        - hi6220-hikey
-        - db410c
-        - Bubblegum
     environment:
         - manual-test
 

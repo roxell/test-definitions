@@ -1,24 +1,10 @@
 metadata:
     name: software-raid0
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Use Linux utility mdadm to create and delete software RAID0.
                   RAID0 consists of striping, without mirroring or parity."
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - d02
-        - d03
-        - d05
-        - overdrive
-        - moonshot
-        - thunderX
     environment:
         - manual-test
 

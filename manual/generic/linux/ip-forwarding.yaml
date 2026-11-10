@@ -1,17 +1,9 @@
 metadata:
     name: ip-forwarding
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if Kernel IP forwarding works."
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - debian
-        - centos
-    scope:
-        - functional
-    devices:
-        - d02
-        - overdrive
     environment:
         - manual-test
 

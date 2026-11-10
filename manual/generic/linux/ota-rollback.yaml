@@ -1,16 +1,9 @@
 metadata:
     name: ota-rollback
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test OTA rollback"
     maintainer:
         - brendan.wood@foundires.io
-    os:
-        - ubuntu
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - am64x
     environment:
         - manual-test
 

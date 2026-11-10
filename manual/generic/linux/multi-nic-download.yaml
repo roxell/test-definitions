@@ -1,17 +1,10 @@
 metadata:
     name: multi-nic-download
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if download can be performed by selecting an interface from multiple available interfaces."
     maintainer:
         - amit.khare@linaro.org
         - chase.qi@linaro.org
-    os:
-        - debian
-    scope:
-        - functional
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
     environment:
         - manual-test
 

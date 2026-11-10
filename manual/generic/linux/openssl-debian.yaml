@@ -1,6 +1,6 @@
 metadata:
     name: openssl-debian
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "OpenSSL is an open source project that provides a robust,
             commercial-grade, and full-featured toolkit for the Transport Layer
             Security (TLS) and Secure Sockets Layer (SSL) protocols.
@@ -8,16 +8,6 @@ metadata:
             ref: https://www.openssl.org"
     maintainer:
         - naresh.kamboju@linaro.org
-    os:
-        - debian
-        - ubuntu
-    scope:
-        - functional
-    devices:
-        - d02
-        - d03
-        - d05
-        - overdrive
     environment:
         - manual-test
 

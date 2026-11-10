@@ -1,16 +1,9 @@
 metadata:
     name: hikey-bluetooth-status-led
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if staus LED working on Hikey board."
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - android
-        - debian
-    scope:
-        - functional
-    devices:
-        - hi6220-hikey
     environment:
         - manual-test
 

@@ -1,20 +1,9 @@
 metadata:
     name: sdcard-speed-test
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Measure sdcard read/write speed with dd command."
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - android
-        - debian
-    scope:
-        - benchmark
-    devices:
-        - panda
-        - panda-es
-        - arndale
-        - hi6220-hikey
-        - db410c
     environment:
         - manual-test
 

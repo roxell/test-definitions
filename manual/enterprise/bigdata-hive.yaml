@@ -1,21 +1,10 @@
 metadata:
     name: hadoop-terasort
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Functional tests of hadoop"
     maintainer:
         - milosz.wasilewski@linaro.org
         - ganesh.raju@linaro.org
-    os:
-        - centos
-        - debian
-    scope:
-        - performance
-    devices:
-        - d02
-        - d03
-        - d05
-        - overdrive
-        - moonshot
     environment:
         - manual-test
 

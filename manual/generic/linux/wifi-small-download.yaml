@@ -1,16 +1,9 @@
 metadata:
     name: wifi-small-downlaod
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if small file can be downloaded via WiFi."
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - ubuntu
-    scope:
-        - functional
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
     environment:
         - manual-test
 

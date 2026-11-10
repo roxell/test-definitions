@@ -1,20 +1,9 @@
 metadata:
     name: andriod-adb-over-usb
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if ADB over USB works well"
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - android
-    scope:
-        - functional
-    devices:
-        - panda
-        - panda-es
-        - vexpress-a9
-        - vexpress-tc2
-        - arndale
-        - hi6220-hikey
     environment:
         - manual-test
 

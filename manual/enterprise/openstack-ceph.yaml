@@ -1,19 +1,9 @@
 metadata:
     name: openstack-ceph-cloud
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Functional tests of cloud instance"
     maintainer:
         - milosz.wasilewski@linaro.org
-    os:
-        - CentOS
-    scope:
-        - functional
-    devices:
-        - d02
-        - d03
-        - d05
-        - overdrive
-        - moonshot
     environment:
         - manual-test
 

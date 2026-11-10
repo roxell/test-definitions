@@ -1,21 +1,10 @@
 metadata:
     name: sparkpi
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Functional tests of Spark - sparkpi"
     maintainer:
         - milosz.wasilewski@linaro.org
         - ganesh.raju@linaro.org
-    os:
-        - centos
-        - debian
-    scope:
-        - functional
-    devices:
-        - d02
-        - d03
-        - d05
-        - overdrive
-        - moonshot
     environment:
         - manual-test
 

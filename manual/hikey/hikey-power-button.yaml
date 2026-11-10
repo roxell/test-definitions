@@ -1,16 +1,9 @@
 metadata:
     name: hikey-power-button
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if the behaviour of hikey power button follows the definition in hardware user guide."
     maintainer:
         - chase.qi@linaro.org
-    os:
-        - android
-        - debian
-    scope:
-        - functional
-    devices:
-        - hi6220-hikey
     environment:
         - manual-test
 

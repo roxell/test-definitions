@@ -1,17 +1,9 @@
 metadata:
     name: linux-wifi-terminal
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Test if WiFi works well from Terminal"
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - ubuntu
-        - openembedded
-    scope:
-        - functional
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
     environment:
         - manual-test
 

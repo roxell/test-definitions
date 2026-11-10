@@ -1,26 +1,12 @@
 metadata:
     name: PXE-boot
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "The Preboot eXecution Environment specification describes as
         standardized client-server environment that boots a software assembly,
         retrieved from a network, on PXE-enabled clients. More details in wiki:
         https://en.wikipedia.org/wiki/Preboot_Execution_Environment"
     maintainer:
         - naresh.kamboju@linaro.org
-    os:
-        - debian
-        - ubuntu
-        - centos
-        - fedora
-    scope:
-        - functional
-    devices:
-        - d02
-        - d03
-        - d05
-        - overdrive
-        - moonshot
-        - thunderX
     environment:
         - manual-test
 

@@ -1,16 +1,9 @@
 metadata:
     name: small-wifi-file-transfer
-    format: "Manual Test Definition 1.0"
+    format: "Manual Test Definition 2.0"
     description: "Small file transfer over WiFi."
     maintainer:
         - amit.khare@linaro.org
-    os:
-        - android
-    scope:
-        - functional
-    devices:
-        - hi6220-hikey
-        - apq8016-sbc
     environment:
         - manual-test
 
