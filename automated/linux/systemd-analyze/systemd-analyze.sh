@@ -8,17 +8,21 @@ OUTPUT="$(pwd)/output"
 OUTPUT_FILE="${OUTPUT}/output.txt"
 RESULT_FILE="${OUTPUT}/result.txt"
 SKIP_INSTALL="true"
+BOOT_TIMEOUT="300"
 
 usage() {
     echo "\
-    Usage: ${0} [-s True|False]
+    Usage: ${0} [-s True|False] [-t boot timeout in seconds]
     "
 }
 
-while getopts "hs:" opt; do
+while getopts "hs:t:" opt; do
     case $opt in
         s)
             SKIP_INSTALL="${OPTARG}"
+            ;;
+        t)
+            BOOT_TIMEOUT="${OPTARG}"
             ;;
         h|*)
             usage
@@ -27,14 +31,17 @@ while getopts "hs:" opt; do
     esac
 done
 
+[ "${BOOT_TIMEOUT}" -gt 0 ] 2>/dev/null || { usage; exit 1; }
+
 create_out_dir "${OUTPUT}"
 
 pkgs="systemd"
 install_deps "${pkgs}" "${SKIP_INSTALL}"
 
-command -v systemd-analyze
-exit_on_fail "systemd-analyze not in ${PATH} or not installed"
-systemd-analyze | tee "${OUTPUT_FILE}"
+timeout "${BOOT_TIMEOUT}" systemctl is-system-running --wait
+systemd-analyze > "${OUTPUT_FILE}"
+exit_on_fail "systemd-analyze"
+cat "${OUTPUT_FILE}"
 
 head -1 "${OUTPUT_FILE}" | grep -oP '\d+\.\d+s \(\w+\)' | while read -r row; do
     seconds=$(echo "${row}"| awk -F ' ' '{print $1}'|sed -e 's|s$||g')
